@@ -1,12 +1,11 @@
 package com.example.Backend.controller.member;
 
+import com.example.Backend.controller.member.form.MemberLoginForm;
 import com.example.Backend.controller.member.form.MemberRegisterForm;
 import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -32,6 +31,13 @@ public class MemberController {
         log.info("signUp(): " + form);
 
         return memberService.signUp(form.toMemberRegisterRequest());
+    }
+
+    @PostMapping("/sign-in")
+    public String signIn(@RequestBody MemberLoginForm form) {
+        log.info("signIn(): " + form);
+
+        return memberService.signIn(form.toMemberLoginRequest());
     }
 
 
