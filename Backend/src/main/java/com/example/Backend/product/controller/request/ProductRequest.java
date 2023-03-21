@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 public class ProductRequest {
 
     final private String productName;
-    final private String writer;
     final private String content;
     final private Integer price;
 
