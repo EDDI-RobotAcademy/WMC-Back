@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Backend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Backend.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/WMC-Back.iml" filepath="$PROJECT_DIR$/.idea/WMC-Back.iml" />
     </modules>
   </component>
