@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,13 +18,15 @@ public class ProductRegisterRequest {
     final private String description;
     final private Integer stock;
     final private Integer price;
-    final private List<ImageData> imageDataList;
-
-    public ProductRegisterRequest toProductRegisterRequest() {
-        return new ProductRegisterRequest(name, description, stock, price, imageDataList);
-    }
+    final private List<String> savedFilePaths;
 
     public Product toProduct() {
+        List<ImageData> imageDataList = new ArrayList<>();
+        for (String path : savedFilePaths) {
+            ImageData imageData = new ImageData();
+            imageData.setImageData(path);
+            imageDataList.add(imageData);
+        }
         return new Product(name, description, stock, price, imageDataList);
     }
 }

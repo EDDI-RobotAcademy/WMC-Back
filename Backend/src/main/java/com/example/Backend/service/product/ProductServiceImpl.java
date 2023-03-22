@@ -12,9 +12,7 @@ public class ProductServiceImpl implements ProductService {
 
     final private ProductRepository productRepository;
 
-
     @Override
-
     public Boolean register(ProductRegisterRequest productRegisterRequest) {
         final Product product = productRegisterRequest.toProduct();
         productRepository.save(product);
