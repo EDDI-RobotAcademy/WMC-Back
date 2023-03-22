@@ -3,6 +3,7 @@ package com.example.Backend.controller.product;
 import com.example.Backend.controller.product.form.ProductRegisterForm;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
+import com.example.Backend.service.product.response.ProductListResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -24,22 +25,25 @@ public class ProductController {
 
     final private ProductService productService;
 
-    @PostMapping(value = "/register", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public boolean productRegister(@ModelAttribute ProductRegisterForm form) throws IOException {
         log.info("productRegister(): " + form);
 
-        // Save the images to the specific location and get a list of saved file paths
-        List<String> savedFiles = saveFiles(form.getFileList());
+        List<String> savedFiles;
 
-        // Create a ProductRegisterRequest object
+        if (form.getFileList() == null || form.getFileList().isEmpty()) {
+            savedFiles = new ArrayList<>();
+            String defaultFilePath = "assets/productImages/default-image.jpg";
+            savedFiles.add(defaultFilePath);
+        } else {
+            savedFiles = saveFiles(form.getFileList());
+        }
+
         ProductRegisterRequest request = new ProductRegisterRequest(form.getName(), form.getDescription(), form.getStock(), form.getPrice(), savedFiles);
 
-        // Call the register method from the productService
         return productService.register(request);
     }
 
-    // Save the files and return the list of saved file paths
-    // ...
     private List<String> saveFiles(List<MultipartFile> fileList) {
         List<String> savedFilePaths = new ArrayList<>();
         String basePath = "../../../finalProject/WMC-Front/frontend/src/assets/productImages/";
@@ -63,4 +67,8 @@ public class ProductController {
         return savedFilePaths;
     }
 
+    @GetMapping("/list")
+    public List<ProductListResponse> getAllProduct() {
+        return productService.getAllProducts();
+    }
 }

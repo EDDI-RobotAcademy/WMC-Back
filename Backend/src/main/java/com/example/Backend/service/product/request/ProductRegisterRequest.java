@@ -22,11 +22,15 @@ public class ProductRegisterRequest {
 
     public Product toProduct() {
         List<ImageData> imageDataList = new ArrayList<>();
+        Product product = new Product(name, description, stock, price);
+
         for (String path : savedFilePaths) {
             ImageData imageData = new ImageData();
             imageData.setImageData(path);
-            imageDataList.add(imageData);
+            product.addImageData(imageData);
         }
-        return new Product(name, description, stock, price, imageDataList);
+
+        return product;
     }
+
 }
