@@ -28,6 +28,12 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<Authentication> authentications = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "member_roles",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
     public Member(String email, MemberProfile memberProfile) {
         this.email = email;
         this.memberProfile = memberProfile;
