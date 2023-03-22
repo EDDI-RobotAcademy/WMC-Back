@@ -43,6 +43,13 @@ public class Product {
     @UpdateTimestamp
     private Date updDate;
 
+    public Product(String name, String description, Integer stock, Integer price) {
+        this.name = name;
+        this.description = description;
+        this.stock = stock;
+        this.price = price;
+    }
+
     public void addImageData(ImageData imageData) {
         imageData.setProduct(this);
         imageDataList.add(imageData);
