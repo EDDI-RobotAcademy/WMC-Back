@@ -28,16 +28,9 @@ public class ProductController {
     @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public boolean productRegister(@ModelAttribute ProductRegisterForm form) throws IOException {
         log.info("productRegister(): " + form);
+        log.info("Files received: " + form.getFileList().size());
 
-        List<String> savedFiles;
-
-        if (form.getFileList() == null || form.getFileList().isEmpty()) {
-            savedFiles = new ArrayList<>();
-            String defaultFilePath = "assets/productImages/default-image.jpg";
-            savedFiles.add(defaultFilePath);
-        } else {
-            savedFiles = saveFiles(form.getFileList());
-        }
+        List<String> savedFiles = saveFiles(form.getFileList());
 
         ProductRegisterRequest request = new ProductRegisterRequest(form.getName(), form.getDescription(), form.getStock(), form.getPrice(), savedFiles);
 
@@ -50,8 +43,10 @@ public class ProductController {
 
         for (MultipartFile multipartFile : fileList) {
             log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());
+            log.info("saveFiles() - file size: " + multipartFile.getSize());
+
             String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add(savedFileName);
+            savedFilePaths.add("assets/productImages/"+multipartFile.getOriginalFilename());
 
             try {
                 FileOutputStream writer = new FileOutputStream(savedFileName);
@@ -66,6 +61,8 @@ public class ProductController {
 
         return savedFilePaths;
     }
+
+
 
     @GetMapping("/list")
     public List<ProductListResponse> getAllProduct() {
