@@ -41,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
             }
 
             ProductListResponse response = new ProductListResponse(
+                    product.getProductId(),
                     product.getName(),
                     product.getDescription(),
                     product.getStock(),
