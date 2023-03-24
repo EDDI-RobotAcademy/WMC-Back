@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ProductListResponse {
+    private Long productId;
     private String name;
     private String description;
     private Integer stock;
