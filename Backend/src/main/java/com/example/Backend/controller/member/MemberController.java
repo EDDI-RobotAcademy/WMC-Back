@@ -33,6 +33,13 @@ public class MemberController {
         return memberService.signUp(form.toMemberRegisterRequest());
     }
 
+    @PostMapping("/check-manager/{managerCode}")
+    public Boolean managerCodeValidation(@PathVariable("managerCode") String managerCode) {
+        log.info("managerCodeValidation(): " + managerCode);
+
+        return memberService.managerCodeValidation(managerCode);
+    }
+
     @PostMapping("/sign-in")
     public String signIn(@RequestBody MemberLoginForm form) {
         log.info("signIn(): " + form);

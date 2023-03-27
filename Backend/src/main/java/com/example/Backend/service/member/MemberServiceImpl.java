@@ -2,23 +2,28 @@ package com.example.Backend.service.member;
 
 import com.example.Backend.entity.member.Authentication;
 import com.example.Backend.entity.member.BasicAuthentication;
+import com.example.Backend.entity.member.ManagerCode;
 import com.example.Backend.entity.member.Member;
 import com.example.Backend.repository.member.AuthenticationRepository;
+import com.example.Backend.repository.member.ManagerCodeRepository;
 import com.example.Backend.repository.member.MemberRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
     final private MemberRepository memberRepository;
+    final private ManagerCodeRepository managerCodeRepository;
     final private AuthenticationRepository authenticationRepository;
     final private RedisService redisService;
 
@@ -35,17 +40,37 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public Boolean signUp(MemberRegisterRequest memberRegisterRequest) {
-        final Member member = memberRegisterRequest.toMember();
-        memberRepository.save(member);
+    public Boolean managerCodeValidation(String managerCode) {
+        Optional<ManagerCode> maybeManager = managerCodeRepository.findByCode(managerCode);
+        if (maybeManager.isPresent()) {
+            return true;
+        }
+        return false;
+    }
 
-        final BasicAuthentication authentication = new BasicAuthentication(
-                member,
-                Authentication.BASIC_AUTH,
-                memberRegisterRequest.getPassword()
-        );
+    @Override
+    public Boolean signUp(MemberRegisterRequest request) {
+        log.info("매니저코드: " + request.getManagerCode());
+        if (request.getManagerCode() == null || request.getManagerCode().isEmpty()) {
+            log.info("일반회원 가입");
+            final Member member = request.toMember();
+            memberRepository.save(member);
 
-        authenticationRepository.save(authentication);
+            final BasicAuthentication auth = new BasicAuthentication(member,
+                    Authentication.BASIC_AUTH, request.getPassword());
+
+            authenticationRepository.save(auth);
+
+        } else {
+            log.info("관리자회원 가입");
+            final Member member = request.toManager();
+            memberRepository.save(member);
+
+            final BasicAuthentication auth = new BasicAuthentication(member,
+                    Authentication.BASIC_AUTH, request.getPassword());
+
+            authenticationRepository.save(auth);
+        }
 
         return true;
     }
