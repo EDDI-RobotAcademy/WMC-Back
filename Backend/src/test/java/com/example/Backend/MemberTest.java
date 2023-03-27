@@ -1,5 +1,6 @@
 package com.example.Backend;
 
+import com.example.Backend.entity.member.AuthorityType;
 import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
 import com.example.Backend.service.security.RedisService;
@@ -26,9 +27,9 @@ public class MemberTest {
     @Test
     public void 회원가입_확인() {
         assertTrue(memberService.signUp(new MemberRegisterRequest(
-                "test@test.com", "test",
+                "test@test.com", "test", "asdf", 19950228, AuthorityType.MEMBER, true,
                 "집", "집", "집",
-                "01234"
+                "01234", "010-2345-1234"
         )));
     }
 

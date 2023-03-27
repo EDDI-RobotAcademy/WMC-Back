@@ -1,6 +1,7 @@
 package com.example.Backend.entity.member;
 
 import com.example.Backend.entity.member.MemberProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,24 +23,48 @@ public class Member {
     @Column(nullable = false)
     private String email;
 
+    @Getter
+    @Column(nullable = false)
+    private String username;
+
+    @Getter
+    @Column(nullable = false)
+    private int birthdate;
+
+    @Getter
+    @Column
+    private boolean managerCheck;
+
+    @Getter
+    @JsonIgnore
+    @JoinColumn(name ="authority_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Authority authority;
+
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private MemberProfile memberProfile;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<Authentication> authentications = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "member_roles",
-            joinColumns = @JoinColumn(name = "member_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
 
-    public Member(String email, MemberProfile memberProfile) {
+    public Member(String email, String username, int birthdate, Authority authority, boolean managerCheck, MemberProfile memberProfile) {
         this.email = email;
+        this.username = username;
+        this.birthdate = birthdate;
+        this.authority = authority;
+        this.managerCheck = managerCheck;
         this.memberProfile = memberProfile;
         memberProfile.setMember(this);
     }
 
+    public Member(String email, String username, int birthdate, Authority authority, boolean managerCheck) {
+        this.email = email;
+        this.username = username;
+        this.birthdate = birthdate;
+        this.authority = authority;
+        this.managerCheck = managerCheck;
+    }
     public boolean isRightPassword(String plainToCheck) {
         final Optional<Authentication> maybeBasicAuth = findBasicAuthentication();
 
