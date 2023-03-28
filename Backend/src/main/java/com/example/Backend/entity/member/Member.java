@@ -65,6 +65,12 @@ public class Member {
         this.authority = authority;
         this.managerCheck = managerCheck;
     }
+
+    public Member(Long id, Authority authority) {
+        this.id = id;
+        this.authority = authority;
+    }
+
     public boolean isRightPassword(String plainToCheck) {
         final Optional<Authentication> maybeBasicAuth = findBasicAuthentication();
 
@@ -82,4 +88,9 @@ public class Member {
                 .filter(authentication -> authentication instanceof BasicAuthentication)
                 .findFirst();
     }
+
+    public String getAuthorityName() {
+        return authority.getAuthorityName().name();
+    }
+
 }
