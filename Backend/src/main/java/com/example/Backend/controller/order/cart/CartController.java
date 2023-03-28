@@ -15,7 +15,7 @@ public class CartController {
     private final RedisServiceImpl redisService;
 
     @PostMapping("/validate")
-    public Long userValidation(@RequestBody String token) {
+    public String userValidation(@RequestBody String token) {
         token = token.substring(0, token.length() - 1);
         log.info("logout(): " + token);
 

@@ -14,22 +14,17 @@ public class RedisServiceImpl implements RedisService {
     final private StringRedisTemplate redisTemplate;
 
     @Override
-    public void setKeyAndValue(String token, Long memberId) {
-        String memberIdString = String.valueOf(memberId);
+    public void setKeyAndValue(String token, Long memberId, String authorityName) {
+        String memberIdAndAuthority = memberId + ":" + authorityName;
         ValueOperations<String, String> value = redisTemplate.opsForValue();
-        value.set(token, memberIdString, Duration.ofMinutes(60));
+        value.set(token, memberIdAndAuthority, Duration.ofMinutes(60));
     }
 
     @Override
-    public Long getValueByKey(String token) {
+    public String getValueByKey(String token) {
         ValueOperations<String, String> value = redisTemplate.opsForValue();
-        String tempMemberId = value.get(token);
-        Long memberId;
-
-        if (tempMemberId == null) { memberId = null; }
-        else { memberId = Long.parseLong(tempMemberId); }
-
-        return memberId;
+        String memberIdAndAuthority = value.get(token);
+        return memberIdAndAuthority;
     }
 
     @Override

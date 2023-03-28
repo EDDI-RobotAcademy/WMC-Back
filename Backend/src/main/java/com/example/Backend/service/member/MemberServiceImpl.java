@@ -10,6 +10,8 @@ import com.example.Backend.repository.member.MemberRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
 import com.example.Backend.service.security.RedisService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -98,7 +100,7 @@ public class MemberServiceImpl implements MemberService {
 
             // redis 처리 필요
             redisService.deleteByKey(userToken.toString());
-            redisService.setKeyAndValue(userToken.toString(), member.getId());
+            redisService.setKeyAndValue(userToken.toString(), member.getId(), member.getAuthorityName());
 
             return userToken.toString();
         }
