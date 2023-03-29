@@ -27,4 +27,10 @@ public class Notice {
 
     @UpdateTimestamp
     private Date updDate;
+
+    public Notice(String title, String writer, String content) {
+        this.title = title;
+        this.writer = writer;
+        this.content = content;
+    }
 }
