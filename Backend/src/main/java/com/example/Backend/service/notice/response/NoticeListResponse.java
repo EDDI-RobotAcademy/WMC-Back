@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class NoticeListResponse {
 
-    private long noticeId;
+    private Long noticeId;
     private String title;
     private String writer;
     private String content;
