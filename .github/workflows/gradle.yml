@@ -33,7 +33,7 @@ jobs:
       uses: samin/mysql-action@v1
       with:
         character set server: 'utf8' 
-        mysql database: 'wmc_db' 
+        mysql database: 'jpa_test' 
         mysql user: 'eddi'
         mysql password: ${{ secrets.MYSQL_PASSWORD }} # github Secret 탭에서 설정하세요!
         
