@@ -1,6 +1,5 @@
 package com.example.Backend.service.notice;
 
-import com.example.Backend.entity.notice.Notice;
 import com.example.Backend.service.notice.request.NoticeRequest;
 import com.example.Backend.service.notice.response.NoticeListResponse;
 

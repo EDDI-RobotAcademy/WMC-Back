@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-import java.util.List;
-
 
 @Getter
 @ToString
@@ -20,6 +18,7 @@ public class NoticeRequest {
     final private String content;
 
 
+
     public Notice toNotice() {
 
         Notice notice = new Notice(title, writer, content);
@@ -27,8 +26,4 @@ public class NoticeRequest {
         return notice;
     }
 
-
-   /* private String title;
-    private String writer;
-    private String content;*/
 }
