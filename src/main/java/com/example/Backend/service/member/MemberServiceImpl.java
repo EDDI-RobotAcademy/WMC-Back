@@ -6,6 +6,7 @@ import com.example.Backend.entity.member.ManagerCode;
 import com.example.Backend.entity.member.Member;
 import com.example.Backend.repository.member.AuthenticationRepository;
 import com.example.Backend.repository.member.ManagerCodeRepository;
+import com.example.Backend.repository.member.MemberProfileRepository;
 import com.example.Backend.repository.member.MemberRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
@@ -13,6 +14,7 @@ import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +27,7 @@ public class MemberServiceImpl implements MemberService {
     final private MemberRepository memberRepository;
     final private ManagerCodeRepository managerCodeRepository;
     final private AuthenticationRepository authenticationRepository;
+    final private MemberProfileRepository memberProfileRepository;
     final private RedisService redisService;
 
     @Override
@@ -43,6 +46,20 @@ public class MemberServiceImpl implements MemberService {
     public Boolean managerCodeValidation(String managerCode) {
         Optional<ManagerCode> maybeManager = managerCodeRepository.findByCode(managerCode);
         if (maybeManager.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public Boolean delete(Long memberId) {
+        Optional<Member> maybeMember = memberRepository.findById(memberId);
+        if (maybeMember.isPresent()) {
+            Member member = maybeMember.get();
+            memberProfileRepository.delete(member.getMemberProfile());
+            authenticationRepository.deleteAll(member.getAuthentications());
+            memberRepository.delete(member);
             return true;
         }
         return false;
@@ -106,4 +123,5 @@ public class MemberServiceImpl implements MemberService {
         throw new RuntimeException("가입된 사용자가 아닙니다!");
     }
 
-    }
+
+}

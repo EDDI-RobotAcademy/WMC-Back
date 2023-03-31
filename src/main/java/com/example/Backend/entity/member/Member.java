@@ -2,6 +2,7 @@ package com.example.Backend.entity.member;
 
 import com.example.Backend.entity.member.MemberProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,31 +12,26 @@ import java.util.Optional;
 import java.util.Set;
 
 @Entity
+@Data
 @NoArgsConstructor
 public class Member {
 
     @Id
-    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Getter
     @Column(nullable = false)
     private String email;
 
-    @Getter
     @Column(nullable = false)
     private String username;
 
-    @Getter
     @Column(nullable = false)
     private int birthdate;
 
-    @Getter
     @Column
     private boolean managerCheck;
 
-    @Getter
     @JsonIgnore
     @JoinColumn(name ="authority_id")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
