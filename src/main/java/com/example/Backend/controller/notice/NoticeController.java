@@ -1,7 +1,6 @@
 package com.example.Backend.controller.notice;
 
 import com.example.Backend.controller.notice.form.NoticeRegisterForm;
-import com.example.Backend.entity.notice.Notice;
 import com.example.Backend.service.notice.NoticeService;
 import com.example.Backend.service.notice.request.NoticeRequest;
 import com.example.Backend.service.notice.response.NoticeListResponse;
@@ -38,27 +37,5 @@ public class NoticeController {
         return noticeService.getAllNotices();
     }
 
-    /*
-    final private NoticeService noticeService;
-
-    public NoticeController(NoticeService noticeService) {
-        this.noticeService = noticeService;
-    }
-
-
-
-    @PostMapping("/register")
-    public void noticeRegister (@RequestBody NoticeRequest noticeRequest) {
-        log.info("noticeRegister()");
-
-        noticeService.register(noticeRequest);
-    }
-
-    @GetMapping("/list")
-    public List<Notice> noticeList () {
-        log.info("noticeList()");
-
-        return noticeService.list();
-    }*/
 }
 
