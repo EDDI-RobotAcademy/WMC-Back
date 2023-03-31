@@ -8,5 +8,6 @@ public interface MemberService {
     Boolean signUp(MemberRegisterRequest request);
     String signIn(MemberLoginRequest memberLoginRequest);
     Boolean managerCodeValidation(String managerCode);
+    Boolean delete(Long memberId);
 
 }
