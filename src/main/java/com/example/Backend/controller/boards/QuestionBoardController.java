@@ -25,14 +25,14 @@ public class QuestionBoardController {
 
         questionService.register(BoardRequest);
     }
-/*
+
     @GetMapping("/list")
     public List<QuestionBoard> questionBoardList () {
         log.info("questionBoardList()");
 
         return questionService.questionList();
     }
-*/
+
 
 
 }

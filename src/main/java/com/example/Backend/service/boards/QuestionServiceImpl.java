@@ -28,10 +28,10 @@ public class QuestionServiceImpl implements QuestionService{
         questionRepository.save(questionBoard);
     }
 
-   /* @Override
+   @Override
     public List<QuestionBoard> questionList() {
         return questionRepository.findAllBy();
-    }*/
+    }
 
 }
 

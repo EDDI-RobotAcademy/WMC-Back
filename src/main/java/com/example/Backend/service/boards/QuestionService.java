@@ -9,5 +9,5 @@ public interface QuestionService {
 
     public void register(BoardRequest BoardRequest);
 
-    //public List<QuestionBoard> questionList();
+    public List<QuestionBoard> questionList();
 }
