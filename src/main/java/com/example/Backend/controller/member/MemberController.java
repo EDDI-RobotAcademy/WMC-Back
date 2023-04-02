@@ -55,7 +55,7 @@ public class MemberController {
         redisService.deleteByKey(token);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public void delete(@RequestBody String token) {
         token = token.substring(0, token.length() - 1);
         log.info("logout(): " + token);
