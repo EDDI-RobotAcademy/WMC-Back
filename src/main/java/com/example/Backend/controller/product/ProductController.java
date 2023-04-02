@@ -62,10 +62,14 @@ public class ProductController {
         return savedFilePaths;
     }
 
-
+    @DeleteMapping("/delete")
+    public boolean delete(@RequestBody Long productId) {
+        return productService.delete(productId);
+    }
 
     @GetMapping("/list")
     public List<ProductListResponse> getAllProduct() {
+
         return productService.getAllProducts();
     }
 }

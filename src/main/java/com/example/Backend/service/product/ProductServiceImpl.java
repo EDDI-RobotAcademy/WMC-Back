@@ -8,9 +8,11 @@ import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.product.response.ProductListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +28,19 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
 
         return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean delete(Long productId) {
+        Optional<Product> maybeProduct = productRepository.findById(productId);
+        if (maybeProduct.isPresent()) {
+            Product product = maybeProduct.get();
+            imageDataRepository.deleteAll(product.getImageDataList());
+            productRepository.delete(product);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -53,5 +68,7 @@ public class ProductServiceImpl implements ProductService {
 
         return productListResponses;
     }
+
+
 
 }
