@@ -129,11 +129,14 @@ public class MemberServiceImpl implements MemberService {
             Member member = maybeMember.get();
             MemberProfile memberProfile = memberProfileRepository.getReferenceById(memberId);
             Address address = memberProfile.getAddress();
-            MemberResponse res = new MemberResponse(member.getEmail(), member.getUsername(), member.getBirthdate(), memberProfile.getPhoneNumber(), address.getCity(), address.getStreet(), address.getAddressDetail(), address.getZipcode());
+            MemberResponse res = new MemberResponse(
+                    member.getEmail(), member.getUsername(), member.getBirthdate(),
+                    memberProfile.getPhoneNumber(), address.getCity(), address.getStreet(),
+                    address.getAddressDetail(), address.getZipcode());
             return res;
         }
 
-        return null;
+        throw new RuntimeException("가입된 사용자가 아닙니다!");
     }
 
 }
