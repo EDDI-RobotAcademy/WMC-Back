@@ -1,6 +1,7 @@
 package com.example.Backend;
 
 import com.example.Backend.entity.member.AuthorityType;
+import com.example.Backend.entity.member.Member;
 import com.example.Backend.repository.member.MemberRepository;
 import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
@@ -9,6 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -41,16 +46,17 @@ public class MemberTest {
     @Test
     public void 회원탈퇴() {
         memberRepository.deleteAll();
-        assertTrue(memberRepository.count()==0);
+        assertEquals(0, memberRepository.count());
         assertTrue(memberService.signUp(new MemberRegisterRequest(
                 "test@test.com", "test", "asdf", 19950228, AuthorityType.MEMBER, true,
                 "집", "집", "집",
                 "01234", "010-2345-1234"
         )));
-        assertTrue(memberRepository.count()==1);
-        Long memberId = 1L;
-        memberService.delete(memberId);
-        assertTrue(memberRepository.count()==0);
+        assertEquals(1, memberRepository.count());
+        List<Member> members = memberRepository.findAll();
+        Member member = members.get(0);
+        memberService.delete(member.getId());
+        assertEquals(0, memberRepository.count());
     }
 
 
