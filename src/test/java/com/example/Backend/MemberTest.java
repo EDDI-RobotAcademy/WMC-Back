@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -52,8 +53,9 @@ public class MemberTest {
                 "01234", "010-2345-1234"
         )));
         assertEquals(1, memberRepository.count());
-        Optional<Member> member = memberRepository.findByEmail("test@test.com");
-        memberService.delete(member.get().getId());
+        List<Member> members = memberRepository.findAll();
+        Member member = members.get(0);
+        memberService.delete(member.getId());
         assertEquals(0, memberRepository.count());
     }
 
