@@ -9,4 +9,6 @@ public interface ProductService {
     Boolean register(ProductRegisterRequest productRegisterRequest);
 
     List<ProductListResponse> getAllProducts();
+
+    Boolean delete(Long productId);
 }

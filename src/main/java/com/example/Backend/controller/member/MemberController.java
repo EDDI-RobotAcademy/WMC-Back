@@ -55,7 +55,22 @@ public class MemberController {
         redisService.deleteByKey(token);
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/account")
+    public void account(@RequestBody String token) {
+        token = token.substring(0, token.length() - 1);
+        log.info("account(): " + token);
+        Long memberId = null;
+        String memberValue = redisService.getValueByKey(token);
+        if (memberValue != null) {
+            String[] value = memberValue.split(":");
+            if (value.length > 0) {
+                memberId = Long.valueOf(value[0]);
+            }
+        }
+        memberService.read(memberId);
+    }
+
+    @DeleteMapping("/delete")
     public void delete(@RequestBody String token) {
         token = token.substring(0, token.length() - 1);
         log.info("logout(): " + token);
