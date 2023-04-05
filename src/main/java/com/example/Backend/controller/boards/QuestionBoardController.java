@@ -28,10 +28,10 @@ public class QuestionBoardController {
 
         return questionService.register(request);
     }
-/*
+
     @GetMapping("/list")
     public List<BoardListResponse> getAllNotice() {
         log.info("questionBoardList()");
         return questionService.getAllQuestion();
-    }*/
+    }
 }

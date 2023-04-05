@@ -13,5 +13,5 @@ public interface QuestionService {
 
     //제어자 public이 인터페이스 멤버와 중복된다? - 인터페이스의 멤버는 public이 되므로 public쓸 필요 x
     //public List<QuestionBoard> questionList();
-    //List<BoardListResponse> getAllQuestion();
+    List<BoardListResponse> getAllQuestion();
 }

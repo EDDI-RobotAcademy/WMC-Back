@@ -27,7 +27,7 @@ public class QuestionServiceImpl implements QuestionService{
 
         return true;
     }
-/*
+
     public List<BoardListResponse> getAllQuestion() {
         List<QuestionBoard> boards = questionRepository.findAll();
         List<BoardListResponse> boardListResponses = new ArrayList<>();
@@ -47,7 +47,7 @@ public class QuestionServiceImpl implements QuestionService{
         return boardListResponses;
 
     }
-*/
+
 
 
 
