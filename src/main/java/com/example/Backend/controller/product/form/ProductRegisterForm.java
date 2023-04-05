@@ -19,9 +19,10 @@ public class ProductRegisterForm {
     private String description;
     private Integer stock;
     private Integer price;
+    private Long categoryId;
     private List<MultipartFile> fileList;
 
-    public ProductRegisterRequest toProductRegisterRequest(List<String> savedFilePaths) {
-        return new ProductRegisterRequest(name, description, stock, price, savedFilePaths);
-    }
+//    public ProductRegisterRequest toProductRegisterRequest(List<String> savedFilePaths) {
+//        return new ProductRegisterRequest(name, description, stock, price, categoryId, savedFilePaths);
+//    }
 }
