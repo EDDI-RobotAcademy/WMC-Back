@@ -1,15 +1,13 @@
 package com.example.Backend.service.member;
 
-import com.example.Backend.entity.member.Authentication;
-import com.example.Backend.entity.member.BasicAuthentication;
-import com.example.Backend.entity.member.ManagerCode;
-import com.example.Backend.entity.member.Member;
+import com.example.Backend.entity.member.*;
 import com.example.Backend.repository.member.AuthenticationRepository;
 import com.example.Backend.repository.member.ManagerCodeRepository;
 import com.example.Backend.repository.member.MemberProfileRepository;
 import com.example.Backend.repository.member.MemberRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
+import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -123,5 +121,22 @@ public class MemberServiceImpl implements MemberService {
         throw new RuntimeException("가입된 사용자가 아닙니다!");
     }
 
+    @Override
+    public MemberResponse read(Long memberId) {
+
+        Optional<Member> maybeMember = memberRepository.findById(memberId);
+        if (maybeMember.isPresent()) {
+            Member member = maybeMember.get();
+            MemberProfile memberProfile = memberProfileRepository.getReferenceById(memberId);
+            Address address = memberProfile.getAddress();
+            MemberResponse res = new MemberResponse(
+                    member.getEmail(), member.getUsername(), member.getBirthdate(),
+                    memberProfile.getPhoneNumber(), address.getCity(), address.getStreet(),
+                    address.getAddressDetail(), address.getZipcode());
+            return res;
+        }
+
+        throw new RuntimeException("가입된 사용자가 아닙니다!");
+    }
 
 }
