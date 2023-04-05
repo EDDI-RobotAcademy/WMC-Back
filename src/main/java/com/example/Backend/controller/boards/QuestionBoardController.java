@@ -1,38 +1,37 @@
 package com.example.Backend.controller.boards;
 
-import com.example.Backend.entity.boards.QuestionBoard;
+import com.example.Backend.controller.boards.form.QuestionRegisterForm;
 import com.example.Backend.service.boards.request.BoardRequest;
 import com.example.Backend.service.boards.QuestionService;
+import com.example.Backend.service.boards.response.BoardListResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/questionBoard")
+@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
 public class QuestionBoardController {
+
     final private QuestionService questionService;
 
-    public QuestionBoardController(QuestionService questionBoardService) {
-        this.questionService = questionBoardService;
-    }
     @PostMapping("/register")
-    public void productRegister (@RequestBody BoardRequest BoardRequest) {
-        log.info("QuestionBoardRegister() 동작");
+    public boolean questionRegister (@ModelAttribute QuestionRegisterForm form) throws IOException {
+        log.info("questionRegister() 동작");
 
-        questionService.register(BoardRequest);
+        BoardRequest request = new BoardRequest(form.getTitle(), form.getWriter(), form.getContent());
+
+        return questionService.register(request);
     }
-
+/*
     @GetMapping("/list")
-    public List<QuestionBoard> questionBoardList () {
+    public List<BoardListResponse> getAllNotice() {
         log.info("questionBoardList()");
-
-        return questionService.questionList();
-    }
-
-
-
+        return questionService.getAllQuestion();
+    }*/
 }
