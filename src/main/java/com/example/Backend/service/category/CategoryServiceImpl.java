@@ -4,9 +4,9 @@ import com.example.Backend.entity.product.Category;
 import com.example.Backend.repository.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,8 +14,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAll();
+        for (Category category : categories) {
+            category.getProductList().size();
+        }
+        return categories;
     }
 
     public Category getCategoryById(Long id) {
