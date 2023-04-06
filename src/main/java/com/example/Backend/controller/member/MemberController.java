@@ -3,6 +3,7 @@ package com.example.Backend.controller.member;
 import com.example.Backend.controller.member.form.MemberLoginForm;
 import com.example.Backend.controller.member.form.MemberRegisterForm;
 import com.example.Backend.service.member.MemberService;
+import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +57,7 @@ public class MemberController {
     }
 
     @PostMapping("/account")
-    public void account(@RequestBody String token) {
+    public MemberResponse account(@RequestBody String token) {
         token = token.substring(0, token.length() - 1);
         log.info("account(): " + token);
         Long memberId = null;
@@ -67,7 +68,7 @@ public class MemberController {
                 memberId = Long.valueOf(value[0]);
             }
         }
-        memberService.read(memberId);
+        return memberService.read(memberId);
     }
 
     @DeleteMapping("/delete")
