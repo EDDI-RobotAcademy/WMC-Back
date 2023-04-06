@@ -33,6 +33,7 @@ public class Product {
     @Column
     private Integer price;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
@@ -67,6 +68,18 @@ public class Product {
         this.category = category;
         this.imageDataList = imageDataList;
     }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "productId=" + productId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", stock=" + stock +
+                ", price=" + price +
+                '}';
+    }
+
 
 }
 
