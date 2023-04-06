@@ -2,10 +2,12 @@ package com.example.Backend.controller.product;
 
 import com.example.Backend.controller.product.form.ProductRegisterForm;
 import com.example.Backend.entity.product.Category;
+import com.example.Backend.entity.product.Product;
 import com.example.Backend.service.category.CategoryService;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.product.response.ProductListResponse;
+import com.example.Backend.service.product.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -43,14 +45,14 @@ public class ProductController {
 
     private List<String> saveFiles(List<MultipartFile> fileList) {
         List<String> savedFilePaths = new ArrayList<>();
-        String basePath = "../../../finalProject/WMC-Front/src/assets/productImages/";
+        String basePath = "/Users/jonginhan/Documents/GitHub/finalProject/WMC-Front/src/assets/productImages/";
 
         for (MultipartFile multipartFile : fileList) {
             log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());
             log.info("saveFiles() - file size: " + multipartFile.getSize());
 
             String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add("assets/productImages/"+multipartFile.getOriginalFilename());
+            savedFilePaths.add("assets/productImages/" + multipartFile.getOriginalFilename());
 
             try {
                 FileOutputStream writer = new FileOutputStream(savedFileName);
@@ -75,5 +77,10 @@ public class ProductController {
     public List<ProductListResponse> getAllProduct() {
 
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/detail")
+    public ProductResponse getProductDetail(@RequestParam Long productId) {
+        return productService.getProductById(productId);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.Backend.entity.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ public class Category {
     @Column(length = 128, nullable = false)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> productList = new ArrayList<>();
 
@@ -33,4 +35,13 @@ public class Category {
         product.setCategory(this);
         productList.add(product);
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryId=" + categoryId +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
 }
