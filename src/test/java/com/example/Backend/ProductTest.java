@@ -7,6 +7,7 @@ import com.example.Backend.repository.product.ProductRepository;
 import com.example.Backend.service.category.CategoryService;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
+import com.example.Backend.service.product.response.ProductResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,9 +52,9 @@ public class ProductTest {
         Category newCategory = categoryService.createCategory("testCategory");
 
         List<String> savedFilePaths = Arrays.asList(
-                "/path/to/test/image1.jpg",
-                "/path/to/test/image2.jpg",
-                "/path/to/test/image3.jpg"
+                "src/assets/productImages/carin1.png",
+                "src/assets/productImages/carin2.png",
+                "src/assets/productImages/carin3.png"
         );
 
         assertTrue(productService.register(new ProductRegisterRequest(
@@ -63,5 +64,28 @@ public class ProductTest {
         List<Product> products = productRepository.findAll();
         Product product = products.get(0);
         assertTrue(productService.delete(product.getProductId()));
+    }
+
+    @Test
+    public void 상품상세정보() {
+        productRepository.deleteAll();
+        assertEquals(0, productRepository.count());
+
+        Category newCategory = categoryService.createCategory("testCategory");
+
+        List<String> savedFilePaths = Arrays.asList(
+                "src/assets/productImages/carin1.png",
+                "src/assets/productImages/carin2.png",
+                "src/assets/productImages/carin3.png"
+        );
+
+        assertTrue(productService.register(new ProductRegisterRequest(
+                "test", "test입니다", 100, 1000, newCategory, savedFilePaths)));
+        assertEquals(1, productRepository.count());
+
+        List<Product> products = productRepository.findAll();
+        Product product = products.get(0);
+        ProductResponse productResponse = productService.getProductById(product.getProductId());
+        assertEquals(product.getProductId(), productResponse.getId());
     }
 }
