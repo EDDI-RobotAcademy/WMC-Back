@@ -34,9 +34,9 @@ public class ProductTest {
         Category newCategory = categoryService.createCategory("testCategory");
 
         List<String> savedFilePaths = Arrays.asList(
-                "/path/to/test/image1.jpg",
-                "/path/to/test/image2.jpg",
-                "/path/to/test/image3.jpg"
+                "src/assets/productImages/carin1.png",
+                "src/assets/productImages/carin2.png",
+                "src/assets/productImages/carin3.png"
         );
 
         assertTrue(productService.register(new ProductRegisterRequest(
