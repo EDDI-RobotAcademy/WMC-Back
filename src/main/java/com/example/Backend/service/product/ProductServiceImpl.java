@@ -6,6 +6,7 @@ import com.example.Backend.repository.product.ImageDataRepository;
 import com.example.Backend.repository.product.ProductRepository;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.product.response.ProductListResponse;
+import com.example.Backend.service.product.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponse getProductById(Long productId) {
+        Optional<Product> maybeProduct = productRepository.findById(productId);
+        if (maybeProduct.isPresent()) {
+            Product product = maybeProduct.get();
+            List<ImageData> imageDataList = imageDataRepository.findAllImagesByProductId(productId);
+            return new ProductResponse(
+                    product.getProductId(),
+                    product.getName(),
+                    product.getDescription(),
+                    product.getPrice(),
+                    imageDataList
+            );
+        } else {
+            return null;
+        }
+
+    }
+
+    @Override
     public List<ProductListResponse> getAllProducts() {
+
         List<Product> products = productRepository.findAll();
         List<ProductListResponse> productListResponses = new ArrayList<>();
 
@@ -68,7 +89,5 @@ public class ProductServiceImpl implements ProductService {
 
         return productListResponses;
     }
-
-
 
 }
