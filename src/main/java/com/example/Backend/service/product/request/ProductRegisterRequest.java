@@ -1,5 +1,6 @@
 package com.example.Backend.service.product.request;
 
+import com.example.Backend.entity.product.Category;
 import com.example.Backend.entity.product.ImageData;
 import com.example.Backend.entity.product.Product;
 import lombok.Getter;
@@ -18,11 +19,12 @@ public class ProductRegisterRequest {
     final private String description;
     final private Integer stock;
     final private Integer price;
+    final private Category category;
     final private List<String> savedFilePaths;
 
     public Product toProduct() {
         List<ImageData> imageDataList = new ArrayList<>();
-        Product product = new Product(name, description, stock, price);
+        Product product = new Product(name, description, stock, price, category);
 
         for (String path : savedFilePaths) {
             ImageData imageData = new ImageData();

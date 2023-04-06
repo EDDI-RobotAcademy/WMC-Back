@@ -1,6 +1,8 @@
 package com.example.Backend.controller.product;
 
 import com.example.Backend.controller.product.form.ProductRegisterForm;
+import com.example.Backend.entity.product.Category;
+import com.example.Backend.service.category.CategoryService;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.product.response.ProductListResponse;
@@ -24,6 +26,7 @@ import java.util.List;
 public class ProductController {
 
     final private ProductService productService;
+    final private CategoryService categoryService;
 
     @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public boolean productRegister(@ModelAttribute ProductRegisterForm form) throws IOException {
@@ -31,8 +34,9 @@ public class ProductController {
         log.info("Files received: " + form.getFileList().size());
 
         List<String> savedFiles = saveFiles(form.getFileList());
+        Category category = categoryService.getCategoryById(form.getCategoryId());
 
-        ProductRegisterRequest request = new ProductRegisterRequest(form.getName(), form.getDescription(), form.getStock(), form.getPrice(), savedFiles);
+        ProductRegisterRequest request = new ProductRegisterRequest(form.getName(), form.getDescription(), form.getStock(), form.getPrice(), category, savedFiles);
 
         return productService.register(request);
     }

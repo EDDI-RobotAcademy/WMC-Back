@@ -33,6 +33,10 @@ public class Product {
     @Column
     private Integer price;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<ImageData> imageDataList = new ArrayList<>();
@@ -43,22 +47,24 @@ public class Product {
     @UpdateTimestamp
     private Date updDate;
 
-    public Product(String name, String description, Integer stock, Integer price) {
+    public Product(String name, String description, Integer stock, Integer price, Category category) {
         this.name = name;
         this.description = description;
         this.stock = stock;
         this.price = price;
+        this.category = category;
     }
 
     public void addImageData(ImageData imageData) {
         imageData.setProduct(this);
         imageDataList.add(imageData);
     }
-    public Product(String name, String description, Integer stock, Integer price, List<ImageData> imageDataList) {
+    public Product(String name, String description, Integer stock, Integer price, Category category, List<ImageData> imageDataList) {
         this.name = name;
         this.description = description;
         this.stock = stock;
         this.price = price;
+        this.category = category;
         this.imageDataList = imageDataList;
     }
 
