@@ -1,9 +1,11 @@
 package com.example.Backend.service.product;
 
+import com.example.Backend.entity.product.Category;
 import com.example.Backend.entity.product.ImageData;
 import com.example.Backend.entity.product.Product;
 import com.example.Backend.repository.product.ImageDataRepository;
 import com.example.Backend.repository.product.ProductRepository;
+import com.example.Backend.service.category.CategoryService;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.product.response.ProductListResponse;
 import com.example.Backend.service.product.response.ProductResponse;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +25,8 @@ public class ProductServiceImpl implements ProductService {
     final private ProductRepository productRepository;
 
     final private ImageDataRepository imageDataRepository;
+
+    final private CategoryService categoryService;
 
     @Override
     public Boolean register(ProductRegisterRequest productRegisterRequest) {
@@ -69,6 +74,33 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findAll();
         List<ProductListResponse> productListResponses = new ArrayList<>();
 
+        for (Product product : products) {
+            String firstPhoto = null;
+            List<ImageData> images = imageDataRepository.findAllImagesByProductId(product.getProductId());
+            if (!images.isEmpty()) {
+                firstPhoto = images.get(0).getImageData();
+            }
+
+            ProductListResponse response = new ProductListResponse(
+                    product.getProductId(),
+                    product.getName(),
+                    product.getDescription(),
+                    product.getStock(),
+                    product.getPrice(),
+                    firstPhoto
+            );
+            productListResponses.add(response);
+        }
+
+        return productListResponses;
+    }
+
+    @Override
+    @Transactional
+    public List<ProductListResponse> getProductsByCategory(Long categoryId) {
+        Category category = categoryService.getCategoryById(categoryId);
+        List<Product> products = category.getProductList();
+        List<ProductListResponse> productListResponses = new ArrayList<>();
         for (Product product : products) {
             String firstPhoto = null;
             List<ImageData> images = imageDataRepository.findAllImagesByProductId(product.getProductId());
