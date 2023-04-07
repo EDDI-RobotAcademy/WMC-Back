@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,8 +22,11 @@ public class NoticeRegisterForm {
 
     private String content;
 
+    private List<MultipartFile> fileList;
 
-    public NoticeRequest toNoticeRequest() {
-        return new NoticeRequest(title, writer, content);
+
+    public NoticeRequest toNoticeRequest(List<String> savedFilePaths) {
+
+        return new NoticeRequest(title, writer, content, savedFilePaths);
     }
 }

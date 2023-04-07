@@ -17,4 +17,6 @@ public class NoticeListResponse {
     private String content;
     private Date regDate;
 
+
+
 }
