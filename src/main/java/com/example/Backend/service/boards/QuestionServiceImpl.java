@@ -1,25 +1,26 @@
 package com.example.Backend.service.boards;
 
+import com.example.Backend.entity.boards.QuestionImageData;
 import com.example.Backend.entity.boards.QuestionBoard;
+import com.example.Backend.repository.boards.QuestionImageDataRepository;
 import com.example.Backend.repository.boards.QuestionRepository;
 import com.example.Backend.service.boards.request.BoardRequest;
 import com.example.Backend.service.boards.response.BoardListResponse;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
-@Service
 
+@Service
+@RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService{
 
     final private QuestionRepository questionRepository;
 
-    public QuestionServiceImpl(QuestionRepository questionRepository){
-        this.questionRepository = questionRepository;
-    }
+    final private QuestionImageDataRepository questionImageDataRepository;
+
 
     public Boolean register(BoardRequest boardRequest) {
         final QuestionBoard questionBoard = boardRequest.toBoard();
@@ -33,13 +34,20 @@ public class QuestionServiceImpl implements QuestionService{
         List<BoardListResponse> boardListResponses = new ArrayList<>();
 
         for (QuestionBoard board : boards) {
+            String firstPhoto = null;
+            List<QuestionImageData> images = questionImageDataRepository.findAllImagesByQuestionBoardId(board.getQuestionBoardId());
+            if (!images.isEmpty()) {
+                firstPhoto = images.get(0).getImageDate();
+            }
 
             BoardListResponse response = new BoardListResponse(
                     board.getQuestionBoardId(),
                     board.getTitle(),
                     board.getContent(),
                     board.getWriter(),
-                    board.getRegDate()
+                    board.getRegDate(),
+                    firstPhoto
+
             );
             boardListResponses.add(response);
 
