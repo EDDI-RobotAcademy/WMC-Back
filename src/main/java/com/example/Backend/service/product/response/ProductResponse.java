@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @RequiredArgsConstructor
 public class ProductResponse {
-    final private Long id;
+    final private Long productId;
     final private String name;
     final private String description;
     final private Integer price;

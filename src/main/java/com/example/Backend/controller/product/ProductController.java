@@ -83,4 +83,10 @@ public class ProductController {
     public ProductResponse getProductDetail(@RequestParam Long productId) {
         return productService.getProductById(productId);
     }
+
+    @GetMapping("/listByCategory")
+    public List<ProductListResponse> getProductsByCategory(@RequestParam Long categoryId) {
+        return productService.getProductsByCategory(categoryId);
+    }
+
 }
