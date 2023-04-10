@@ -5,6 +5,7 @@ import com.example.Backend.entity.notice.Notice;
 import com.example.Backend.service.notice.NoticeService;
 import com.example.Backend.service.notice.request.NoticeRequest;
 import com.example.Backend.service.notice.response.NoticeListResponse;
+import com.example.Backend.service.notice.response.NoticeReadResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -75,5 +76,12 @@ public class NoticeController {
         List<NoticeListResponse> result = noticeService.getAllNotices();
         log.info("Exiting getAllNotice() method with result: " + result);
         return result;
+    }
+
+    @GetMapping("/{noticeId}")
+    public NoticeReadResponse noticeRead(@PathVariable("noticeId") Long noticeId) {
+        log.info("noticeRead()");
+
+        return noticeService.read(noticeId);
     }
 }

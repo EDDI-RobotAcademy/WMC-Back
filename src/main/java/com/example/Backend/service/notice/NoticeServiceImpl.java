@@ -6,6 +6,7 @@ import com.example.Backend.repository.notice.NoticeRepository;
 import com.example.Backend.repository.notice.NoticeImageDataRepository;
 import com.example.Backend.service.notice.request.NoticeRequest;
 import com.example.Backend.service.notice.response.NoticeListResponse;
+import com.example.Backend.service.notice.response.NoticeReadResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -49,5 +51,28 @@ public class NoticeServiceImpl implements NoticeService {
             noticeListResponses.add(response);
         }
         return noticeListResponses;
+    }
+
+    @Override
+    public NoticeReadResponse read(Long noticeId) {
+        Optional<Notice> maybeNotice = noticeRepository.findById(noticeId);
+
+        if (maybeNotice.isEmpty()) {
+            log.info("읽을 수가 없습니다. {}", noticeId);
+            return null;
+        }
+
+        Notice notice = maybeNotice.get();
+        List<NoticeImageData> images = noticeImageDataRepository.findAllImagesByNoticeId(noticeId);
+
+        NoticeReadResponse response = new NoticeReadResponse(
+                notice.getNoticeId(),
+                notice.getTitle(),
+                notice.getWriter(),
+                notice.getContent(),
+                notice.getRegDate(),
+                images
+        );
+        return response;
     }
 }
