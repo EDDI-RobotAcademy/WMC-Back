@@ -15,4 +15,6 @@ public interface NoticeService {
 
     NoticeReadResponse read(Long noticeId);
 
+    boolean delete(Long noticeId);
+
 }

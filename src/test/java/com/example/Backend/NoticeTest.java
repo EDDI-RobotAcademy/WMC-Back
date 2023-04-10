@@ -74,4 +74,33 @@ public class NoticeTest {
         NoticeReadResponse noticeReadResponse = noticeService.read(notice.getNoticeId());
         assertEquals(notice.getNoticeId(), noticeReadResponse.getNoticeId());
     }
+
+    @Test
+    public void 상품삭제_확인() {
+
+        noticeRepository.deleteAll();
+        assertEquals(0, noticeRepository.count());
+
+        List<String> savedFilePaths = Arrays.asList(
+                "src/assets/noticeImages/image1.jpg",
+                "src/assets/noticeImages/image1.jpg",
+                "src/assets/noticeImages/image1.jpg"
+        );
+
+        assertTrue(noticeService.register(new NoticeRequest(
+                "test", "test입니다", "test내용", savedFilePaths
+        )));
+        assertEquals(1, noticeRepository.count());
+
+        List<Notice> notices = noticeRepository.findAll();
+        Notice notice = notices.get(0);
+
+        boolean result = noticeService.delete(notice.getNoticeId());
+        assertTrue(result);
+        assertEquals(0, noticeRepository.count());
+
+        result = noticeService.delete(notice.getNoticeId());
+
+        assertFalse(result);
+    }
 }

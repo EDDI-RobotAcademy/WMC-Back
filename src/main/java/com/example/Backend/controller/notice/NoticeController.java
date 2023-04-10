@@ -84,4 +84,10 @@ public class NoticeController {
 
         return noticeService.read(noticeId);
     }
+
+    @DeleteMapping("/{noticeId}")
+    public boolean deleteNotice(@PathVariable("noticeId") Long noticeId) {
+        log.info("deleteNotice(): " + noticeId);
+        return noticeService.delete(noticeId);
+    }
 }

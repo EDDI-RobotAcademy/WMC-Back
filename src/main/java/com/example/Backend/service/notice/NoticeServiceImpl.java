@@ -25,7 +25,6 @@ public class NoticeServiceImpl implements NoticeService {
 
     final private NoticeImageDataRepository noticeImageDataRepository;
 
-
     public Boolean register(NoticeRequest noticeRequest) {
         final Notice notice = noticeRequest.toNotice();
         noticeRepository.save(notice);
@@ -74,5 +73,21 @@ public class NoticeServiceImpl implements NoticeService {
                 images
         );
         return response;
+    }
+
+    @Override
+    public boolean delete(Long noticeId) {
+        if (noticeRepository.existsById(noticeId)) {
+            List<NoticeImageData> images = noticeImageDataRepository.findAllImagesByNoticeId(noticeId);
+            for (NoticeImageData image : images) {
+                noticeImageDataRepository.deleteById(image.getId());
+            }
+
+            noticeRepository.deleteById(noticeId);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
