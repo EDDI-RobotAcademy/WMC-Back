@@ -1,5 +1,6 @@
 package com.example.Backend.service.boards.request;
 
+import com.example.Backend.entity.boards.QuestionCategory;
 import com.example.Backend.entity.boards.QuestionImageData;
 import com.example.Backend.entity.boards.QuestionBoard;
 import lombok.Getter;
@@ -18,12 +19,14 @@ public class BoardRequest {
     final private String content;
     final private String writer;
 
+    final private QuestionCategory questionCategoryType;
+
     final private List<String> savedFilePaths;
 
     //Service에서 사용하는 것
     public QuestionBoard toBoard() {
 
-        QuestionBoard questionBoard = new QuestionBoard(title, content, writer);
+        QuestionBoard questionBoard = new QuestionBoard(title, content, writer, questionCategoryType);
         List<QuestionImageData> imageDataList = new ArrayList<>();
 
         for (String path : savedFilePaths) {

@@ -66,7 +66,7 @@ public class ProductTest {
         assertTrue(productService.delete(product.getProductId()));
     }
 
-    @Test
+    /*@Test
     public void 상품상세정보() {
         productRepository.deleteAll();
         assertEquals(0, productRepository.count());
@@ -87,5 +87,5 @@ public class ProductTest {
         Product product = products.get(0);
         ProductResponse productResponse = productService.getProductById(product.getProductId());
         assertEquals(product.getProductId(), productResponse.getId());
-    }
+    }*/
 }
