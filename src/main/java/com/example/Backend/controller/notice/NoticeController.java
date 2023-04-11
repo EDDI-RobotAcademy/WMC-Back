@@ -90,4 +90,21 @@ public class NoticeController {
         log.info("deleteNotice(): " + noticeId);
         return noticeService.delete(noticeId);
     }
+
+    @PutMapping(value = "/modify/{noticeId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public boolean modifyNotice(@PathVariable("noticeId") Long noticeId,
+                                @ModelAttribute NoticeRegisterForm form) throws IOException {
+        if (form.getFileList() == null) {
+            form.setFileList(new ArrayList<>());
+        }
+
+        log.info("modifyNotice(): " + form);
+        log.info("Files received: " + form.getFileList().size());
+
+        List<String> savedFiles = saveFiles(form.getFileList());
+
+        NoticeRequest request = new NoticeRequest(form.getTitle(), form.getWriter(), form.getContent(), savedFiles);
+
+        return noticeService.modify(noticeId, request);
+    }
 }

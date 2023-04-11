@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -88,6 +89,41 @@ public class NoticeServiceImpl implements NoticeService {
         } else {
             return false;
         }
+    }
 
+
+    @Override
+    @Transactional
+    public boolean modify(Long noticeId, NoticeRequest noticeRequest) {
+        Optional<Notice> maybeNotice = noticeRepository.findById(noticeId);
+
+        if (maybeNotice.isEmpty()) {
+            log.info("Notice not found for modify. NoticeId: {}", noticeId);
+            return false;
+        }
+
+        Notice notice = maybeNotice.get();
+
+        try {
+            notice.setTitle(noticeRequest.getTitle());
+            notice.setWriter(noticeRequest.getWriter());
+            notice.setContent(noticeRequest.getContent());
+
+            List<NoticeImageData> existingImages = noticeImageDataRepository.findAllImagesByNoticeId(noticeId);
+            existingImages.forEach(image -> noticeImageDataRepository.deleteById(image.getId()));
+
+            List<String> newFilePaths = noticeRequest.getSavedFilePaths();
+            newFilePaths.forEach(path -> {
+                NoticeImageData noticeImageData = new NoticeImageData();
+                noticeImageData.setNoticeImageData(path);
+                notice.addNoticeImageData(noticeImageData);
+            });
+
+            noticeRepository.save(notice);
+            return true;
+        } catch (Exception e) {
+            log.error("Error modifying notice with id: {}", noticeId, e);
+            return false;
+        }
     }
 }
