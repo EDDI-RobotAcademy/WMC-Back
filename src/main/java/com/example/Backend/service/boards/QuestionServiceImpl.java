@@ -2,8 +2,8 @@ package com.example.Backend.service.boards;
 
 import com.example.Backend.entity.boards.QuestionImageData;
 import com.example.Backend.entity.boards.QuestionBoard;
-import com.example.Backend.repository.boards.QuestionImageDataRepository;
-import com.example.Backend.repository.boards.QuestionRepository;
+import com.example.Backend.repository.jpa.boards.QuestionImageDataRepository;
+import com.example.Backend.repository.jpa.boards.QuestionRepository;
 import com.example.Backend.service.boards.request.BoardRequest;
 import com.example.Backend.service.boards.response.BoardListResponse;
 import lombok.RequiredArgsConstructor;

@@ -28,6 +28,7 @@ import java.util.List;
 public class ProductController {
 
     final private ProductService productService;
+
     final private CategoryService categoryService;
 
     @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -87,6 +88,11 @@ public class ProductController {
     @GetMapping("/listByCategory")
     public List<ProductListResponse> getProductsByCategory(@RequestParam Long categoryId) {
         return productService.getProductsByCategory(categoryId);
+    }
+
+    @GetMapping("/search/{name}")
+    public List<Product> search(@RequestParam("name") String name) {
+        return productService.getAll(name);
     }
 
 }

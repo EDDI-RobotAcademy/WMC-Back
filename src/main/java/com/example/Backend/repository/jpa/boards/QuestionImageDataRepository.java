@@ -1,4 +1,4 @@
-package com.example.Backend.repository.boards;
+package com.example.Backend.repository.jpa.boards;
 
 import com.example.Backend.entity.boards.QuestionImageData;
 import org.springframework.data.jpa.repository.JpaRepository;

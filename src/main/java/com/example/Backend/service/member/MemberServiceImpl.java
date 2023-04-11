@@ -1,10 +1,10 @@
 package com.example.Backend.service.member;
 
 import com.example.Backend.entity.member.*;
-import com.example.Backend.repository.member.AuthenticationRepository;
-import com.example.Backend.repository.member.ManagerCodeRepository;
-import com.example.Backend.repository.member.MemberProfileRepository;
-import com.example.Backend.repository.member.MemberRepository;
+import com.example.Backend.repository.jpa.member.AuthenticationRepository;
+import com.example.Backend.repository.jpa.member.ManagerCodeRepository;
+import com.example.Backend.repository.jpa.member.MemberProfileRepository;
+import com.example.Backend.repository.jpa.member.MemberRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
 import com.example.Backend.service.member.response.MemberResponse;

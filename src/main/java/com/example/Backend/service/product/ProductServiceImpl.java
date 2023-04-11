@@ -3,13 +3,21 @@ package com.example.Backend.service.product;
 import com.example.Backend.entity.product.Category;
 import com.example.Backend.entity.product.ImageData;
 import com.example.Backend.entity.product.Product;
-import com.example.Backend.repository.product.ImageDataRepository;
-import com.example.Backend.repository.product.ProductRepository;
+import com.example.Backend.repository.elasticSearch.ElasticSearchRepository;
+import com.example.Backend.repository.elasticSearch.ProductSearchRepository;
+import com.example.Backend.repository.jpa.product.ImageDataRepository;
+import com.example.Backend.repository.jpa.product.ProductRepository;
 import com.example.Backend.service.category.CategoryService;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.product.response.ProductListResponse;
 import com.example.Backend.service.product.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,10 +36,16 @@ public class ProductServiceImpl implements ProductService {
 
     final private CategoryService categoryService;
 
+    final private ElasticsearchRestTemplate elasticsearchRestTemplate;
+
+    final private ProductSearchRepository productSearchRepository;
+
     @Override
+    @Transactional
     public Boolean register(ProductRegisterRequest productRegisterRequest) {
         final Product product = productRegisterRequest.toProduct();
         productRepository.save(product);
+        productSearchRepository.save(product);
 
         return true;
     }
@@ -44,6 +58,7 @@ public class ProductServiceImpl implements ProductService {
             Product product = maybeProduct.get();
             imageDataRepository.deleteAll(product.getImageDataList());
             productRepository.delete(product);
+            productSearchRepository.delete(product);
             return true;
         }
         return false;
@@ -99,8 +114,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public List<ProductListResponse> getProductsByCategory(Long categoryId) {
-        Category category = categoryService.getCategoryById(categoryId);
-        List<Product> products = category.getProductList();
+        List<Product> products = productRepository.findByCategoryCategoryId(categoryId);
         List<ProductListResponse> productListResponses = new ArrayList<>();
         for (Product product : products) {
             String firstPhoto = null;
@@ -123,6 +137,7 @@ public class ProductServiceImpl implements ProductService {
         return productListResponses;
     }
 
+
     @Transactional
     public void decreaseProductStock(Long productId, Integer quantity) {
         Optional<Product> maybeProduct = productRepository.findById(productId);
@@ -135,4 +150,32 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional
+    @Override
+    public List<Product> getAll(String name) {
+        QueryBuilder query = org.elasticsearch.index.query.QueryBuilders.boolQuery()
+                .should(
+                        QueryBuilders.queryStringQuery(name)
+                                .lenient(true)
+                                .field("name")
+                                .field("productId")
+                                .field("price")
+                                .field("stock")
+                ).should(org.elasticsearch.index.query.QueryBuilders.queryStringQuery("*" + name + "*")
+                        .lenient(true)
+                        .field("name")
+                        .field("productId")
+                        .field("price")
+                        .field("stock"));
+
+        NativeSearchQuery build = new NativeSearchQueryBuilder()
+                .withQuery(query)
+                .build();
+
+        SearchHits<Product> searchHits = elasticsearchRestTemplate.search(build, Product.class);
+        List<Product> products = searchHits.getSearchHits().stream()
+                .map(hit -> hit.getContent())
+                .collect(Collectors.toList());
+        return products;
+    }
 }
