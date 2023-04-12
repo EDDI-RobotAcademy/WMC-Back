@@ -60,6 +60,7 @@ public class ProductServiceImpl implements ProductService {
                     product.getName(),
                     product.getDescription(),
                     product.getPrice(),
+                    product.getStock(),
                     imageDataList
             );
         } else {
@@ -120,6 +121,18 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return productListResponses;
+    }
+
+    @Transactional
+    public void decreaseProductStock(Long productId, Integer quantity) {
+        Optional<Product> maybeProduct = productRepository.findById(productId);
+        if (maybeProduct.isPresent()) {
+            Product product = maybeProduct.get();
+            product.setStock(product.getStock() - quantity);
+            productRepository.save(product);
+        } else {
+            throw new RuntimeException("Product 없음");
+        }
     }
 
 }

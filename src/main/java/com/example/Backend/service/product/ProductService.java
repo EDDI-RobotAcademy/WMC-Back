@@ -17,4 +17,6 @@ public interface ProductService {
     ProductResponse getProductById(Long productId);
 
     List<ProductListResponse> getProductsByCategory(Long categoryId);
+
+    void decreaseProductStock(Long productId, Integer quantity);
 }
