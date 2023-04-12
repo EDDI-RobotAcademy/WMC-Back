@@ -1,5 +1,7 @@
 package com.example.Backend.entity.boards;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -7,7 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -24,6 +28,11 @@ public class QuestionBoard {
     private String writer;
     @Lob
     private String content;
+
+    // FK
+    @OneToMany(mappedBy = "questionBoard", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<QuestionImageData> imageDataList = new ArrayList<>();
     @CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date regDate;
@@ -37,4 +46,12 @@ public class QuestionBoard {
         this.content = content;
         this.writer = writer;
     }
+
+    // imageData entity를 QuestionBoard class에 넣기
+    public void addImageData(QuestionImageData imageData) {
+        imageData.setQuestionBoard(this);
+        imageDataList.add(imageData);
+    }
+
+
 }

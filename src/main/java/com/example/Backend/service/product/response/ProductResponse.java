@@ -13,6 +13,7 @@ public class ProductResponse {
     final private String name;
     final private String description;
     final private Integer price;
+    final private Integer stock;
     final private List<ImageData> imageDataList;
 
 }
