@@ -44,7 +44,8 @@ public class QuestionBoardController {
 
     private List<String> saveImageFiles(List<MultipartFile> fileList) {
         List<String> savedFilePaths = new ArrayList<>();
-        String basePath = "../../../finalProject/WMC-Front/frontend/src/assets/questionImages/";
+        String basePath = "/finalProject/WMC-Front/src/assets/questionImages/";
+
 
         for (MultipartFile multipartFile : fileList) {
             log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());

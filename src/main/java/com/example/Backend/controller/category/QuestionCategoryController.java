@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/categoryList")
 @CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
 public class QuestionCategoryController {
 
