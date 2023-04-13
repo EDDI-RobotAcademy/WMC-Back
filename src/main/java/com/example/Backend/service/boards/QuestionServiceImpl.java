@@ -51,6 +51,7 @@ public class QuestionServiceImpl implements QuestionService{
                     board.getContent(),
                     board.getWriter(),
                     board.getRegDate(),
+                    board.getQuestionCategory().getQuestionCategoryType(),
                     firstPhoto
 
             );
@@ -80,6 +81,7 @@ public class QuestionServiceImpl implements QuestionService{
                     board.getContent(),
                     board.getWriter(),
                     board.getRegDate(),
+                    board.getQuestionCategory().getQuestionCategoryType(),
                     firstPhoto
             );
             boardListResponses.add(response);
