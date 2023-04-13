@@ -5,15 +5,18 @@ import com.example.Backend.entity.product.ImageData;
 import com.example.Backend.entity.product.Product;
 import com.example.Backend.repository.elasticSearch.ElasticSearchRepository;
 import com.example.Backend.repository.elasticSearch.ProductSearchRepository;
+import com.example.Backend.repository.jpa.category.CategoryRepository;
 import com.example.Backend.repository.jpa.product.ImageDataRepository;
 import com.example.Backend.repository.jpa.product.ProductRepository;
 import com.example.Backend.service.category.CategoryService;
+import com.example.Backend.service.event.ProductSavedEvent;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.product.response.ProductListResponse;
 import com.example.Backend.service.product.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
@@ -34,19 +37,24 @@ public class ProductServiceImpl implements ProductService {
 
     final private ImageDataRepository imageDataRepository;
 
-    final private CategoryService categoryService;
+//    final private CategoryService categoryService;
+
+    final private CategoryRepository categoryRepository;
 
     final private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     final private ProductSearchRepository productSearchRepository;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     @Override
     @Transactional
     public Boolean register(ProductRegisterRequest productRegisterRequest) {
-        final Product product = productRegisterRequest.toProduct();
+        Category category = categoryRepository.findById(productRegisterRequest.getCategoryId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
+        final Product product = productRegisterRequest.toProduct(category);
         productRepository.save(product);
-        productSearchRepository.save(product);
-
+//        eventPublisher.publishEvent(new ProductSavedEvent(product));
         return true;
     }
 
@@ -58,7 +66,7 @@ public class ProductServiceImpl implements ProductService {
             Product product = maybeProduct.get();
             imageDataRepository.deleteAll(product.getImageDataList());
             productRepository.delete(product);
-            productSearchRepository.delete(product);
+//            productSearchRepository.delete(product);
             return true;
         }
         return false;

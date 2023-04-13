@@ -1,4 +1,5 @@
 package com.example.Backend.entity.product;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
@@ -39,9 +40,10 @@ public class Product {
     @Column
     private Integer price;
 
-    @JsonIgnore
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @Field(includeInParent = false)
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

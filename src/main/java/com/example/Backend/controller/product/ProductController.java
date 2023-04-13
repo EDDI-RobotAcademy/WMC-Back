@@ -37,10 +37,10 @@ public class ProductController {
         log.info("Files received: " + form.getFileList().size());
 
         List<String> savedFiles = saveFiles(form.getFileList());
-        Category category = categoryService.getCategoryById(form.getCategoryId());
 
-        ProductRegisterRequest request = new ProductRegisterRequest(form.getName(), form.getDescription(), form.getStock(), form.getPrice(), category, savedFiles);
+        ProductRegisterRequest request = new ProductRegisterRequest(form.getName(), form.getDescription(), form.getStock(), form.getPrice(), form.getCategoryId(), savedFiles);
 
+//        Product product = request.toProduct(category);
         return productService.register(request);
     }
 
