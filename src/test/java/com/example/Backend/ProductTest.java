@@ -40,7 +40,7 @@ public class ProductTest {
         );
 
         assertTrue(productService.register(new ProductRegisterRequest(
-                "test", "test입니다", 100, 1000, newCategory, savedFilePaths)));
+                "test", "test입니다", 100, 1000, 1L, savedFilePaths)));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class ProductTest {
         );
 
         assertTrue(productService.register(new ProductRegisterRequest(
-                "test", "test입니다", 100, 1000, newCategory, savedFilePaths)));
+                "test", "test입니다", 100, 1000, 1L, savedFilePaths)));
         assertEquals(1, productRepository.count());
 
         List<Product> products = productRepository.findAll();
@@ -79,7 +79,7 @@ public class ProductTest {
         );
 
         assertTrue(productService.register(new ProductRegisterRequest(
-                "test", "test입니다", 100, 1000, newCategory, savedFilePaths)));
+                "test", "test입니다", 100, 1000, 1L, savedFilePaths)));
         assertEquals(1, productRepository.count());
 
         List<Product> products = productRepository.findAll();
