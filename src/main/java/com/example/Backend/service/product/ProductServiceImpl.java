@@ -3,7 +3,7 @@ package com.example.Backend.service.product;
 import com.example.Backend.entity.product.Category;
 import com.example.Backend.entity.product.ImageData;
 import com.example.Backend.entity.product.Product;
-import com.example.Backend.repository.elasticSearch.ElasticSearchRepository;
+//import com.example.Backend.repository.elasticSearch.ElasticSearchRepository;
 import com.example.Backend.repository.elasticSearch.ProductSearchRepository;
 import com.example.Backend.repository.jpa.category.CategoryRepository;
 import com.example.Backend.repository.jpa.product.ImageDataRepository;
