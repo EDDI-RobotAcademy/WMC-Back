@@ -19,10 +19,10 @@ public class ProductRegisterRequest {
     final private String description;
     final private Integer stock;
     final private Integer price;
-    final private Category category;
+    final private Long categoryId;
     final private List<String> savedFilePaths;
 
-    public Product toProduct() {
+    public Product toProduct(Category category) {
         List<ImageData> imageDataList = new ArrayList<>();
         Product product = new Product(name, description, stock, price, category);
 

@@ -2,8 +2,8 @@ package com.example.Backend.service.notice;
 
 import com.example.Backend.entity.notice.Notice;
 import com.example.Backend.entity.notice.NoticeImageData;
-import com.example.Backend.repository.notice.NoticeRepository;
-import com.example.Backend.repository.notice.NoticeImageDataRepository;
+import com.example.Backend.repository.jpa.notice.NoticeRepository;
+import com.example.Backend.repository.jpa.notice.NoticeImageDataRepository;
 import com.example.Backend.service.notice.request.NoticeRequest;
 import com.example.Backend.service.notice.response.NoticeListResponse;
 import com.example.Backend.service.notice.response.NoticeReadResponse;
