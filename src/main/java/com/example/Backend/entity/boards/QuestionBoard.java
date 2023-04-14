@@ -1,6 +1,7 @@
 package com.example.Backend.entity.boards;
 
 
+import com.example.Backend.entity.product.Category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,11 @@ public class QuestionBoard {
     @Lob
     private String content;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "question_category_id", nullable = false)
+    private QuestionCategory questionCategory;
+
     // FK
     @OneToMany(mappedBy = "questionBoard", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -41,10 +47,11 @@ public class QuestionBoard {
     private Date updDate;
 
     // request에서 요청한 것
-    public QuestionBoard(String title, String content, String writer) {
+    public QuestionBoard(String title, String content, String writer, QuestionCategory questionCategory) {
         this.title = title;
         this.content = content;
         this.writer = writer;
+        this.questionCategory = questionCategory;
     }
 
     // imageData entity를 QuestionBoard class에 넣기
@@ -53,5 +60,13 @@ public class QuestionBoard {
         imageDataList.add(imageData);
     }
 
+    public String toString(){
+        return "QuestionBoard{ " +
+                "questionBoardId=" + questionBoardId +
+                ", title='" + title + '\'' +
+                ", writer='" + writer + '\'' +
+                ", content" + content +
+                '}';
+    }
 
 }

@@ -85,6 +85,10 @@ public class ProductTest {
         List<Product> products = productRepository.findAll();
         Product product = products.get(0);
         ProductResponse productResponse = productService.getProductById(product.getProductId());
+
+
+
         assertEquals(product.getProductId(), productResponse.getProductId());
     }
+
 }

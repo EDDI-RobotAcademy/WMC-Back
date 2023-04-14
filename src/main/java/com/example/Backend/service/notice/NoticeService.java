@@ -17,4 +17,6 @@ public interface NoticeService {
 
     boolean delete(Long noticeId);
 
+    boolean modify(Long noticeId, NoticeRequest noticeRequest);
+
 }
