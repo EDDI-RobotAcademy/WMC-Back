@@ -1,10 +1,10 @@
 package com.example.Backend.service.member;
 
 import com.example.Backend.entity.member.*;
-import com.example.Backend.repository.member.AuthenticationRepository;
-import com.example.Backend.repository.member.ManagerCodeRepository;
-import com.example.Backend.repository.member.MemberProfileRepository;
-import com.example.Backend.repository.member.MemberRepository;
+import com.example.Backend.repository.jpa.member.AuthenticationRepository;
+import com.example.Backend.repository.jpa.member.ManagerCodeRepository;
+import com.example.Backend.repository.jpa.member.MemberProfileRepository;
+import com.example.Backend.repository.jpa.member.MemberRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
 import com.example.Backend.service.member.response.MemberResponse;
@@ -139,4 +139,12 @@ public class MemberServiceImpl implements MemberService {
         throw new RuntimeException("가입된 사용자가 아닙니다!");
     }
 
+    @Override
+    public Member getMemberById(Long memberId) {
+        Optional<Member> maybeMember = memberRepository.findById(memberId);
+        if (maybeMember.isPresent()) {
+            return maybeMember.get();
+        }
+        throw new RuntimeException("가입된 사용자가 아닙니다!");
+    }
 }

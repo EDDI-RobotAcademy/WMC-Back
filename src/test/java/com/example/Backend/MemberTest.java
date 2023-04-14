@@ -2,7 +2,7 @@ package com.example.Backend;
 
 import com.example.Backend.entity.member.AuthorityType;
 import com.example.Backend.entity.member.Member;
-import com.example.Backend.repository.member.MemberRepository;
+import com.example.Backend.repository.jpa.member.MemberRepository;
 import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
 import com.example.Backend.service.member.response.MemberResponse;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
