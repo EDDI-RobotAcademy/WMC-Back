@@ -1,6 +1,7 @@
 package com.example.Backend;
 
 import com.example.Backend.entity.notice.Notice;
+import com.example.Backend.entity.notice.NoticeImageData;
 import com.example.Backend.repository.jpa.notice.NoticeImageDataRepository;
 import com.example.Backend.repository.jpa.notice.NoticeRepository;
 import com.example.Backend.service.notice.NoticeService;
@@ -12,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -102,5 +106,44 @@ public class NoticeTest {
         result = noticeService.delete(notice.getNoticeId());
 
         assertFalse(result);
+    }
+
+    @Test
+    @Transactional
+    public void 공지사항_수정_확인() {
+        // Prepare test data
+        Notice initialNotice = new Notice("Title", "Writer", "Content");
+        noticeRepository.save(initialNotice);
+
+        List<String> savedFilePaths = Arrays.asList(
+                "src/assets/noticeImages/abc.jpg",
+                "src/assets/noticeImages/abc.jpg",
+                "src/assets/noticeImages/abc.jpg"
+        );
+
+        NoticeRequest modifyRequest = new NoticeRequest(
+                "modify Title", "modify Writer", "modify Content", savedFilePaths
+        );
+
+        // Test modify
+        boolean modifyResult = noticeService.modify(initialNotice.getNoticeId(), modifyRequest);
+        assertTrue(modifyResult);
+
+        // Check modifyd data
+        Optional<Notice> modifydNoticeOptional = noticeRepository.findById(initialNotice.getNoticeId());
+        assertTrue(modifydNoticeOptional.isPresent());
+        Notice modifydNotice = modifydNoticeOptional.get();
+
+        assertEquals(modifyRequest.getTitle(), modifydNotice.getTitle());
+        assertEquals(modifyRequest.getWriter(), modifydNotice.getWriter());
+        assertEquals(modifyRequest.getContent(), modifydNotice.getContent());
+
+        // Check images
+        List<String> imagePaths = modifydNotice.getNoticeImageDataList().stream()
+                .map(NoticeImageData::getNoticeImageData)
+                .collect(Collectors.toList());
+
+        assertEquals(modifyRequest.getSavedFilePaths().size(), imagePaths.size());
+        assertTrue(imagePaths.containsAll(modifyRequest.getSavedFilePaths()));
     }
 }
