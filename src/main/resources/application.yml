@@ -9,6 +9,14 @@ spring:
     password: eddi@123
     driver-class-name: com.mysql.cj.jdbc.Driver
     dialect: org.hibernate.dialect.MySQL8Dialect
+  elasticsearch:
+    host: localhost
+    port: 9200
+    cluster-name: elasticsearch
+    rest:
+      uris: http://localhost:9200
+  main:
+    allow-bean-definition-overriding: true
 
   jpa:
     open-in-view: false
@@ -16,7 +24,7 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
   cache:
     type: redis
@@ -29,3 +37,6 @@ spring:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 10MB
+
+
+

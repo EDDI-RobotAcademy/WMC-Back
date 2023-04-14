@@ -1,9 +1,8 @@
 package com.example.Backend;
 
 import com.example.Backend.entity.product.Category;
-import com.example.Backend.entity.product.ImageData;
 import com.example.Backend.entity.product.Product;
-import com.example.Backend.repository.product.ProductRepository;
+import com.example.Backend.repository.jpa.product.ProductRepository;
 import com.example.Backend.service.category.CategoryService;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
@@ -41,7 +40,7 @@ public class ProductTest {
         );
 
         assertTrue(productService.register(new ProductRegisterRequest(
-                "test", "test입니다", 100, 1000, newCategory, savedFilePaths)));
+                "test", "test입니다", 100, 1000, 1L, savedFilePaths)));
     }
 
     @Test
@@ -58,7 +57,7 @@ public class ProductTest {
         );
 
         assertTrue(productService.register(new ProductRegisterRequest(
-                "test", "test입니다", 100, 1000, newCategory, savedFilePaths)));
+                "test", "test입니다", 100, 1000, 1L, savedFilePaths)));
         assertEquals(1, productRepository.count());
 
         List<Product> products = productRepository.findAll();
@@ -80,12 +79,16 @@ public class ProductTest {
         );
 
         assertTrue(productService.register(new ProductRegisterRequest(
-                "test", "test입니다", 100, 1000, newCategory, savedFilePaths)));
+                "test", "test입니다", 100, 1000, 1L, savedFilePaths)));
         assertEquals(1, productRepository.count());
 
         List<Product> products = productRepository.findAll();
         Product product = products.get(0);
         ProductResponse productResponse = productService.getProductById(product.getProductId());
-        assertEquals(product.getProductId(), productResponse.getId());
+
+
+
+        assertEquals(product.getProductId(), productResponse.getProductId());
     }
+
 }
