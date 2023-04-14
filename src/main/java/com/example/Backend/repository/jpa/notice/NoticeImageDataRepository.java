@@ -1,4 +1,4 @@
-package com.example.Backend.repository.notice;
+package com.example.Backend.repository.jpa.notice;
 
 import com.example.Backend.entity.notice.NoticeImageData;
 import org.springframework.data.jpa.repository.JpaRepository;
