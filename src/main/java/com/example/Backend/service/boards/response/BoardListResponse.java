@@ -18,5 +18,7 @@ public class BoardListResponse {
     private String writer;
     private String content;
     private Date regDate;
+    private String questionCategoryType;
     private String firstPhoto;
+
 }
