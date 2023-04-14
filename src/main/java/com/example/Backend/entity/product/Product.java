@@ -1,4 +1,7 @@
 package com.example.Backend.entity.product;
+import com.example.Backend.entity.order.Order;
+import com.example.Backend.entity.order.OrderItem;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,6 +22,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Document(indexName = "product")
+@JsonIgnoreProperties("orderItemList")
 public class Product {
 
     @Id
@@ -49,6 +53,9 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<ImageData> imageDataList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItemList = new ArrayList<>();
 
     @CreationTimestamp
     private Date regDate;
@@ -87,7 +94,6 @@ public class Product {
                 ", price=" + price +
                 '}';
     }
-
 
 }
 

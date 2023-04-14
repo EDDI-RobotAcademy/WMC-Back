@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ProductService {
+
     Boolean register(ProductRegisterRequest productRegisterRequest);
 
     List<ProductListResponse> getAllProducts();

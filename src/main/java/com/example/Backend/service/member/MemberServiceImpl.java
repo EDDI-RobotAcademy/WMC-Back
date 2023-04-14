@@ -139,4 +139,12 @@ public class MemberServiceImpl implements MemberService {
         throw new RuntimeException("가입된 사용자가 아닙니다!");
     }
 
+    @Override
+    public Member getMemberById(Long memberId) {
+        Optional<Member> maybeMember = memberRepository.findById(memberId);
+        if (maybeMember.isPresent()) {
+            return maybeMember.get();
+        }
+        throw new RuntimeException("가입된 사용자가 아닙니다!");
+    }
 }
