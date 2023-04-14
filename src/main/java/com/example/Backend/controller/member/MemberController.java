@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.Backend.controller.order.cart.OrderController.getaLong;
+
 
 @Slf4j
 @RestController
@@ -58,17 +60,12 @@ public class MemberController {
 
     @PostMapping("/account")
     public MemberResponse account(@RequestBody String token) {
-        token = token.substring(0, token.length() - 1);
-        log.info("account(): " + token);
-        Long memberId = null;
-        String memberValue = redisService.getValueByKey(token);
-        if (memberValue != null) {
-            String[] value = memberValue.split(":");
-            if (value.length > 0) {
-                memberId = Long.valueOf(value[0]);
-            }
-        }
+        Long memberId = getMemberIdByToken(token);
         return memberService.read(memberId);
+    }
+
+    private Long getMemberIdByToken(String token) {
+        return getaLong(token, log, redisService);
     }
 
     @DeleteMapping("/delete")
