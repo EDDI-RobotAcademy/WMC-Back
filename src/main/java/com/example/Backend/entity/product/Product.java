@@ -44,10 +44,10 @@ public class Product {
     @Column
     private Integer price;
 
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    @Field(includeInParent = false)
+    @Field(type = FieldType.Auto , includeInParent = true)
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
