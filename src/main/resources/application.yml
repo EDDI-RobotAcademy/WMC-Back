@@ -15,8 +15,8 @@ spring:
     cluster-name: elasticsearch
     rest:
       uris: http://localhost:9200
-  main:
-    allow-bean-definition-overriding: true
+#  main:
+#    allow-bean-definition-overriding: true
 
   jpa:
     open-in-view: false
