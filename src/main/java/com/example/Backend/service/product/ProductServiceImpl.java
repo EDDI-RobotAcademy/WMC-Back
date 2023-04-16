@@ -54,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
         final Product product = productRegisterRequest.toProduct(category);
         productRepository.save(product);
+        productSearchRepository.save(product);
 //        eventPublisher.publishEvent(new ProductSavedEvent(product));
         return true;
     }
