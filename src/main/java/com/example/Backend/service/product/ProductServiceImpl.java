@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
@@ -54,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
         final Product product = productRegisterRequest.toProduct(category);
         productRepository.save(product);
-        productSearchRepository.save(product);
+//        productSearchRepository.save(product);
 //        eventPublisher.publishEvent(new ProductSavedEvent(product));
         return true;
     }
@@ -187,4 +189,37 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
         return products;
     }
+
+    @Override
+    public List<ProductListResponse> getMostSoldProductList() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Object[]> results = productRepository.findTop10ByOrderBySoldDesc(pageable);
+        List<Product> products = new ArrayList<>();
+        for (Object[] result : results) {
+            Product product = (Product) result[0];
+            // Integer sold = (Integer) result[1]; 각 상품의 sold 접근하기
+            products.add(product);
+        }
+        List<ProductListResponse> productListResponses = new ArrayList<>();
+        for (Product product : products) {
+            String firstPhoto = null;
+            List<ImageData> images = imageDataRepository.findAllImagesByProductId(product.getProductId());
+            if (!images.isEmpty()) {
+                firstPhoto = images.get(0).getImageData();
+            }
+
+            ProductListResponse response = new ProductListResponse(
+                    product.getProductId(),
+                    product.getName(),
+                    product.getDescription(),
+                    product.getStock(),
+                    product.getPrice(),
+                    firstPhoto
+            );
+            productListResponses.add(response);
+        }
+
+        return productListResponses;
+    }
+
 }

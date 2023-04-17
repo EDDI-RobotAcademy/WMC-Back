@@ -95,4 +95,9 @@ public class ProductController {
         return productService.getAll(name);
     }
 
+    @GetMapping("/mostsoldlist")
+    public List<ProductListResponse> getMostSoldProductList() {
+
+        return productService.getMostSoldProductList();
+    }
 }
