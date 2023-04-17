@@ -114,6 +114,7 @@ public class ProductServiceImpl implements ProductService {
                     product.getDescription(),
                     product.getStock(),
                     product.getPrice(),
+                    null,
                     firstPhoto
             );
             productListResponses.add(response);
@@ -140,6 +141,7 @@ public class ProductServiceImpl implements ProductService {
                     product.getDescription(),
                     product.getStock(),
                     product.getPrice(),
+                    null,
                     firstPhoto
             );
             productListResponses.add(response);
@@ -191,35 +193,35 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductListResponse> getMostSoldProductList() {
-        Pageable pageable = PageRequest.of(0, 10);
+    @Transactional
+    public List<ProductListResponse> getMostSoldProductList(Pageable pageable) {
+        pageable = PageRequest.of(0, 10);
         List<Object[]> results = productRepository.findTop10ByOrderBySoldDesc(pageable);
         List<Product> products = new ArrayList<>();
         for (Object[] result : results) {
             Product product = (Product) result[0];
-            // Integer sold = (Integer) result[1]; 각 상품의 sold 접근하기
             products.add(product);
         }
         List<ProductListResponse> productListResponses = new ArrayList<>();
-        for (Product product : products) {
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
             String firstPhoto = null;
             List<ImageData> images = imageDataRepository.findAllImagesByProductId(product.getProductId());
             if (!images.isEmpty()) {
                 firstPhoto = images.get(0).getImageData();
             }
 
+            Long sold = (Long) results.get(i)[1];
+
             ProductListResponse response = new ProductListResponse(
-                    product.getProductId(),
-                    product.getName(),
-                    product.getDescription(),
-                    product.getStock(),
-                    product.getPrice(),
-                    firstPhoto
+                    product,
+                    sold
             );
             productListResponses.add(response);
         }
 
         return productListResponses;
     }
+
 
 }

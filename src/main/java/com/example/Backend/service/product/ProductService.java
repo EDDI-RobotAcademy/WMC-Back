@@ -25,6 +25,6 @@ public interface ProductService {
 
     List<Product> getAll(String name);
 
-    List<ProductListResponse> getMostSoldProductList();
+    List<ProductListResponse> getMostSoldProductList(Pageable pageable);
 //    Page<Product> searchByName(String name, Pageable pageable);
 }

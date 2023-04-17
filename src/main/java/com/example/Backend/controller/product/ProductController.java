@@ -10,6 +10,8 @@ import com.example.Backend.service.product.response.ProductListResponse;
 import com.example.Backend.service.product.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -98,6 +100,7 @@ public class ProductController {
     @GetMapping("/mostsoldlist")
     public List<ProductListResponse> getMostSoldProductList() {
 
-        return productService.getMostSoldProductList();
+        Pageable pageable = PageRequest.of(0, 10);
+        return productService.getMostSoldProductList(pageable);
     }
 }
