@@ -1,7 +1,6 @@
 package com.example.Backend.manager.controller;
 
 import com.example.Backend.entity.product.Product;
-import com.example.Backend.manager.service.response.SalesData;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.product.response.ProductListResponse;
 import lombok.RequiredArgsConstructor;
