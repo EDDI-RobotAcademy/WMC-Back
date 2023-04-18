@@ -10,4 +10,5 @@ public interface  OrderService {
     void saveOrder(Order order);
     void createOrderItem(Order order, OrderItemRequest orderItemRequest);
     void createOrder(Long memberId, List<OrderItemRequest> orderItems);
+    boolean isProductEnough(Long productId, Integer quantity);
 }
