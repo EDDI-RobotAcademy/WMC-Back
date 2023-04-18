@@ -1,4 +1,4 @@
-package com.example.Backend.controller.order.cart;
+package com.example.Backend.controller.order;
 
 import com.example.Backend.entity.member.Member;
 import com.example.Backend.entity.order.Order;
@@ -36,6 +36,11 @@ public class OrderController {
     @PostMapping("/kakaoPay")
     public String kakaoPay(@RequestBody KakaoPayRequest payload) throws IOException {
         List<OrderItemRequest> orderItems = payload.getOrderItems();
+        for (OrderItemRequest orderItem : orderItems) {
+            if (!orderService.isProductEnough(orderItem.getProductId(), orderItem.getQuantity())) {
+                throw new RuntimeException("재고가 충분치 않습니다! : " + orderItem.getProductId());
+            }
+        }
         String token = payload.getToken();
         log.info("token: " + token);
         URL url = new URL("https://kapi.kakao.com/v1/payment/ready");
