@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/cart")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://52.79.176.94/", allowedHeaders = "*")
+@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
 public class CartController {
 
     private final RedisServiceImpl redisService;

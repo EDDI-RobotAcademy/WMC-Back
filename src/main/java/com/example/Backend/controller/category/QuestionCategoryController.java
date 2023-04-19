@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categoryList")
-@CrossOrigin(origins = "http://52.79.176.94/", allowedHeaders = "*")
+@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
 public class QuestionCategoryController {
 
     @Autowired
