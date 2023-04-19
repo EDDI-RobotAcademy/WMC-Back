@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/questionBoard")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://52.79.176.94/", allowedHeaders = "*")
+@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
 public class QuestionBoardController {
 
     final private QuestionService questionService;
