@@ -24,11 +24,13 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
 
+    @Override
     public void saveOrder(Order order) {
         orderRepository.save(order);
     }
 
     @Transactional
+    @Override
     public void createOrderItem(Order order, OrderItemRequest orderItemRequest) {
         Product product = productRepository.findById(orderItemRequest.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -39,6 +41,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Transactional
+    @Override
     public void createOrder(Long memberId, List<OrderItemRequest> orderItems) {
         Member buyer = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
@@ -56,6 +59,15 @@ public class OrderServiceImpl implements OrderService {
             orderItemRepository.save(orderItem);
         }
     }
+
+    @Override
+    public boolean isProductEnough(Long productId, Integer quantity){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        return product.getStock() >= quantity;
+    }
+
 
 
 

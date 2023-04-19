@@ -12,14 +12,16 @@ public class ProductListResponse {
     private String description;
     private Integer stock;
     private Integer price;
+    private Long sold;
     private String firstPhoto;
 
-    public ProductListResponse(Product product) {
+    public ProductListResponse(Product product, Long sold) {
         this.productId = product.getProductId();
         this.name = product.getName();
         this.description = product.getDescription();
         this.stock = product.getStock();
         this.price = product.getPrice();
+        this.sold = sold;
         this.firstPhoto = product.getImageDataList().get(0).getImageData();
     }
 }
