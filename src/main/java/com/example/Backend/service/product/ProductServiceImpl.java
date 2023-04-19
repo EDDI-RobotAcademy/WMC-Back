@@ -1,11 +1,13 @@
 package com.example.Backend.service.product;
 
+import com.example.Backend.entity.order.OrderItem;
 import com.example.Backend.entity.product.Category;
 import com.example.Backend.entity.product.ImageData;
 import com.example.Backend.entity.product.Product;
 //import com.example.Backend.repository.elasticSearch.ElasticSearchRepository;
 //import com.example.Backend.repository.elasticSearch.ProductSearchRepository;
 import com.example.Backend.repository.jpa.category.CategoryRepository;
+import com.example.Backend.repository.jpa.order.OrderItemRepository;
 import com.example.Backend.repository.jpa.product.ImageDataRepository;
 import com.example.Backend.repository.jpa.product.ProductRepository;
 import com.example.Backend.service.category.CategoryService;
@@ -48,6 +50,8 @@ public class ProductServiceImpl implements ProductService {
 //    final private ProductSearchRepository productSearchRepository;
 
     private final ApplicationEventPublisher eventPublisher;
+
+    final private OrderItemRepository orderItemRepository;
 
     @Override
     @Transactional
@@ -108,6 +112,8 @@ public class ProductServiceImpl implements ProductService {
                 firstPhoto = images.get(0).getImageData();
             }
 
+            Integer totalQuantity = orderItemRepository.findTotalQuantityByProduct(product);
+
             ProductListResponse response = new ProductListResponse(
                     product.getProductId(),
                     product.getName(),
@@ -115,7 +121,11 @@ public class ProductServiceImpl implements ProductService {
                     product.getStock(),
                     product.getPrice(),
                     null,
-                    firstPhoto
+                    firstPhoto,
+                    product.getRegDate(),
+                    product.getUpdDate(),
+                    totalQuantity
+
             );
             productListResponses.add(response);
         }
@@ -126,26 +136,32 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public List<ProductListResponse> getProductsByCategory(Long categoryId) {
-        List<Product> products = productRepository.findByCategoryCategoryId(categoryId);
-        List<ProductListResponse> productListResponses = new ArrayList<>();
-        for (Product product : products) {
-            String firstPhoto = null;
-            List<ImageData> images = imageDataRepository.findAllImagesByProductId(product.getProductId());
-            if (!images.isEmpty()) {
-                firstPhoto = images.get(0).getImageData();
-            }
+            List<Product> products = productRepository.findByCategoryCategoryId(categoryId);
+            List<ProductListResponse> productListResponses = new ArrayList<>();
+            for (Product product : products) {
+                String firstPhoto = null;
+                List<ImageData> images = imageDataRepository.findAllImagesByProductId(product.getProductId());
+                if (!images.isEmpty()) {
+                    firstPhoto = images.get(0).getImageData();
+                }
 
-            ProductListResponse response = new ProductListResponse(
-                    product.getProductId(),
-                    product.getName(),
-                    product.getDescription(),
-                    product.getStock(),
-                    product.getPrice(),
-                    null,
-                    firstPhoto
-            );
-            productListResponses.add(response);
-        }
+                Integer totalQuantity = orderItemRepository.findTotalQuantityByProduct(product);
+
+                ProductListResponse response = new ProductListResponse(
+                        product.getProductId(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getStock(),
+                        product.getPrice(),
+                        null,
+                        firstPhoto,
+                        product.getRegDate(),
+                        product.getUpdDate(),
+                        totalQuantity
+
+                );
+                productListResponses.add(response);
+            }
 
         return productListResponses;
     }
