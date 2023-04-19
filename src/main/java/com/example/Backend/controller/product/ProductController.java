@@ -55,7 +55,7 @@ public class ProductController {
             log.info("saveFiles() - file size: " + multipartFile.getSize());
 
             String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add("/home/ec2-user/project/frontend/html/img/" + multipartFile.getOriginalFilename());
+            savedFilePaths.add("home/ec2-user/project/frontend/html/img/" + multipartFile.getOriginalFilename());
 
             try {
                 FileOutputStream writer = new FileOutputStream(savedFileName);
