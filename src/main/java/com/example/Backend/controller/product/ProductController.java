@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "http://52.79.176.94/", allowedHeaders = "*")
 public class ProductController {
 
     final private ProductService productService;
@@ -92,10 +92,10 @@ public class ProductController {
         return productService.getProductsByCategory(categoryId);
     }
 
-    @GetMapping("/search/{name}")
-    public List<Product> search(@RequestParam("name") String name) {
-        return productService.getAll(name);
-    }
+//    @GetMapping("/search/{name}")
+//    public List<Product> search(@RequestParam("name") String name) {
+//        return productService.getAll(name);
+//    }
 
     @GetMapping("/mostsoldlist")
     public List<ProductListResponse> getMostSoldProductList() {
