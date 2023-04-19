@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/manager")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "http://wemakecode.co.kr", allowedHeaders = "*")
 public class ManagerController {
 
     final private ProductService productService;
