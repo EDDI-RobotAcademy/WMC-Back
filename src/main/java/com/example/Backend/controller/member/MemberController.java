@@ -16,7 +16,7 @@ import static com.example.Backend.controller.order.OrderController.getaLong;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "http://52.79.176.94/", allowedHeaders = "*")
 public class MemberController {
 
     final private MemberService memberService;
