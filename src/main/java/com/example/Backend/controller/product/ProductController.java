@@ -48,14 +48,14 @@ public class ProductController {
 
     private List<String> saveFiles(List<MultipartFile> fileList) {
         List<String> savedFilePaths = new ArrayList<>();
-        String basePath = "/Users/jonginhan/Documents/GitHub/finalProject/WMC-Front/src/assets/productImages/";
+        String basePath = "/home/ec2-user/project/frontend/html/img/";
 
         for (MultipartFile multipartFile : fileList) {
             log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());
             log.info("saveFiles() - file size: " + multipartFile.getSize());
 
             String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add("assets/productImages/" + multipartFile.getOriginalFilename());
+            savedFilePaths.add("home/ec2-user/project/frontend/html/img/" + multipartFile.getOriginalFilename());
 
             try {
                 FileOutputStream writer = new FileOutputStream(savedFileName);
