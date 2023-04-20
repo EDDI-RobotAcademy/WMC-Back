@@ -80,7 +80,7 @@ public class NoticeTest {
     }
 
     @Test
-    public void 상품삭제_확인() {
+    public void 공지사항_삭제_확인() {
 
         noticeRepository.deleteAll();
         assertEquals(0, noticeRepository.count());

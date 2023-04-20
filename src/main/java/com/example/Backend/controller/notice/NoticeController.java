@@ -2,12 +2,15 @@ package com.example.Backend.controller.notice;
 
 import com.example.Backend.controller.notice.form.NoticeRegisterForm;
 import com.example.Backend.entity.notice.Notice;
+import com.example.Backend.entity.notice.NoticeImageData;
+import com.example.Backend.repository.jpa.notice.NoticeImageDataRepository;
 import com.example.Backend.service.notice.NoticeService;
 import com.example.Backend.service.notice.request.NoticeRequest;
 import com.example.Backend.service.notice.response.NoticeListResponse;
 import com.example.Backend.service.notice.response.NoticeReadResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +28,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/notice")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
+//@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
+@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
 public class NoticeController {
 
 
     final private NoticeService noticeService;
+
+    @Autowired
+    private NoticeImageDataRepository noticeImageDataRepository;
 
 
     @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -54,12 +64,14 @@ public class NoticeController {
             log.info("saveFiles() - file size: " + multipartFile.getSize());
 
             String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add("assets/noticeImages/"+multipartFile.getOriginalFilename());
+            //savedFilePaths.add("assets/noticeImages/"+multipartFile.getOriginalFilename());
+            savedFilePaths.add(multipartFile.getOriginalFilename());
 
             try {
                 FileOutputStream writer = new FileOutputStream(savedFileName);
                 writer.write(multipartFile.getBytes());
                 writer.close();
+                log.info("Image saved at: " + savedFileName); // Add this line
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -85,11 +97,32 @@ public class NoticeController {
         return noticeService.read(noticeId);
     }
 
-    @DeleteMapping("/{noticeId}")
+//    @DeleteMapping("/{noticeId}")
+//    public boolean deleteNotice(@PathVariable("noticeId") Long noticeId) {
+//        log.info("deleteNotice(): " + noticeId);
+//        return noticeService.delete(noticeId);
+//    }
+
+    @DeleteMapping(value = "/delete/{noticeId}")
     public boolean deleteNotice(@PathVariable("noticeId") Long noticeId) {
         log.info("deleteNotice(): " + noticeId);
+
+        List<NoticeImageData> images = noticeImageDataRepository.findAllImagesByNoticeId(noticeId);
+        String basePath = "../../WMC/WMC-Front/src/assets/noticeImages/";
+
+        for (NoticeImageData image : images) {
+            try {
+                Path imagePath = Paths.get(basePath + image.getNoticeImageData());
+                log.info("Deleting image at: " + imagePath); // Add this line
+                Files.delete(imagePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         return noticeService.delete(noticeId);
     }
+
 
     @PutMapping(value = "/modify/{noticeId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public boolean modifyNotice(@PathVariable("noticeId") Long noticeId,
