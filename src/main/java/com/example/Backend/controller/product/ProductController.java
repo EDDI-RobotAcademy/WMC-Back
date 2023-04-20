@@ -10,6 +10,8 @@ import com.example.Backend.service.product.response.ProductListResponse;
 import com.example.Backend.service.product.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
 public class ProductController {
 
     final private ProductService productService;
@@ -46,14 +48,14 @@ public class ProductController {
 
     private List<String> saveFiles(List<MultipartFile> fileList) {
         List<String> savedFilePaths = new ArrayList<>();
-        String basePath = "/Users/jonginhan/Documents/GitHub/finalProject/WMC-Front/src/assets/productImages/";
+        String basePath = "/home/ec2-user/project/frontend/html/img/";
 
         for (MultipartFile multipartFile : fileList) {
             log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());
             log.info("saveFiles() - file size: " + multipartFile.getSize());
 
             String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add("assets/productImages/" + multipartFile.getOriginalFilename());
+            savedFilePaths.add("home/ec2-user/project/frontend/html/img/" + multipartFile.getOriginalFilename());
 
             try {
                 FileOutputStream writer = new FileOutputStream(savedFileName);
@@ -90,9 +92,15 @@ public class ProductController {
         return productService.getProductsByCategory(categoryId);
     }
 
-    @GetMapping("/search/{name}")
-    public List<Product> search(@RequestParam("name") String name) {
-        return productService.getAll(name);
-    }
+//    @GetMapping("/search/{name}")
+//    public List<Product> search(@RequestParam("name") String name) {
+//        return productService.getAll(name);
+//    }
 
+    @GetMapping("/mostsoldlist")
+    public List<ProductListResponse> getMostSoldProductList() {
+
+        Pageable pageable = PageRequest.of(0, 10);
+        return productService.getMostSoldProductList(pageable);
+    }
 }

@@ -23,6 +23,8 @@ public interface ProductService {
 
     void decreaseProductStock(Long productId, Integer quantity);
 
-    List<Product> getAll(String name);
+//    List<Product> getAll(String name);
+
+    List<ProductListResponse> getMostSoldProductList(Pageable pageable);
 //    Page<Product> searchByName(String name, Pageable pageable);
 }
