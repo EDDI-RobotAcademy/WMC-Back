@@ -46,7 +46,7 @@ public class ProductController {
 
     private List<String> saveFiles(List<MultipartFile> fileList) {
         List<String> savedFilePaths = new ArrayList<>();
-        String basePath = "/Users/jonginhan/Documents/GitHub/finalProject/WMC-Front/src/assets/productImages/";
+        String basePath = "/finalProject/WMC-Front/src/assets/productImages/";
 
         for (MultipartFile multipartFile : fileList) {
             log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());

@@ -1,8 +1,11 @@
 package com.example.Backend;
 
+import com.example.Backend.entity.boards.QuestionBoard;
 import com.example.Backend.entity.boards.QuestionCategory;
+import com.example.Backend.repository.jpa.boards.QuestionRepository;
 import com.example.Backend.service.boards.QuestionService;
 import com.example.Backend.service.boards.request.BoardRequest;
+import com.example.Backend.service.boards.response.BoardResponse;
 import com.example.Backend.service.category.QuestionCategoryService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -20,6 +24,9 @@ public class QuestionTest {
     private QuestionService questionService;
     @Autowired
     private QuestionCategoryService questionCategoryService;
+
+    @Autowired
+    private QuestionRepository questionRepository;
 
     @Test
     public void 질문게시글_등록_확인() {
@@ -34,6 +41,33 @@ public class QuestionTest {
         assertTrue(questionService.register(new BoardRequest(
                 "test", "test입니다", "test내용", testCategory,  savedFilePaths
         )));
+    }
+
+    @Test
+    public void 상품읽기() {
+        questionRepository.deleteAll();
+        assertEquals(0, questionRepository.count());
+
+        QuestionCategory testCategory = questionCategoryService.createQuestionCategory("testCategory");
+
+        List<String> savedFilePaths = Arrays.asList(
+                "src/assets/questionImages/carin1.png",
+                "src/assets/questionImages/carin2.png",
+                "src/assets/questionImages/carin3.png"
+        );
+
+        assertTrue(questionService.register(new BoardRequest(
+                "test", "test입니다", "test내용", testCategory,  savedFilePaths
+        )));
+
+        assertEquals(1, questionRepository.count());
+
+        List<QuestionBoard> questionBoards = questionRepository.findAll();
+        QuestionBoard questionBoard = questionBoards.get(0);
+        BoardResponse boardResponse = questionService.read(questionBoard.getQuestionBoardId());
+
+        assertEquals(questionBoard.getQuestionBoardId(), boardResponse.getQuestionBoardId());
+
     }
 
 }

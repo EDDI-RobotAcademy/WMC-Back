@@ -1,10 +1,12 @@
 package com.example.Backend.controller.boards;
 
 import com.example.Backend.controller.boards.form.QuestionRegisterForm;
+import com.example.Backend.entity.boards.QuestionBoard;
 import com.example.Backend.entity.boards.QuestionCategory;
 import com.example.Backend.service.boards.request.BoardRequest;
 import com.example.Backend.service.boards.QuestionService;
 import com.example.Backend.service.boards.response.BoardListResponse;
+import com.example.Backend.service.boards.response.BoardResponse;
 import com.example.Backend.service.category.QuestionCategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +45,7 @@ public class QuestionBoardController {
     }
 
     private List<String> saveImageFiles(List<MultipartFile> fileList) {
-        List<String> savedFilePaths = new ArrayList
+        List<String> savedFilePaths = new ArrayList<>();
         
         String basePath = "/finalProject/WMC-Front/src/assets/questionImages/";
 
@@ -74,6 +76,18 @@ public class QuestionBoardController {
         log.info("getAllQuestion()");
         return questionService.getAllQuestion();
     }
+
+    @GetMapping("/{questionBoardId}")
+    /*
+    public BoardResponse readQuestion(@RequestParam Long questionBoardId) {
+        return questionService.read(questionBoardId);
+    }*/
+    public BoardResponse readQuestion(@PathVariable("questionBoardId") Long questionBoardId) {
+        return questionService.read(questionBoardId);
+    }
+
+
+
 
     @GetMapping("/questionListByCategory")
     public List<BoardListResponse> getQuestionsByCategory(@RequestParam Long categoryId){

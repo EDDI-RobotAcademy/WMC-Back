@@ -7,6 +7,7 @@ import com.example.Backend.repository.jpa.boards.QuestionImageDataRepository;
 import com.example.Backend.repository.jpa.boards.QuestionRepository;
 import com.example.Backend.service.boards.request.BoardRequest;
 import com.example.Backend.service.boards.response.BoardListResponse;
+import com.example.Backend.service.boards.response.BoardResponse;
 import com.example.Backend.service.category.QuestionCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -89,6 +91,50 @@ public class QuestionServiceImpl implements QuestionService{
 
         return boardListResponses;
     }
+
+    @Override
+    public BoardResponse read(Long questionBoardId) {
+        Optional<QuestionBoard> maybeQuestionBoard = questionRepository.findById(questionBoardId);
+
+        if (maybeQuestionBoard.isPresent()) {
+            QuestionBoard questionBoard = maybeQuestionBoard.get();
+            List<QuestionImageData> images = questionImageDataRepository.findAllImagesByQuestionBoardId(questionBoardId);
+            return new BoardResponse(
+                    questionBoard.getQuestionBoardId(),
+                    questionBoard.getTitle(),
+                    questionBoard.getWriter(),
+                    questionBoard.getContent(),
+                    questionBoard.getRegDate(),
+                    questionBoard.getQuestionCategory().getQuestionCategoryType(),
+                    images
+            );
+        }else {
+            return null;
+        }
+
+
+/*
+
+        if (maybeQuestionBoard.isEmpty()){
+            return null;
+        }
+
+        QuestionBoard questionBoard = maybeQuestionBoard.get();
+        List<QuestionImageData> images = questionImageDataRepository.findAllImagesByQuestionBoardId(questionBoardId);
+
+        BoardResponse response = new BoardResponse(
+                questionBoard.getQuestionBoardId(),
+                questionBoard.getTitle(),
+                questionBoard.getWriter(),
+                questionBoard.getContent(),
+                questionBoard.getRegDate(),
+                questionBoard.getQuestionCategory().getQuestionCategoryType(),
+                images
+
+        );
+        return response;
+        */
+    };
 
 
 
