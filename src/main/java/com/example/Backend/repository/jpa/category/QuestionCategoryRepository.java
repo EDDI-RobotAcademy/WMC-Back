@@ -1,4 +1,4 @@
-package com.example.Backend.repository.category;
+package com.example.Backend.repository.jpa.category;
 
 import com.example.Backend.entity.boards.QuestionCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
