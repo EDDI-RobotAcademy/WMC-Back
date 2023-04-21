@@ -22,7 +22,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/notice")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
 public class NoticeController {
 
 
