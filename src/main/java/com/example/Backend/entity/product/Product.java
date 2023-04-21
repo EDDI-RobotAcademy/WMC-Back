@@ -3,14 +3,14 @@ import com.example.Backend.entity.order.Order;
 import com.example.Backend.entity.order.OrderItem;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+//import org.springframework.data.elasticsearch.annotations.FieldType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
+//import org.springframework.data.elasticsearch.annotations.Document;
+//import org.springframework.data.elasticsearch.annotations.Field;
 //import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
@@ -21,18 +21,18 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-@Document(indexName = "product")
+//@Document(indexName = "product")
 @JsonIgnoreProperties("orderItemList")
 public class Product {
 
     @Id
     @org.springframework.data.annotation.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Field(type = FieldType.Keyword)
+//    @Field(type = FieldType.Keyword)
     private Long productId;
 
     @Column(length = 128, nullable = false)
-    @Field(type = FieldType.Text)
+//    @Field(type = FieldType.Text)
     private String name;
 
     @Column(length = 128, nullable = false)
@@ -44,10 +44,10 @@ public class Product {
     @Column
     private Integer price;
 
-    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    @Field(includeInParent = false)
+//    @Field(type = FieldType.Auto , includeInParent = true)
     private Category category;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -9,14 +9,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.Backend.controller.order.cart.OrderController.getaLong;
+import static com.example.Backend.controller.order.OrderController.getaLong;
 
 
 @Slf4j
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
 public class MemberController {
 
     final private MemberService memberService;
@@ -60,7 +60,16 @@ public class MemberController {
 
     @PostMapping("/account")
     public MemberResponse account(@RequestBody String token) {
-        Long memberId = getMemberIdByToken(token);
+        token = token.substring(0, token.length() - 1);
+        log.info("logout(): " + token);
+        Long memberId = null;
+        String memberValue = redisService.getValueByKey(token);
+        if (memberValue != null) {
+            String[] value = memberValue.split(":");
+            if (value.length > 0) {
+                memberId = Long.valueOf(value[0]);
+            }
+        }
         return memberService.read(memberId);
     }
 
@@ -81,6 +90,22 @@ public class MemberController {
             }
         }
         memberService.delete(memberId);
+    }
+
+    @PostMapping("/ismanager")
+    public boolean isManager(@RequestBody String token) {
+        token = token.substring(0, token.length() - 1);
+        log.info("logout(): " + token);
+        String authorityName = null;
+        String memberValue = redisService.getValueByKey(token);
+        if (memberValue != null) {
+            String[] value = memberValue.split(":");
+            if (value.length > 0) {
+                authorityName = value[1];
+                log.info("authorityName: " + authorityName);
+            }
+        }
+        return authorityName.equals("MANAGER");
     }
 
 }

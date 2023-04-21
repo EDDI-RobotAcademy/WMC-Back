@@ -122,9 +122,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public MemberResponse read(Long memberId) {
 
-        Optional<Member> maybeMember = memberRepository.findById(memberId);
+        Optional<Member> maybeMember = memberRepository.findByIdWithProfile(memberId);
         if (maybeMember.isPresent()) {
             Member member = maybeMember.get();
             MemberProfile memberProfile = memberProfileRepository.getReferenceById(memberId);
