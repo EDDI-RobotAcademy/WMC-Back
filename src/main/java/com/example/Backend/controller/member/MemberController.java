@@ -7,6 +7,8 @@ import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.Backend.controller.order.OrderController.getaLong;
@@ -51,12 +53,19 @@ public class MemberController {
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestBody String token) {
-        token = token.substring(0, token.length() - 1);
-        log.info("logout(): " + token);
+    public ResponseEntity<Void> logout(@RequestBody String token) {
+        try {
+            token = token.substring(0, token.length() - 1);
+            log.info("logout(): " + token);
 
-        redisService.deleteByKey(token);
+            redisService.deleteByKey(token);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error("Error during logout: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
+
 
     @PostMapping("/account")
     public MemberResponse account(@RequestBody String token) {
