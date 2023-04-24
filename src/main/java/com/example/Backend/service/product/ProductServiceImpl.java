@@ -18,6 +18,7 @@ import com.example.Backend.service.product.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 //import org.elasticsearch.index.query.QueryBuilder;
 //import org.elasticsearch.index.query.QueryBuilders;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -56,6 +58,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public Boolean register(ProductRegisterRequest productRegisterRequest) {
+        log.info("Received ProductRegisterRequest: " + productRegisterRequest);
+
         Category category = categoryRepository.findById(productRegisterRequest.getCategoryId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리입니다."));
         final Product product = productRegisterRequest.toProduct(category);

@@ -26,19 +26,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
 public class ProductController {
 
     final private ProductService productService;
 
     final private CategoryService categoryService;
 
-    @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public boolean productRegister(@ModelAttribute ProductRegisterForm form) throws IOException {
+    @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public boolean productRegister(@RequestBody ProductRegisterForm form) throws IOException {
         log.info("productRegister(): " + form);
-        log.info("Files received: " + form.getFileList().size());
+//        log.info("Files received: " + form.getFileList().size());
 
-        List<String> savedFiles = saveFiles(form.getFileList());
+        List<String> savedFiles = form.getFileNames();
 
         ProductRegisterRequest request = new ProductRegisterRequest(form.getName(), form.getDescription(), form.getStock(), form.getPrice(), form.getCategoryId(), savedFiles);
 
@@ -46,30 +45,30 @@ public class ProductController {
         return productService.register(request);
     }
 
-    private List<String> saveFiles(List<MultipartFile> fileList) {
-        List<String> savedFilePaths = new ArrayList<>();
-        String basePath = "/home/ec2-user/project/frontend/html/img/";
-
-        for (MultipartFile multipartFile : fileList) {
-            log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());
-            log.info("saveFiles() - file size: " + multipartFile.getSize());
-
-            String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add("home/ec2-user/project/frontend/html/img/" + multipartFile.getOriginalFilename());
-
-            try {
-                FileOutputStream writer = new FileOutputStream(savedFileName);
-                writer.write(multipartFile.getBytes());
-                writer.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return savedFilePaths;
-    }
+//    private List<String> saveFiles(List<MultipartFile> fileList) {
+//        List<String> savedFilePaths = new ArrayList<>();
+//        String basePath = "/home/ec2-user/project/frontend/html/img/";
+//
+//        for (MultipartFile multipartFile : fileList) {
+//            log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());
+//            log.info("saveFiles() - file size: " + multipartFile.getSize());
+//
+//            String savedFileName = basePath + multipartFile.getOriginalFilename();
+//            savedFilePaths.add("home/ec2-user/project/frontend/html/img/" + multipartFile.getOriginalFilename());
+//
+//            try {
+//                FileOutputStream writer = new FileOutputStream(savedFileName);
+//                writer.write(multipartFile.getBytes());
+//                writer.close();
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        return savedFilePaths;
+//    }
 
     @DeleteMapping("/delete")
     public boolean delete(@RequestBody Long productId) {

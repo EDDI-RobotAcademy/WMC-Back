@@ -30,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 //@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
 @CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
+
 public class NoticeController {
 
 
