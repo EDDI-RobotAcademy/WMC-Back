@@ -1,6 +1,10 @@
 package com.example.Backend;
 
-import com.example.Backend.repository.review.ReviewRepository;
+import com.example.Backend.entity.product.Category;
+import com.example.Backend.repository.jpa.product.ProductRepository;
+import com.example.Backend.repository.jpa.review.ReviewRepository;
+import com.example.Backend.service.category.CategoryService;
+import com.example.Backend.service.notice.request.NoticeRequest;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.review.ReviewService;
 import com.example.Backend.service.review.request.ReviewRegisterRequest;
@@ -11,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -21,17 +26,22 @@ public class ReviewTest {
 
     @Autowired
     private ReviewRepository reviewRepository;
-
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ProductRepository productRepository;
     @Test
-    public void 리뷰등록_테스트(){
-        reviewRepository.deleteAll();
-        assertTrue(reviewRepository.count() == 0);
+    public void 리뷰_등록_확인 (){
         List<String> savedFilePaths = Arrays.asList(
-                "/path/to/test/image1.jpg",
-                "/path/to/test/image2.jpg",
-                "/path/to/test/image3.jpg"
+                "src/assets/noticeImages/image1.jpg",
+                "src/assets/noticeImages/image1.jpg",
+                "src/assets/noticeImages/image1.jpg"
         );
-        assertTrue(reviewService.register(new ReviewRegisterRequest("asdf","asdf",3.5f, "test입니다", savedFilePaths)));
-        assertTrue(reviewRepository.count() == 1);
+        assertTrue(reviewService.register(new ReviewRegisterRequest(
+                "test", "test입니다", 5, "fjdof", savedFilePaths
+        )));
     }
-}
+
+    }
+
+

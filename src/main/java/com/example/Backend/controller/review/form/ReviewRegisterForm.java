@@ -1,6 +1,6 @@
 package com.example.Backend.controller.review.form;
 
-import com.example.Backend.service.product.request.ProductRegisterRequest;
+
 import com.example.Backend.service.review.request.ReviewRegisterRequest;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;

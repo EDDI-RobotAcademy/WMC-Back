@@ -1,10 +1,8 @@
 package com.example.Backend.service.review;
 
-import com.example.Backend.entity.product.Product;
 import com.example.Backend.entity.review.Review;
-import com.example.Backend.repository.review.ReviewImageRepository;
-import com.example.Backend.repository.review.ReviewRepository;
-import com.example.Backend.service.product.request.ProductRegisterRequest;
+import com.example.Backend.repository.jpa.review.ReviewImageRepository;
+import com.example.Backend.repository.jpa.review.ReviewRepository;
 import com.example.Backend.service.review.request.ReviewRegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

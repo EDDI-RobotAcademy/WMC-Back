@@ -1,6 +1,6 @@
 package com.example.Backend.service.review;
 
-import com.example.Backend.repository.review.ReviewRepository;
+import com.example.Backend.repository.jpa.review.ReviewRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

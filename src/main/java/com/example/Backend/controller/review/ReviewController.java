@@ -1,7 +1,6 @@
 package com.example.Backend.controller.review;
 
 import com.example.Backend.controller.review.form.ReviewRegisterForm;
-import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.review.ReviewService;
 import com.example.Backend.service.review.request.ReviewRegisterRequest;
 import lombok.RequiredArgsConstructor;
