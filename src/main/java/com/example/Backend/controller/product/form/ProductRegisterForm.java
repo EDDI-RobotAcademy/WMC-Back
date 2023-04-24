@@ -20,7 +20,7 @@ public class ProductRegisterForm {
     private Integer stock;
     private Integer price;
     private Long categoryId;
-    private List<MultipartFile> fileList;
+    private List<String> fileNames;
 
 //    public ProductRegisterRequest toProductRegisterRequest(List<String> savedFilePaths) {
 //        return new ProductRegisterRequest(name, description, stock, price, categoryId, savedFilePaths);
