@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
 
 //    final private ProductSearchRepository productSearchRepository;
 
-    private final ApplicationEventPublisher eventPublisher;
+//    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -220,6 +220,32 @@ public class ProductServiceImpl implements ProductService {
             ProductListResponse response = new ProductListResponse(
                     product,
                     sold
+            );
+            productListResponses.add(response);
+        }
+
+        return productListResponses;
+    }
+
+    @Override
+    public List<ProductListResponse> search(String keyword){
+        List<Product> products = productRepository.findSearchProduct(keyword);
+        List<ProductListResponse> productListResponses = new ArrayList<>();
+        for (Product product : products) {
+            String firstPhoto = null;
+            List<ImageData> images = imageDataRepository.findAllImagesByProductId(product.getProductId());
+            if (!images.isEmpty()) {
+                firstPhoto = images.get(0).getImageData();
+            }
+
+            ProductListResponse response = new ProductListResponse(
+                    product.getProductId(),
+                    product.getName(),
+                    product.getDescription(),
+                    product.getStock(),
+                    product.getPrice(),
+                    null,
+                    firstPhoto
             );
             productListResponses.add(response);
         }

@@ -13,4 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p, SUM(oi.quantity) AS sold FROM Product p LEFT JOIN p.orderItemList oi GROUP BY p ORDER BY sold DESC")
     List<Object[]> findTop10ByOrderBySoldDesc(Pageable pageable);
+
+    @Query("select p from Product p where p.name like %:name%")
+    List<Product> findSearchProduct(String name);
 }
