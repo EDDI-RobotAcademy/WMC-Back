@@ -1,6 +1,8 @@
 package com.example.Backend.entity.member;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -15,6 +17,8 @@ public abstract class Authentication {
     public static final String BASIC_AUTH = "BASIC";
 
     @Id
+    @Setter
+    @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = null;
 

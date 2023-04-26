@@ -1,7 +1,10 @@
 package com.example.Backend.controller.member;
 
+import com.example.Backend.controller.member.form.CheckPasswordForm;
 import com.example.Backend.controller.member.form.MemberLoginForm;
 import com.example.Backend.controller.member.form.MemberRegisterForm;
+import com.example.Backend.controller.member.form.PasswordUpdateForm;
+import com.example.Backend.entity.member.Member;
 import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
@@ -10,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
 
 import static com.example.Backend.controller.order.OrderController.getaLong;
 
@@ -50,6 +55,18 @@ public class MemberController {
 
         return memberService.signIn(form.toMemberLoginRequest());
     }
+
+    @PostMapping("/passwordCheck")
+    public Boolean passwordCheck(@RequestBody CheckPasswordForm checkPasswordForm) {
+        return memberService.passwordCheck(checkPasswordForm);
+    }
+
+    @PutMapping("/passwordUpdate")
+    public void passwordUpdate(@RequestBody PasswordUpdateForm passwordUpdateForm) {
+       log.info("PasswordUpdate" + passwordUpdateForm );
+       memberService.passwordUpdate(passwordUpdateForm);
+    }
+
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(@RequestBody String token) {
