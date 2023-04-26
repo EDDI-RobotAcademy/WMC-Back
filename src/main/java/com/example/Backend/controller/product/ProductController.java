@@ -81,6 +81,18 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    @GetMapping("/search")
+    public List<ProductListResponse> productsList(@RequestParam(value = "keyword", required = false) String keyword) {
+        log.info("키워드 = " + keyword);
+
+        if (keyword == null || keyword.length() == 0){
+            return productService.getAllProducts();
+        }else {
+//            searchService.registerOrAddCntKeyWord(keyword);
+            return productService.search(keyword);
+        }
+    }
+
     @GetMapping("/detail")
     public ProductResponse getProductDetail(@RequestParam Long productId) {
         return productService.getProductById(productId);
