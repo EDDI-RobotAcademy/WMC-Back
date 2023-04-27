@@ -6,6 +6,7 @@ import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.order.OrderService;
 import com.example.Backend.service.order.request.KakaoPayRequest;
 import com.example.Backend.service.order.request.OrderItemRequest;
+import com.example.Backend.service.order.response.ManagerOrderResponse;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +78,7 @@ public class OrderController {
         }
 
     }
+
     public Long getMemberIdByToken(String token) {
         return getaLong(token, log, redisService);
     }
@@ -84,6 +86,8 @@ public class OrderController {
     public static Long getaLong(String token, Logger log, RedisService redisService) {
 //        token = token.substring(0, token.length() - 1);
         log.info("account(): " + token);
+
+
         Long memberId = null;
         String memberValue = redisService.getValueByKey(token);
         log.info("Member value from Redis: " + memberValue);
@@ -97,5 +101,27 @@ public class OrderController {
         return memberId;
     }
 
+//    @PostMapping("/kakaoPaySuccess")
 
+//    @PostMapping("/myorderlist")
+//    public List<Order> getMemberOrderList(@RequestBody String token) {
+//        Long memberId = getMemberIdByToken(token);
+//        return orderService.getMyOrderList(memberId);
+//    }
+
+    @PostMapping("/managerorderlist")
+    public List<ManagerOrderResponse> getManagerOrderList(@RequestBody String token) {
+        log.info("token:" + token);
+        token = token.substring(0, token.length() - 1);
+        log.info(token);
+        String value = redisService.getValueByKey(token);
+        log.info("value:" + value);
+        String[] values = value.split(":");
+        String authority = values[1];
+        log.info("authority:" + authority);
+        if(authority.equals("MANAGER")) {
+            return orderService.getManagerOrderList();
+        }
+        throw new RuntimeException("권한이 없습니다.");
+    }
 }

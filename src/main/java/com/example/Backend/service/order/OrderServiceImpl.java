@@ -9,6 +9,7 @@ import com.example.Backend.repository.jpa.order.OrderItemRepository;
 import com.example.Backend.repository.jpa.order.OrderRepository;
 import com.example.Backend.repository.jpa.product.ProductRepository;
 import com.example.Backend.service.order.request.OrderItemRequest;
+import com.example.Backend.service.order.response.ManagerOrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,6 +69,12 @@ public class OrderServiceImpl implements OrderService {
         return product.getStock() >= quantity;
     }
 
+    @Override
+    public List<ManagerOrderResponse> getManagerOrderList() {
+        return orderRepository.findAllOrderDetails();
+
+
+    }
 
 
 
