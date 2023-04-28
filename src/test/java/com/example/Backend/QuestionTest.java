@@ -7,6 +7,9 @@ import com.example.Backend.service.boards.QuestionService;
 import com.example.Backend.service.boards.request.BoardRequest;
 import com.example.Backend.service.boards.response.BoardResponse;
 import com.example.Backend.service.category.QuestionCategoryService;
+import com.example.Backend.service.comment.QuestionCommentService;
+import com.example.Backend.service.comment.request.CommentRequest;
+import com.example.Backend.service.notice.request.NoticeRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +30,9 @@ public class QuestionTest {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private QuestionCommentService questionCommentService;
 
     @Test
     public void 질문게시글_등록_확인() {
@@ -69,5 +75,15 @@ public class QuestionTest {
         assertEquals(questionBoard.getQuestionBoardId(), boardResponse.getQuestionBoardId());
 
     }
+    @Test
+    public void Commemt_등록_확인() {
+
+        //QuestionBoard testQuestionBoard = questionCommentService.
+
+        assertTrue(questionCommentService.register(new CommentRequest(
+                "test", 1L, 10L
+        )));
+    }
+
 
 }

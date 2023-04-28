@@ -39,6 +39,25 @@ public class QuestionBoard {
     @OneToMany(mappedBy = "questionBoard", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<QuestionImageData> imageDataList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "questionBoard", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<QuestionComment> questionCommentList = new ArrayList<>();
+
+
+    // 부모 게시물과의 관계
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_board_id")
+    private QuestionBoard parentBoard;
+
+    //자식게시물(답글) 목록
+    @JsonIgnore
+    @OneToMany(mappedBy = "parentBoard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<QuestionBoard> replies = new ArrayList<>();
+
+
+
     @CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date regDate;
