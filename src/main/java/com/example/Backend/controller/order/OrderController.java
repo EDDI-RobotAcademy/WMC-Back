@@ -21,6 +21,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import com.example.Backend.exception.ManagerOrderNotAllowedException;
 
 @Slf4j
 @RestController
@@ -35,14 +36,27 @@ public class OrderController {
 
     @PostMapping("/kakaoPay")
     public String kakaoPay(@RequestBody KakaoPayRequest payload) throws IOException {
+        String token = payload.getToken();
+        log.info("token: " + token);
+        String memberValue = redisService.getValueByKey(token);
+        log.info("Member value from Redis: " + memberValue);
+
+        String authName = null;
+        if (memberValue != null) {
+            String[] value = memberValue.split(":");
+            if (value.length > 0) {
+                authName = value[1];
+            }
+        }
+        if (authName.equals("MANAGER")) {
+            throw new ManagerOrderNotAllowedException("관리자는 주문할 수 없습니다.");
+        }
         List<OrderItemRequest> orderItems = payload.getOrderItems();
         for (OrderItemRequest orderItem : orderItems) {
             if (!orderService.isProductEnough(orderItem.getProductId(), orderItem.getQuantity())) {
                 throw new RuntimeException("재고가 충분치 않습니다! : " + orderItem.getProductId());
             }
         }
-        String token = payload.getToken();
-        log.info("token: " + token);
         URL url = new URL("https://kapi.kakao.com/v1/payment/ready");
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
