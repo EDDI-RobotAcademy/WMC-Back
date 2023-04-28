@@ -21,6 +21,6 @@ public interface MemberService {
     Boolean passwordCheck(CheckPasswordForm checkPasswordForm);
 
 
-    void passwordUpdate(PasswordUpdateForm passwordUpdateForm);
+    Boolean passwordUpdate(PasswordUpdateForm passwordUpdateForm);
 
 }
