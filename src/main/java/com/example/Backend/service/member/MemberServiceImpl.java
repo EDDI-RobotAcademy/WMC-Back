@@ -166,7 +166,7 @@ public class MemberServiceImpl implements MemberService {
     }
     @Override
     @Transactional
-    public void passwordUpdate(PasswordUpdateForm passwordUpdateForm) {
+    public Boolean passwordUpdate(PasswordUpdateForm passwordUpdateForm) {
         Optional<Member> maybeMember = memberRepository.findById(passwordUpdateForm.getMemberId());
         Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_id(passwordUpdateForm.getMemberId());
 
@@ -181,6 +181,8 @@ public class MemberServiceImpl implements MemberService {
 
             authentication.setId(maybeAuthentication.get().getId());
             authenticationRepository.save(authentication);
+            return true;
         }
+        return false;
     }
 }

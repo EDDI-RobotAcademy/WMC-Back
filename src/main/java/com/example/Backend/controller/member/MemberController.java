@@ -62,9 +62,10 @@ public class MemberController {
     }
 
     @PutMapping("/passwordUpdate")
-    public void passwordUpdate(@RequestBody PasswordUpdateForm passwordUpdateForm) {
-       log.info("PasswordUpdate" + passwordUpdateForm );
-       memberService.passwordUpdate(passwordUpdateForm);
+    public Boolean passwordUpdate(@RequestBody PasswordUpdateForm passwordUpdateForm) {
+       log.info("PasswordUpdate : " + passwordUpdateForm );
+
+       return memberService.passwordUpdate(passwordUpdateForm);
     }
 
 
