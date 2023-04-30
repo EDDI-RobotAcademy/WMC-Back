@@ -11,7 +11,7 @@ public interface ReviewService {
 
     Boolean register(ReviewRequest reviewRequest);
 
-    List<ReviewListResponse> getAllReviews();
+    List<ReviewListResponse> getAllReviews(Long productId);
 
     Boolean delete(Long reviewId);
 
