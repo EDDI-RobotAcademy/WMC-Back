@@ -1,7 +1,6 @@
 package com.example.Backend.service.review;
 
 import com.example.Backend.entity.member.Member;
-import com.example.Backend.entity.product.ImageData;
 import com.example.Backend.entity.product.Product;
 import com.example.Backend.entity.review.Review;
 import com.example.Backend.entity.review.ReviewImageData;
@@ -9,8 +8,6 @@ import com.example.Backend.repository.jpa.member.MemberRepository;
 import com.example.Backend.repository.jpa.product.ProductRepository;
 import com.example.Backend.repository.jpa.review.ReviewImageDataRepository;
 import com.example.Backend.repository.jpa.review.ReviewRepository;
-import com.example.Backend.service.product.response.ProductListResponse;
-import com.example.Backend.service.product.response.ProductResponse;
 import com.example.Backend.service.review.Request.ReviewRequest;
 import com.example.Backend.service.review.response.ReviewListResponse;
 import com.example.Backend.service.review.response.ReviewResponse;
