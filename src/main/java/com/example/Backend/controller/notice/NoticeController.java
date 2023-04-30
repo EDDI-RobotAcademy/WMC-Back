@@ -1,5 +1,6 @@
 package com.example.Backend.controller.notice;
 
+import com.example.Backend.controller.member.MemberController;
 import com.example.Backend.controller.notice.form.NoticeRegisterForm;
 import com.example.Backend.entity.notice.Notice;
 import com.example.Backend.entity.notice.NoticeImageData;
@@ -39,9 +40,16 @@ public class NoticeController {
     @Autowired
     private NoticeImageDataRepository noticeImageDataRepository;
 
+    @Autowired
+    private MemberController memberController;
+
 
     @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public boolean noticeRegister(@ModelAttribute NoticeRegisterForm form) throws IOException {
+    //public boolean noticeRegister(@ModelAttribute NoticeRegisterForm form) throws IOException {
+    public boolean noticeRegister(@RequestHeader("Authorization") String token, @ModelAttribute NoticeRegisterForm form) throws IOException {
+        if (!memberController.isManager(token)) {
+            return false;
+        }
         if (form.getFileList() == null) {
             form.setFileList(new ArrayList<>());
         }
@@ -105,7 +113,11 @@ public class NoticeController {
 //    }
 
     @DeleteMapping(value = "/delete/{noticeId}")
-    public boolean deleteNotice(@PathVariable("noticeId") Long noticeId) {
+    //public boolean deleteNotice(@PathVariable("noticeId") Long noticeId) {
+    public boolean deleteNotice(@RequestHeader("Authorization") String token, @PathVariable("noticeId") Long noticeId) {
+        if (!memberController.isManager(token)) {
+            return false;
+        }
         log.info("deleteNotice(): " + noticeId);
 
         List<NoticeImageData> images = noticeImageDataRepository.findAllImagesByNoticeId(noticeId);
@@ -126,8 +138,13 @@ public class NoticeController {
 
 
     @PutMapping(value = "/modify/{noticeId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public boolean modifyNotice(@PathVariable("noticeId") Long noticeId,
+    //public boolean modifyNotice(@PathVariable("noticeId") Long noticeId,
+                                //@ModelAttribute NoticeRegisterForm form) throws IOException {
+    public boolean modifyNotice(@RequestHeader("Authorization") String token, @PathVariable("noticeId") Long noticeId,
                                 @ModelAttribute NoticeRegisterForm form) throws IOException {
+        if (!memberController.isManager(token)) {
+            return false;
+        }
         if (form.getFileList() == null) {
             form.setFileList(new ArrayList<>());
         }
