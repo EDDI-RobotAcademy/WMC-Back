@@ -1,23 +1,19 @@
 package com.example.Backend.controller.review.form;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 
 import java.util.List;
-@Getter
-@Setter
+
+@Data
 @NoArgsConstructor
 @ToString
 public class ReviewRegisterForm {
 
     private Long productId;
-    private Long memberId;
+    private String token;
     private int rating;
     private String content;
-    private List<String>fileNames;
-
+    private List<String> fileNames;
 
 }

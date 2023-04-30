@@ -29,14 +29,16 @@ public class Review {
     @JoinColumn(name="product_id", nullable = false )
     private Product product;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
 
-    @Lob
-    private int rating;
     @Column
+    private int rating;
+
+    @Lob
     private String content;
+
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
