@@ -65,8 +65,11 @@ public class Product {
 
     @UpdateTimestamp
     private Date updDate;
+
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
+
     public Product(String name, String description, Integer stock, Integer price, Category category) {
         this.name = name;
         this.description = description;

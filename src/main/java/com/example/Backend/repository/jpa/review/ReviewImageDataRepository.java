@@ -13,5 +13,4 @@ public interface ReviewImageDataRepository extends JpaRepository<ReviewImageData
 
     @Query("select i from ReviewImageData i join i.review r where r.reviewId = :reviewId")
     List<ReviewImageData> findAllImagesByReviewId(Long reviewId);
-    List<ReviewImageData> findImagesByProduct(Product product);
 }

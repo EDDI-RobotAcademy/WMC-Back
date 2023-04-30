@@ -51,9 +51,9 @@ public class ReviewController {
     }
 
     @GetMapping("/list")
-    public List<ReviewListResponse> getAllReviews() {
+    public List<ReviewListResponse> getAllReviews(@RequestBody Long productId) {
 
-        return reviewService.getAllReviews();
+        return reviewService.getAllReviews(productId);
     }
 
 }

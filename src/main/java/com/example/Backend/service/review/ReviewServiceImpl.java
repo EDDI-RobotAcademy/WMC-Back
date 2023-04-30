@@ -28,15 +28,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
-
     final private ProductRepository productRepository;
-
-
     final private MemberRepository memberRepository;
-
-
     final private ReviewRepository reviewRepository;
-
     final private ReviewImageDataRepository reviewImageDataRepository;
 
     @Override
@@ -51,6 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
             return true;
 
     }
+
     @Override
     @Transactional
     public Boolean delete(Long reviewId) {
@@ -75,7 +70,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         for (Review review : reviews) {
             String firstPhoto = null;
-            List<ReviewImageData> images = reviewImageDataRepository.findImagesByProduct(product);
+            List<ReviewImageData> images = reviewImageDataRepository.findAllImagesByReviewId(review.getReviewId());
             if (!images.isEmpty()) {
                 firstPhoto = images.get(0).getReviewImageData();
             }
@@ -104,17 +99,7 @@ public class ReviewServiceImpl implements ReviewService {
        Review review = reviewRepository.findById(reviewId)
                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰입니다."));
 
-            Product product = maybeProduct.get();
-            List<ImageData> imageDataList = imageDataRepository.findAllImagesByProductId(productId);
-            return new ProductResponse(
-                    product.getProductId(),
-                    product.getName(),
-                    product.getDescription(),
-                    product.getPrice(),
-                    product.getStock(),
-                    imageDataList
-            );
-
+        return null;
     }
 
 }
