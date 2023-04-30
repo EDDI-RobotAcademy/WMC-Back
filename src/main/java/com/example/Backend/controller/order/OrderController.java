@@ -6,6 +6,7 @@ import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.order.OrderService;
 import com.example.Backend.service.order.request.KakaoPayRequest;
 import com.example.Backend.service.order.request.OrderItemRequest;
+import com.example.Backend.service.order.response.ManagerOrderResponse;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import com.example.Backend.exception.ManagerOrderNotAllowedException;
 
 @Slf4j
 @RestController
@@ -34,14 +36,27 @@ public class OrderController {
 
     @PostMapping("/kakaoPay")
     public String kakaoPay(@RequestBody KakaoPayRequest payload) throws IOException {
+        String token = payload.getToken();
+        log.info("token: " + token);
+        String memberValue = redisService.getValueByKey(token);
+        log.info("Member value from Redis: " + memberValue);
+
+        String authName = null;
+        if (memberValue != null) {
+            String[] value = memberValue.split(":");
+            if (value.length > 0) {
+                authName = value[1];
+            }
+        }
+        if (authName.equals("MANAGER")) {
+            throw new ManagerOrderNotAllowedException("관리자는 주문할 수 없습니다.");
+        }
         List<OrderItemRequest> orderItems = payload.getOrderItems();
         for (OrderItemRequest orderItem : orderItems) {
             if (!orderService.isProductEnough(orderItem.getProductId(), orderItem.getQuantity())) {
                 throw new RuntimeException("재고가 충분치 않습니다! : " + orderItem.getProductId());
             }
         }
-        String token = payload.getToken();
-        log.info("token: " + token);
         URL url = new URL("https://kapi.kakao.com/v1/payment/ready");
         try {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -77,6 +92,7 @@ public class OrderController {
         }
 
     }
+
     public Long getMemberIdByToken(String token) {
         return getaLong(token, log, redisService);
     }
@@ -84,6 +100,8 @@ public class OrderController {
     public static Long getaLong(String token, Logger log, RedisService redisService) {
 //        token = token.substring(0, token.length() - 1);
         log.info("account(): " + token);
+
+
         Long memberId = null;
         String memberValue = redisService.getValueByKey(token);
         log.info("Member value from Redis: " + memberValue);
@@ -97,5 +115,27 @@ public class OrderController {
         return memberId;
     }
 
+//    @PostMapping("/kakaoPaySuccess")
 
+//    @PostMapping("/myorderlist")
+//    public List<Order> getMemberOrderList(@RequestBody String token) {
+//        Long memberId = getMemberIdByToken(token);
+//        return orderService.getMyOrderList(memberId);
+//    }
+
+    @PostMapping("/managerorderlist")
+    public List<ManagerOrderResponse> getManagerOrderList(@RequestBody String token) {
+        log.info("token:" + token);
+        token = token.substring(0, token.length() - 1);
+        log.info(token);
+        String value = redisService.getValueByKey(token);
+        log.info("value:" + value);
+        String[] values = value.split(":");
+        String authority = values[1];
+        log.info("authority:" + authority);
+        if(authority.equals("MANAGER")) {
+            return orderService.getManagerOrderList();
+        }
+        throw new RuntimeException("권한이 없습니다.");
+    }
 }

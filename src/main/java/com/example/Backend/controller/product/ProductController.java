@@ -72,6 +72,7 @@ public class ProductController {
 
     @DeleteMapping("/delete")
     public boolean delete(@RequestBody Long productId) {
+
         return productService.delete(productId);
     }
 
@@ -79,6 +80,18 @@ public class ProductController {
     public List<ProductListResponse> getAllProduct() {
 
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/search")
+    public List<ProductListResponse> productsList(@RequestParam(value = "keyword", required = false) String keyword) {
+        log.info("키워드 = " + keyword);
+
+        if (keyword == null || keyword.length() == 0){
+            return productService.getAllProducts();
+        }else {
+//            searchService.registerOrAddCntKeyWord(keyword);
+            return productService.search(keyword);
+        }
     }
 
     @GetMapping("/detail")

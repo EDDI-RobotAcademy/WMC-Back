@@ -27,4 +27,7 @@ public interface ProductService {
 
     List<ProductListResponse> getMostSoldProductList(Pageable pageable);
 //    Page<Product> searchByName(String name, Pageable pageable);
+
+    List<ProductListResponse> search(String keyword);
+
 }

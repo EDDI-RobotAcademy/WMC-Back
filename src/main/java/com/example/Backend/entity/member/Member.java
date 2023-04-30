@@ -2,6 +2,8 @@ package com.example.Backend.entity.member;
 
 import com.example.Backend.entity.member.MemberProfile;
 import com.example.Backend.entity.order.Order;
+
+import com.example.Backend.entity.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
@@ -42,9 +44,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Authentication> authentications = new HashSet<>();
 
-    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Order> orderList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
+
 
 
     public Member(String email, String username, int birthdate, Authority authority, boolean managerCheck, MemberProfile memberProfile) {

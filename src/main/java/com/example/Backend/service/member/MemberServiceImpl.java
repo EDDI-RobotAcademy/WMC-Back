@@ -1,5 +1,7 @@
 package com.example.Backend.service.member;
 
+import com.example.Backend.controller.member.form.CheckPasswordForm;
+import com.example.Backend.controller.member.form.PasswordUpdateForm;
 import com.example.Backend.entity.member.*;
 import com.example.Backend.repository.jpa.member.AuthenticationRepository;
 import com.example.Backend.repository.jpa.member.ManagerCodeRepository;
@@ -120,6 +122,20 @@ public class MemberServiceImpl implements MemberService {
 
         throw new RuntimeException("가입된 사용자가 아닙니다!");
     }
+    @Override
+    @Transactional
+    public Boolean passwordCheck(CheckPasswordForm checkPasswordForm) {
+        Long memberId = checkPasswordForm.getMemberId();
+        Optional<Member> maybeMember = memberRepository.findById(memberId);
+
+        if (maybeMember.isPresent()) {
+            Member member = maybeMember.get();
+            String password = checkPasswordForm.getPassword();
+            return member.isRightPassword(password);
+        }
+        return false;
+    }
+
 
     @Override
     @Transactional
@@ -147,5 +163,26 @@ public class MemberServiceImpl implements MemberService {
             return maybeMember.get();
         }
         throw new RuntimeException("가입된 사용자가 아닙니다!");
+    }
+    @Override
+    @Transactional
+    public Boolean passwordUpdate(PasswordUpdateForm passwordUpdateForm) {
+        Optional<Member> maybeMember = memberRepository.findById(passwordUpdateForm.getMemberId());
+        Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_id(passwordUpdateForm.getMemberId());
+
+        if (maybeMember.isPresent()) {
+            Member member = maybeMember.get();
+
+            final BasicAuthentication authentication = new BasicAuthentication(
+                    member,
+                    Authentication.BASIC_AUTH,
+                    passwordUpdateForm.getNewPassword()
+            );
+
+            authentication.setId(maybeAuthentication.get().getId());
+            authenticationRepository.save(authentication);
+            return true;
+        }
+        return false;
     }
 }
