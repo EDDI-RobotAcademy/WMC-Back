@@ -1,11 +1,14 @@
 package com.example.Backend.entity.review;
 
+import com.example.Backend.entity.boards.QuestionImageData;
+import com.example.Backend.entity.member.Member;
 import com.example.Backend.entity.product.Product;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,47 +16,47 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
 @NoArgsConstructor
-//기본 생성자를 만들어 주는 것.
-
+@Table(name="review")
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
-
-    @Column(length = 128, nullable = false)
-    private String title;
-
-    @Column(length = 128, nullable = false)
-    private String writer;
-
-    @Column
-    private float rating;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name="product_id", nullable = false )
+    private Product product;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="member_id")
+    private Member member;
     @Lob
+    private int rating;
+    @Column
     private String content;
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<ReviewImageData> reviewImageDataList = new ArrayList<>();
 
     @CreationTimestamp
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date regDate;
 
     @UpdateTimestamp
-    private Date updateDate;
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private Date updDate;
 
-    //orphanRemoval = true : 연결된 항목이 더 이상 Review 항목에서 참조되지 않을때 제거
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<ReviewImage> reviewImageList = new ArrayList<>();
 
-    public Review(String title, String writer, float rating, String content ){
-        this.title=title;
-        this.writer = writer;
-        this.rating = rating;
-        this.content = content;
+    public Review(Product product , Member member , int rating , String content){
+        this.product= product;
+        this.member=member;
+        this.rating=rating;
+        this.content=content;
     }
-    public void addReviewImage(ReviewImage reviewImage){
-        reviewImage.setReview(this);
-        reviewImageList.add(reviewImage);
+    public void addReviewImageData(ReviewImageData reviewImageData) {
+        reviewImageData.setReview(this);
+        reviewImageDataList.add(reviewImageData);
     }
+
 
 }

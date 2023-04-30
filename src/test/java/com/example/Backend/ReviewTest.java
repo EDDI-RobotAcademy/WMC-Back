@@ -38,7 +38,7 @@ public class ReviewTest {
                 "src/assets/noticeImages/image1.jpg"
         );
         assertTrue(reviewService.register(new ReviewRegisterRequest(
-                "test", "test입니다", 5, "fjdof", savedFilePaths
+                1, 1, "sfsjkdfk", "fjdof","dldld",1,"sdjfjdfjkl", savedFilePaths
         )));
     }
 

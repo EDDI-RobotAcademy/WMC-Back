@@ -1,6 +1,8 @@
 package com.example.Backend.entity.product;
 import com.example.Backend.entity.order.Order;
 import com.example.Backend.entity.order.OrderItem;
+
+import com.example.Backend.entity.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 //import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -50,6 +52,7 @@ public class Product {
 //    @Field(type = FieldType.Auto , includeInParent = true)
     private Category category;
 
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<ImageData> imageDataList = new ArrayList<>();
@@ -62,7 +65,8 @@ public class Product {
 
     @UpdateTimestamp
     private Date updDate;
-
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
     public Product(String name, String description, Integer stock, Integer price, Category category) {
         this.name = name;
         this.description = description;

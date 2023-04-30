@@ -1,8 +1,21 @@
 package com.example.Backend.service.review;
 
-import com.example.Backend.service.product.request.ProductRegisterRequest;
-import com.example.Backend.service.review.request.ReviewRegisterRequest;
+
+import com.example.Backend.service.review.Request.ReviewRequest;
+import com.example.Backend.service.review.response.ReviewListResponse;
+import com.example.Backend.service.review.response.ReviewResponse;
+
+import java.util.List;
 
 public interface ReviewService {
-    Boolean register(ReviewRegisterRequest reviewRegisterRequest);
+
+    Boolean register(ReviewRequest reviewRequest);
+
+    List<ReviewListResponse> getAllReviews();
+
+    Boolean delete(Long reviewId);
+
+    ReviewResponse getReviewById(Long reviewId);
+
+
 }
