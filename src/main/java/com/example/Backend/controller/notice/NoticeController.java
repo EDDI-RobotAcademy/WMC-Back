@@ -29,9 +29,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/notice")
 @RequiredArgsConstructor
-//@CrossOrigin(origins = "http://wemakecode.co.kr/", allowedHeaders = "*")
-@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
-
 public class NoticeController {
 
 
@@ -44,51 +41,16 @@ public class NoticeController {
     private MemberController memberController;
 
 
-    @PostMapping(value = "/register", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    //public boolean noticeRegister(@ModelAttribute NoticeRegisterForm form) throws IOException {
-    public boolean noticeRegister(@RequestHeader("Authorization") String token, @ModelAttribute NoticeRegisterForm form) throws IOException {
-        if (!memberController.isManager(token)) {
-            return false;
-        }
-        if (form.getFileList() == null) {
-            form.setFileList(new ArrayList<>());
-        }
+    @PostMapping(value = "/register", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    public boolean noticeRegister(@RequestBody NoticeRegisterForm form) throws IOException {
 
         log.info("noticeRegister(): " + form);
-        log.info("Files received: " + form.getFileList().size());
 
-        List<String> savedFiles = saveFiles(form.getFileList());
+        List<String> savedFiles = form.getFileNames();
 
         NoticeRequest request = new NoticeRequest(form.getTitle(), form.getWriter(), form.getContent(), savedFiles);
 
         return noticeService.register(request);
-    }
-
-    private List<String> saveFiles(List<MultipartFile> fileList) {
-        List<String> savedFilePaths = new ArrayList<>();
-        String basePath = "../../WMC/WMC-Front/src/assets/noticeImages/";
-
-        for (MultipartFile multipartFile : fileList) {
-            log.info("saveFiles() - filename: " + multipartFile.getOriginalFilename());
-            log.info("saveFiles() - file size: " + multipartFile.getSize());
-
-            String savedFileName = basePath + multipartFile.getOriginalFilename();
-            //savedFilePaths.add("assets/noticeImages/"+multipartFile.getOriginalFilename());
-            savedFilePaths.add(multipartFile.getOriginalFilename());
-
-            try {
-                FileOutputStream writer = new FileOutputStream(savedFileName);
-                writer.write(multipartFile.getBytes());
-                writer.close();
-                log.info("Image saved at: " + savedFileName); // Add this line
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return savedFilePaths;
     }
 
     @GetMapping("/list")
@@ -145,14 +107,14 @@ public class NoticeController {
         if (!memberController.isManager(token)) {
             return false;
         }
-        if (form.getFileList() == null) {
-            form.setFileList(new ArrayList<>());
-        }
+//        if (form.getFileList() == null) {
+//            form.setFileList(new ArrayList<>());
+//        }
 
         log.info("modifyNotice(): " + form);
-        log.info("Files received: " + form.getFileList().size());
+//        log.info("Files received: " + form.getFileList().size());
 
-        List<String> savedFiles = saveFiles(form.getFileList());
+        List<String> savedFiles = form.getFileNames();
 
         NoticeRequest request = new NoticeRequest(form.getTitle(), form.getWriter(), form.getContent(), savedFiles);
 
