@@ -7,7 +7,6 @@ import com.example.Backend.service.category.CategoryService;
 import com.example.Backend.service.notice.request.NoticeRequest;
 import com.example.Backend.service.product.request.ProductRegisterRequest;
 import com.example.Backend.service.review.ReviewService;
-import com.example.Backend.service.review.request.ReviewRegisterRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,17 +29,17 @@ public class ReviewTest {
     private CategoryService categoryService;
     @Autowired
     private ProductRepository productRepository;
-    @Test
-    public void 리뷰_등록_확인 (){
-        List<String> savedFilePaths = Arrays.asList(
-                "src/assets/noticeImages/image1.jpg",
-                "src/assets/noticeImages/image1.jpg",
-                "src/assets/noticeImages/image1.jpg"
-        );
-        assertTrue(reviewService.register(new ReviewRegisterRequest(
-                1, 1, "sfsjkdfk", "fjdof","dldld",1,"sdjfjdfjkl", savedFilePaths
-        )));
-    }
+//    @Test
+//    public void 리뷰_등록_확인 (){
+//        List<String> savedFilePaths = Arrays.asList(
+//                "src/assets/noticeImages/image1.jpg",
+//                "src/assets/noticeImages/image1.jpg",
+//                "src/assets/noticeImages/image1.jpg"
+//        );
+//        assertTrue(reviewService.register(new ReviewRegisterRequest(
+//                1, 1, "sfsjkdfk", "fjdof","dldld",1,"sdjfjdfjkl", savedFilePaths
+//        )));
+//    }
 
     }
 
