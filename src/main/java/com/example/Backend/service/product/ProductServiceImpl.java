@@ -261,7 +261,10 @@ public class ProductServiceImpl implements ProductService {
                     product.getStock(),
                     product.getPrice(),
                     null,
-                    firstPhoto
+                    firstPhoto,
+                    product.getRegDate(),
+                    product.getUpdDate(),
+                    null
             );
             productListResponses.add(response);
         }
