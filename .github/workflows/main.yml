@@ -6,8 +6,7 @@ on:
       - main
       
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.actor }}/backend-server
-  VERSION: ${{ github.sha }}
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}
   NAME: backend-server
       
 jobs:
@@ -41,9 +40,9 @@ jobs:
       ## docker build & push to production
       - name: Docker build & push to prod
         run: |
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }}
+            docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GHCR_TOKEN }}
             docker buildx create --name arm64builder --use
-            docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/silenc3502/backend-server:latest --push .
+            docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/eddi-robot-academy/wmc-back:latest --push .
             docker logout
 
   deploy:
