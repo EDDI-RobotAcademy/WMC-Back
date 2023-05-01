@@ -9,6 +9,7 @@ import com.example.Backend.repository.jpa.member.MemberProfileRepository;
 import com.example.Backend.repository.jpa.member.MemberRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
+import com.example.Backend.service.member.request.MemberUpdateAddressRequest;
 import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -122,6 +123,7 @@ public class MemberServiceImpl implements MemberService {
 
         throw new RuntimeException("가입된 사용자가 아닙니다!");
     }
+
     @Override
     @Transactional
     public Boolean passwordCheck(CheckPasswordForm checkPasswordForm) {
@@ -164,6 +166,7 @@ public class MemberServiceImpl implements MemberService {
         }
         throw new RuntimeException("가입된 사용자가 아닙니다!");
     }
+
     @Override
     @Transactional
     public Boolean passwordUpdate(PasswordUpdateForm passwordUpdateForm) {
@@ -184,5 +187,25 @@ public class MemberServiceImpl implements MemberService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    @Transactional
+    public Boolean addressUpdate(MemberUpdateAddressRequest memberUpdateAddressRequest) {
+        Optional<Member> optionalMember = memberRepository.findById(memberUpdateAddressRequest.getMemberId());
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            MemberProfile memberProfile = member.getMemberProfile();
+            Address address = Address.of(memberUpdateAddressRequest.getNewCity(),
+                    memberUpdateAddressRequest.getNewStreet(),
+                    memberUpdateAddressRequest.getNewAddressDetail(),
+                    memberUpdateAddressRequest.getNewZipcode());
+            memberProfile.setAddress(address);
+            memberProfileRepository.save(memberProfile);
+            return true;
+        } else {
+            // member가 존재하지 않을 경우에 대한 처리
+            return false;
+        }
     }
 }
