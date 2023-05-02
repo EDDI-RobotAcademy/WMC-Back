@@ -85,4 +85,6 @@ jobs:
             docker image prune -f
             docker logout
 
+            cd WMC-Back
+
             docker-compose up -d
