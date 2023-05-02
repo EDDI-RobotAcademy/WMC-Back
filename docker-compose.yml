@@ -49,6 +49,9 @@ services:
         java -jar /app.jar
     networks:
       - app
+    environment:
+      - MYSQL_HOST=db
+      - REDIS_HOST=redis
 
 networks:
   app:
