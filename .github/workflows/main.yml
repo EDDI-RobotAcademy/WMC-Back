@@ -65,7 +65,6 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }}
           script_stop: true
           script: |
-            cd actions-runner
             pwd
             if [[ "$(docker ps -q --filter ancestor=mysql:8.0)" ]]; then
               docker rm -f $(docker ps -qa --filter ancestor=mysql:8.0)
