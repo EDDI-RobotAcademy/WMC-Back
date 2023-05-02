@@ -84,3 +84,5 @@ jobs:
 
             docker image prune -f
             docker logout
+
+            docker-compose up -d
