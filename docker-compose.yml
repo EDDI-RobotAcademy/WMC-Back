@@ -41,12 +41,7 @@ services:
       - redis
     ports:
       - "7777:7777"
-    command:
-      - bash
-      - -c
-      - |
-        /wait-for-it.sh db:3306 -t 15
-        java -jar /app.jar
+    command: ["./wait-for-it.sh", "db:3306", "--timeout=15", "--", "java", "-jar", "/app.jar"]
     networks:
       - app
     environment:
