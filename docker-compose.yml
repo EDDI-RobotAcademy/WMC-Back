@@ -41,13 +41,17 @@ services:
       - redis
     ports:
       - "7777:7777"
-    command: ["./wait-for-it.sh", "db:3306", "--timeout=15", "--", "java", "-jar", "/app.jar"]
+    command:
+      - bash
+      - -c
+      - |
+        /wait-for-it.sh db:3306 -t 15
+        java -jar /app.jar
     networks:
       - app
     environment:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
-    entrypoint: ["/wait-for-it.sh"]
 
 networks:
   app:
