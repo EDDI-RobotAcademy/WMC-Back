@@ -40,7 +40,7 @@ jobs:
       ## docker build & push to production
       - name: Docker build & push to prod
         run: |
-            docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GHCR_TOKEN }}
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             docker buildx create --name arm64builder --use
             docker buildx build -f Dockerfile -t ghcr.io/eddi-robot-academy/wmc-back:latest --push .
             docker logout
@@ -79,12 +79,9 @@ jobs:
             fi
             echo "pass backend-deploy-test/backend-deploy-test-server:latest"
             
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_TOKEN }}
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             
-            docker pull ghcr.io/silenc3502/backend-server:latest
+            docker pull ${{ env.DOCKER_IMAGE }}:latest
 
             docker image prune -f
             docker logout
-            
-            docker-compose up -d
-      
