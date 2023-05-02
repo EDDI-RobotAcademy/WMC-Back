@@ -42,7 +42,7 @@ jobs:
         run: |
             docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GHCR_TOKEN }}
             docker buildx create --name arm64builder --use
-            docker buildx build --platform linux/amd64,linux/arm64 -f Dockerfile -t ghcr.io/eddi-robot-academy/wmc-back:latest --push .
+            docker buildx build -f Dockerfile -t ghcr.io/eddi-robot-academy/wmc-back:latest --push .
             docker logout
 
   deploy:
