@@ -1,9 +1,9 @@
 FROM openjdk:17-alpine
 
-RUN apk add --no-cache bash
+RUN apk update
 
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} /app/app.jar
+ARG JAR_FILE=*.jar
 
-ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /
-RUN chmod +x /wait-for-it.sh
+COPY ${JAR_FILE} app.jar
+
+ENTRYPOINT [ "java", "-jar", "/app.jar" ]
