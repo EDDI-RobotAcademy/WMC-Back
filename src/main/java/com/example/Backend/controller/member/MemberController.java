@@ -1,11 +1,8 @@
 package com.example.Backend.controller.member;
 
-import com.example.Backend.controller.member.form.CheckPasswordForm;
-import com.example.Backend.controller.member.form.MemberLoginForm;
-import com.example.Backend.controller.member.form.MemberRegisterForm;
-import com.example.Backend.controller.member.form.PasswordUpdateForm;
-import com.example.Backend.entity.member.Member;
+import com.example.Backend.controller.member.form.*;
 import com.example.Backend.service.member.MemberService;
+import com.example.Backend.service.member.request.MemberUpdateAddressRequest;
 import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
+import java.util.Map;
 
 import static com.example.Backend.controller.order.OrderController.getaLong;
 
@@ -63,10 +60,17 @@ public class MemberController {
 
     @PutMapping("/passwordUpdate")
     public Boolean passwordUpdate(@RequestBody PasswordUpdateForm passwordUpdateForm) {
-       log.info("PasswordUpdate : " + passwordUpdateForm );
+       log.info("passwordUpdate : " + passwordUpdateForm );
 
        return memberService.passwordUpdate(passwordUpdateForm);
     }
+
+    @PutMapping("/addressUpdate")
+    public Boolean addressUpdate(@RequestBody MemberUpdateAddressRequest memberUpdateAddressRequest) {
+        log.info("addressUpdate : " + memberUpdateAddressRequest);
+        return memberService.addressUpdate(memberUpdateAddressRequest);
+    }
+
 
 
     @PostMapping("/logout")
@@ -87,7 +91,7 @@ public class MemberController {
     @PostMapping("/account")
     public MemberResponse account(@RequestBody String token) {
         token = token.substring(0, token.length() - 1);
-        log.info("logout(): " + token);
+        log.info("account(): " + token);
         Long memberId = null;
         String memberValue = redisService.getValueByKey(token);
         if (memberValue != null) {
@@ -104,19 +108,29 @@ public class MemberController {
     }
 
     @DeleteMapping("/delete")
-    public void delete(@RequestBody String token) {
-        token = token.substring(0, token.length() - 1);
-        log.info("logout(): " + token);
+    public boolean delete(@RequestBody Map<String, String> map) {
+
+        log.info("delete(): " + map);
         Long memberId = null;
+
+        String token = map.get("token");
         String memberValue = redisService.getValueByKey(token);
+        log.info("memberValue : " + memberValue);
         if (memberValue != null) {
             String[] value = memberValue.split(":");
             if (value.length > 0) {
                 memberId = Long.valueOf(value[0]);
             }
         }
-        memberService.delete(memberId);
+        log.info("memberId: " + memberId);
+
+        if (memberId == null) {
+            return false;
+        }
+
+        return memberService.delete(memberId);
     }
+
 
     @PostMapping("/ismanager")
     public boolean isManager(@RequestBody String token) {

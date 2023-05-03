@@ -5,8 +5,8 @@ import com.example.Backend.controller.member.form.PasswordUpdateForm;
 import com.example.Backend.entity.member.Member;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
+import com.example.Backend.service.member.request.MemberUpdateAddressRequest;
 import com.example.Backend.service.member.response.MemberResponse;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface MemberService {
     Boolean emailValidation(String email);
@@ -22,5 +22,6 @@ public interface MemberService {
 
 
     Boolean passwordUpdate(PasswordUpdateForm passwordUpdateForm);
+    Boolean addressUpdate(MemberUpdateAddressRequest memberUpdateAddressRequest);
 
 }
