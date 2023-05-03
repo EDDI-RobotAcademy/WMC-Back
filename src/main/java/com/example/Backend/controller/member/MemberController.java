@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 import static com.example.Backend.controller.order.OrderController.getaLong;
 
 
@@ -106,19 +108,29 @@ public class MemberController {
     }
 
     @DeleteMapping("/delete")
-    public void delete(@RequestBody String token) {
-        token = token.substring(0, token.length() - 1);
-        log.info("logout(): " + token);
+    public boolean delete(@RequestBody Map<String, String> map) {
+
+        log.info("delete(): " + map);
         Long memberId = null;
+
+        String token = map.get("token");
         String memberValue = redisService.getValueByKey(token);
+        log.info("memberValue : " + memberValue);
         if (memberValue != null) {
             String[] value = memberValue.split(":");
             if (value.length > 0) {
                 memberId = Long.valueOf(value[0]);
             }
         }
-        memberService.delete(memberId);
+        log.info("memberId: " + memberId);
+
+        if (memberId == null) {
+            return false;
+        }
+
+        return memberService.delete(memberId);
     }
+
 
     @PostMapping("/ismanager")
     public boolean isManager(@RequestBody String token) {
