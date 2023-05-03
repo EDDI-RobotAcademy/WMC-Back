@@ -1,7 +1,7 @@
 FROM openjdk:17-alpine
 
 ARG JAR_FILE=*.jar
-COPY ${JAR_FILE} app.jar
+COPY build/libs/Backend-0.0.1-SNAPSHOT.jar app.jar
 
 RUN apk add --no-cache --update bash
 # 여기서 wait-for-it.sh 를 설치하고 권한을 준다
