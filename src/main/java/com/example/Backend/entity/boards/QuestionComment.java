@@ -24,30 +24,26 @@ public class QuestionComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionCommentNo;
-
-    //@JoinColumn(name = "member_id")
-    //@ManyToOne(fetch = FetchType.LAZY, targetEntity = Member.class)
-    //private List<Member> member;
+    @Column(length = 100, nullable = false)
+    private Long questionCommentId;
 
     @Lob
     private String comment;
 
-    //@JsonIgnore
-    //@ManyToOne(fetch = FetchType.LAZY, targetEntity = QuestionBoard.class)
-    //@JoinColumn(name = "question_board_id")
-    //private List<QuestionBoard> questionBoard;
+    @Column(length = 100, nullable = false)
+    private String writer;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_board_id")
     private QuestionBoard questionBoard;
 
+    /*
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
+*/
 
     @CreationTimestamp
     @DateTimeFormat(pattern = "yyyy-mm-dd")
@@ -61,17 +57,29 @@ public class QuestionComment {
         this.questionBoard = questionBoard;
         this.member = member;
     }*/
-    public QuestionComment(String comment){
+    /*
+    questionCommentId말고 questionBoardId를 생성자에 넣을 수가 없음.. 타입이 달라서
+    어떻게?? 그냥 이렇게 하면 question_board_Id가 안 들어감..
+    public QuestionComment(Long questionBoardId, String comment, String writer){
         this.comment = comment;
+        this.questionBoard = new QuestionBoard(questionBoardId);
+        this.writer = writer;
+    }*/
+
+    public QuestionComment(Long questionCommentId, String comment, String writer){
+        this.comment = comment;
+        this.questionCommentId = questionCommentId;
+        this.writer = writer;
     }
-/*
+
+
     public String toString(){
         return "QuestionComment{ " +
-                "questionCommentNo=" + questionCommentNo +
-                ", member='" + member + '\'' +
+                "questionCommentId=" + questionCommentId +
+                ", writer='" + writer + '\'' +
                 ", comment='" + comment + '\'' +
                 ", questionBoard" + questionBoard +
                 '}';
     }
-*/
+
 }

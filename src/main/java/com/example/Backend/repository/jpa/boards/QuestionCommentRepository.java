@@ -13,6 +13,9 @@ public interface QuestionCommentRepository extends JpaRepository<QuestionComment
     //List<QuestionComment> findCommentByQuestionNo(Long questionBoardId);
     List<QuestionComment> findAllBy();
 
+    //@Query("select qc from QuestionComment qc join fetch qc.questionBoard q where q.questionBoardId = :questionBoardId")
+    //List<QuestionComment> findCommentByBoardId(Long questionBoardId);
+
     ///@Query("select c from QuestionComment c join fetch c.member")
     //QuestionComment findByQuestionNo(Long questionBoardId);
 

@@ -1,17 +1,28 @@
 package com.example.Backend.service.comment.response;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import com.example.Backend.entity.member.Member;
+import lombok.*;
 
-@Data
-@RequiredArgsConstructor
+import java.util.Date;
+
+
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 public class CommentResponse {
 
-    final private String comment;
 
-    final private Long question_no;
+    private Long questionBoardId;
+    private Long questionCommentId;
+    private String comment;
+    private String writer;
+    private Date regDate;
+    private Date udpDate;
 
-    final private Long member_no;
+    //private Long memberId;
+
+
 
 
 }

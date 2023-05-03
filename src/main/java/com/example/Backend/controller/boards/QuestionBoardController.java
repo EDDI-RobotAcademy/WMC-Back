@@ -77,7 +77,7 @@ public class QuestionBoardController {
         return questionService.getAllQuestion();
     }
 
-    @GetMapping("/{questionBoardId}")
+    @GetMapping("/read/{questionBoardId}")
     /*
     public BoardResponse readQuestion(@RequestParam Long questionBoardId) {
         return questionService.read(questionBoardId);
@@ -85,6 +85,13 @@ public class QuestionBoardController {
     public BoardResponse readQuestion(@PathVariable("questionBoardId") Long questionBoardId) {
         return questionService.read(questionBoardId);
     }
+
+    @DeleteMapping("/{questionBoardId}")
+    public boolean deleteQuestion(@PathVariable("questionBoardId") Long questionBoardId){
+        log.info("questionBoardId():" + questionBoardId);
+        return questionService.delete(questionBoardId);
+    }
+
 
 
 

@@ -73,6 +73,9 @@ public class QuestionBoard {
         this.questionCategory = questionCategory;
     }
 
+    public QuestionBoard(Long questionBoardId) {
+    }
+
     // imageData entity를 QuestionBoard class에 넣기
     public void addImageData(QuestionImageData imageData) {
         imageData.setQuestionBoard(this);
