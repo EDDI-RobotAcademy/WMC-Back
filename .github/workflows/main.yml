@@ -85,6 +85,3 @@ jobs:
             docker image prune -f
             docker logout
 
-            cd /home/ec2-user/WMC-Back
-
-            docker-compose up -d
