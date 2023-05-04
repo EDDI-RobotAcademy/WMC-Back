@@ -79,19 +79,21 @@ jobs:
               docker rm -f $(docker ps -qa --filter ancestor=mysql:8.0)
             fi
             echo "pass mysql-container"
-            
+
             if [[ "$(docker ps -qa --filter ancestor="wmc/wmc-server:latest")" ]]; then
               docker rm -f $(docker ps -qa --filter ancestor="wmc/wmc-server:latest")
             fi
             echo "pass "wmc/wmc-server:latest""
-            
+
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-            
+
             docker pull ghcr.io/eddi-robot-academy/wmc-back:latest
             docker pull ghcr.io/eddi-robot-academy/wmc-back:${{ github.sha }}
 
             docker image prune -f
             docker logout
             cd /home/ec2-user/project/WMC-Back
+            export VERSION=${{ github.sha }}
             docker-compose up -d
+
 
