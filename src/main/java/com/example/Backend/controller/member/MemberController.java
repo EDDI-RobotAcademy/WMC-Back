@@ -109,7 +109,7 @@ public class MemberController {
 
     @DeleteMapping("/delete")
     public boolean delete(@RequestBody Map<String, String> map) {
-
+        log.info("Hello");
         log.info("delete(): " + map);
         Long memberId = null;
 
