@@ -90,7 +90,7 @@ jobs:
             docker pull ghcr.io/eddi-robot-academy/wmc-back:latest
             docker pull ghcr.io/eddi-robot-academy/wmc-back:${{ github.sha }}
 
-            docker image prune -f
+            docker image prune -af
             docker logout
             cd /home/ec2-user/project/WMC-Back
             export VERSION=${{ github.sha }}
