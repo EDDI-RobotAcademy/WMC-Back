@@ -135,6 +135,7 @@ public class MemberController {
     @PostMapping("/ismanager")
     public boolean isManager(@RequestBody String token) {
         token = token.substring(0, token.length() - 1);
+        log.info("ismanager(): " + token);
         log.info("logout(): " + token);
         String authorityName = null;
         String memberValue = redisService.getValueByKey(token);
@@ -145,6 +146,7 @@ public class MemberController {
                 log.info("authorityName: " + authorityName);
             }
         }
+        log.info(String.valueOf(authorityName.equals("MANAGER")));
         return authorityName.equals("MANAGER");
     }
 

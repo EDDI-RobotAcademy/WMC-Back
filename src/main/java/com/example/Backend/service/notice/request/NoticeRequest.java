@@ -26,13 +26,14 @@ public class NoticeRequest {
 
     public Notice toNotice() {
 
-        List<NoticeImageData> noitceImageDataList = new ArrayList<>();
         Notice notice = new Notice(title, writer, content);
 
-        for (String path : savedFilePaths) {
-            NoticeImageData noticeImageData = new NoticeImageData();
-            noticeImageData.setNoticeImageData(path);
-            notice.addNoticeImageData(noticeImageData);
+        if (savedFilePaths != null) {
+            for (String path : savedFilePaths) {
+                NoticeImageData noticeImageData = new NoticeImageData();
+                noticeImageData.setNoticeImageData(path);
+                notice.addNoticeImageData(noticeImageData);
+            }
         }
 
         return notice;
