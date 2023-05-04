@@ -90,5 +90,17 @@
 //
 //        assertEquals(product.getProductId(), productResponse.getProductId());
 //    }
+//    @Test
+//    public void 상품_구매_총수량_테스트() {
 //
+//        OrderItem orderItem1 = new OrderItem();
+//        orderItem1.setQuantity(5);
+//
+//        OrderItem orderItem2 = new OrderItem();
+//        orderItem2.setQuantity(10);
+//
+//        Integer totalQuantity = orderItem1.getQuantity() + orderItem2.getQuantity();
+//
+//        assertEquals(15, totalQuantity);
+//    }
 //}

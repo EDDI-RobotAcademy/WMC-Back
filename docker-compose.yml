@@ -50,8 +50,8 @@ services:
     networks:
       - app
     environment:
-      - MYSQL_HOST=db
-      - REDIS_HOST=redis
+      - MYSQL_HOST=wmc-db
+      - REDIS_HOST=wmc-redis
 
 networks:
   app:

@@ -21,11 +21,6 @@ public class NoticeRegisterForm {
 
     private String content;
 
-    private List<MultipartFile> fileList;
+    private List<String> fileNames;
 
-
-    public NoticeRequest toNoticeRequest(List<String> savedFilePaths) {
-
-        return new NoticeRequest(title, writer, content, savedFilePaths);
-    }
 }
