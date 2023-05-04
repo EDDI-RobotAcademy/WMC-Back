@@ -68,33 +68,9 @@ public class NoticeController {
         return noticeService.read(noticeId);
     }
 
-//    @DeleteMapping("/{noticeId}")
-//    public boolean deleteNotice(@PathVariable("noticeId") Long noticeId) {
-//        log.info("deleteNotice(): " + noticeId);
-//        return noticeService.delete(noticeId);
-//    }
-
-    @DeleteMapping(value = "/delete/{noticeId}")
-    //public boolean deleteNotice(@PathVariable("noticeId") Long noticeId) {
-    public boolean deleteNotice(@RequestHeader("Authorization") String token, @PathVariable("noticeId") Long noticeId) {
-        if (!memberController.isManager(token)) {
-            return false;
-        }
+    @DeleteMapping("/delete/{noticeId}")
+    public boolean deleteNotice(@PathVariable("noticeId") Long noticeId) {
         log.info("deleteNotice(): " + noticeId);
-
-        List<NoticeImageData> images = noticeImageDataRepository.findAllImagesByNoticeId(noticeId);
-        String basePath = "../../WMC/WMC-Front/src/assets/noticeImages/";
-
-        for (NoticeImageData image : images) {
-            try {
-                Path imagePath = Paths.get(basePath + image.getNoticeImageData());
-                log.info("Deleting image at: " + imagePath); // Add this line
-                Files.delete(imagePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         return noticeService.delete(noticeId);
     }
 
@@ -107,12 +83,8 @@ public class NoticeController {
         if (!memberController.isManager(token)) {
             return false;
         }
-//        if (form.getFileList() == null) {
-//            form.setFileList(new ArrayList<>());
-//        }
 
         log.info("modifyNotice(): " + form);
-//        log.info("Files received: " + form.getFileList().size());
 
         List<String> savedFiles = form.getFileNames();
 
