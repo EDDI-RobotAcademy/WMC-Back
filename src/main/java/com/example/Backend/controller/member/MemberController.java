@@ -125,6 +125,8 @@ public class MemberController {
         log.info("memberId: " + memberId);
 
         if (memberId == null) {
+            log.info("token: " + map);
+            log.info("memberValue: " + memberValue);
             return false;
         }
 
