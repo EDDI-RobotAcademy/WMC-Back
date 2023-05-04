@@ -39,14 +39,20 @@ jobs:
       ## gradle build
       - name: Build with Gradle
         run: ./gradlew build -x test
+      - name: Show JAR file information
+        run: |
+          ls -la build/libs
+          echo "JAR file last modified:"
+          date -r build/libs/*.jar
+
         
       ## docker build & push to production
       - name: Docker build & push to prod
         run: |
-            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-            docker buildx create --name x86builder --platform linux/amd64 --use
-            docker buildx build -f Dockerfile -t ghcr.io/eddi-robot-academy/wmc-back:latest --push .
-            docker logout
+          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+          docker buildx create --name x86builder --platform linux/amd64 --use
+          docker buildx build -f Dockerfile -t ghcr.io/eddi-robot-academy/wmc-back:latest -t ghcr.io/eddi-robot-academy/wmc-back:${{ github.sha }} --push .
+          docker logout
 
   deploy:
     needs: build
@@ -82,6 +88,7 @@ jobs:
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             
             docker pull ghcr.io/eddi-robot-academy/wmc-back:latest
+            docker pull ghcr.io/eddi-robot-academy/wmc-back:${{ github.sha }}
 
             docker image prune -f
             docker logout
