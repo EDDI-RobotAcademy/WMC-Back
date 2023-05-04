@@ -31,7 +31,7 @@ services:
     networks:
       - app
   server:
-    image: "wmc/wmc-server:latest"
+    image: "ghcr.io/eddi-robot-academy/wmc-back:latest"  # Update this line
     build: .
     container_name: wmc-server
     restart: unless-stopped
