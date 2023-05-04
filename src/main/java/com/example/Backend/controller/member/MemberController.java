@@ -112,6 +112,7 @@ public class MemberController {
     public boolean delete(@RequestBody Map<String, String> map) {
         log.info("Hello");
         log.info("Hello 성희");
+        log.info("Hello 종인");
         log.info("delete(): " + map);
         Long memberId = null;
 
