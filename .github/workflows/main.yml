@@ -43,7 +43,7 @@ jobs:
       ## docker build & push to production
       - name: Docker build & push to prod
         run: |
-            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             docker buildx create --name x86builder --platform linux/amd64 --use
             docker buildx build -f Dockerfile -t ghcr.io/eddi-robot-academy/wmc-back:latest --push .
             docker logout
@@ -79,7 +79,7 @@ jobs:
             fi
             echo "pass "wmc/wmc-server:latest""
             
-            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             
             docker pull ghcr.io/eddi-robot-academy/wmc-back:latest
 
