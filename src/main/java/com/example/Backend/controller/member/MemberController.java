@@ -5,6 +5,7 @@ import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.member.request.MemberUpdateAddressRequest;
 import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -60,9 +61,9 @@ public class MemberController {
 
     @PutMapping("/passwordUpdate")
     public Boolean passwordUpdate(@RequestBody PasswordUpdateForm passwordUpdateForm) {
-       log.info("passwordUpdate : " + passwordUpdateForm );
+        log.info("PasswordUpdate : " + passwordUpdateForm);
 
-       return memberService.passwordUpdate(passwordUpdateForm);
+        return memberService.passwordUpdate(passwordUpdateForm);
     }
 
     @PutMapping("/addressUpdate")
@@ -152,4 +153,8 @@ public class MemberController {
         return authorityName.equals("MANAGER");
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
 }
