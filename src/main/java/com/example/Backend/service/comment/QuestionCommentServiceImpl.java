@@ -34,13 +34,6 @@ public class QuestionCommentServiceImpl implements QuestionCommentService{
         questionCommentRepository.save(questionComment);
         return true;
 
-         /*
-        final QuestionComment questionComment = commentRequest.toComment();
-        questionCommentRepository.save(questionComment);
-        return true;
-
-         */
-
     }
 
 
@@ -69,13 +62,11 @@ public class QuestionCommentServiceImpl implements QuestionCommentService{
 
     }
 
-
-/*
     public List<CommentResponse> questionCommentList(Long questionBoardId) {
         List<QuestionComment> questionCommentList = questionCommentRepository.findCommentByBoardId(questionBoardId);
         List<CommentResponse> commentResponseList = new ArrayList<>();
 
-        for(QuestionComment questionComment: questionCommentList) {
+        for (QuestionComment questionComment : questionCommentList) {
             CommentResponse commentResponse = new CommentResponse(
                     questionComment.getQuestionCommentId(),
                     questionComment.getQuestionBoard().getQuestionBoardId(),
@@ -90,23 +81,6 @@ public class QuestionCommentServiceImpl implements QuestionCommentService{
         }
         return commentResponseList;
     }
-    */
-
-
-    /*
-    public void register(CommentRequest commentRequest){
-        //나중에 상품 관련된 Q&A할 때 findAllCommentByProductId
-
-        Optional<QuestionBoard> maybeQuestionBoard = questionRepository.findById(commentRequest.getQuestionBoardId());
-        QuestionComment questionComment = new QuestionComment();
-
-        questionComment.setWriter(commentRequest.getWriter());
-        questionComment.setComment(commentRequest.getComment());
-        questionComment.setQuestionBoard(maybeQuestionBoard.get());
-
-        questionCommentRepository.save(questionComment);
-    }
-    */
 
 
 }

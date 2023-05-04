@@ -25,8 +25,8 @@ public class QuestionCommentController {
     public List<CommentResponse> questionCommentList(@PathVariable("questionBoardId") Long questionBoardId) {
         log.info("questionBoardId() 동작");
 
-        //return questionCommentService.questionCommentList(questionBoardId);
-        return questionCommentService.getAllComment();
+        return questionCommentService.questionCommentList(questionBoardId);
+        //return questionCommentService.getAllComment();
     }
 
     @PostMapping("/register")
