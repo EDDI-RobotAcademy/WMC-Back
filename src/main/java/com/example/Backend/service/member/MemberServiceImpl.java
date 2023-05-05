@@ -7,6 +7,7 @@ import com.example.Backend.repository.jpa.member.AuthenticationRepository;
 import com.example.Backend.repository.jpa.member.ManagerCodeRepository;
 import com.example.Backend.repository.jpa.member.MemberProfileRepository;
 import com.example.Backend.repository.jpa.member.MemberRepository;
+import com.example.Backend.repository.jpa.order.OrderRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
 import com.example.Backend.service.member.request.MemberUpdateAddressRequest;
@@ -29,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
     final private ManagerCodeRepository managerCodeRepository;
     final private AuthenticationRepository authenticationRepository;
     final private MemberProfileRepository memberProfileRepository;
+    final private OrderRepository orderRepository;
     final private RedisService redisService;
 
     @Override
@@ -58,6 +60,9 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> maybeMember = memberRepository.findById(memberId);
         if (maybeMember.isPresent()) {
             Member member = maybeMember.get();
+
+            orderRepository.deleteAllByBuyer(member);
+
             memberProfileRepository.delete(member.getMemberProfile());
             authenticationRepository.deleteAll(member.getAuthentications());
             memberRepository.delete(member);

@@ -1,5 +1,6 @@
 package com.example.Backend.repository.jpa.order;
 
+import com.example.Backend.entity.member.Member;
 import com.example.Backend.entity.order.Order;
 import com.example.Backend.service.order.response.ManagerOrderResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,5 +18,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "JOIN m.memberProfile mp " +
             "JOIN mp.address a")
     List<ManagerOrderResponse> findAllOrderDetails();
+
+    void deleteAllByBuyer(Member buyer);
 
 }
