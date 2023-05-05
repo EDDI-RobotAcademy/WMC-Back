@@ -31,7 +31,7 @@ services:
     networks:
       - app
   server:
-    image: "wmc/wmc-server:latest"
+    image: "ghcr.io/EDDI-RobotAcademy/WMC-Back/wmc-server:latest"
     build: .
     container_name: wmc-server
     restart: unless-stopped
@@ -57,7 +57,6 @@ networks:
   app:
     name: server_network
     driver: bridge
-
 
 volumes:
   dbdata:
