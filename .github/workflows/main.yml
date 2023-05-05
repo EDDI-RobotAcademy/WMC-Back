@@ -42,7 +42,7 @@ jobs:
         run: |
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
             docker buildx create --name x86builder --platform linux/amd64 --use
-            docker buildx build -f Dockerfile -t ghcr.io/EDDI-RobotAcademy/WMC-Back/wmc-server:latest --push .
+            docker buildx build -f Dockerfile -t ghcr.io/eddi-robotacademy/wmc-back/wmc-server:latest --push .
             docker logout
 
   deploy:
@@ -78,7 +78,7 @@ jobs:
 
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-            docker pull ghcr.io/EDDI-RobotAcademy/WMC-Back/wmc-server:latest
+            docker pull ghcr.io/eddi-robotacademy/wmc-back/wmc-server:latest
 
             docker image prune -f
             docker logout
