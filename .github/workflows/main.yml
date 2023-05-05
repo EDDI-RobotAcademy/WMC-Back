@@ -5,7 +5,7 @@ on:
     types: [TEST_FINISH_TRIGGER]
 
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/wmc-server
+  DOCKER_IMAGE: ghcr.io/${{ github.repository_owner }}/wmc-back/wmc-server
   VERSION: ${{ github.sha }}
   NAME: backend-server
 
@@ -71,10 +71,11 @@ jobs:
             fi
             echo "pass mysql-container"
 
-            if [[ "$(docker ps -qa --filter ancestor=wmc/wmc-server:latest)" ]]; then
-              docker rm -f $(docker ps -qa --filter ancestor=wmc/wmc-server:latest)
+            if [[ "$(docker ps -qa --filter ancestor=ghcr.io/eddi-robotacademy/wmc-back/wmc-server:latest)" ]]; then
+            docker rm -f $(docker ps -qa --filter ancestor=ghcr.io/eddi-robotacademy/wmc-back/wmc-server:latest)
+            
             fi
-            echo "pass wmc/wmc-server:latest"
+            echo "pass ghcr.io/eddi-robotacademy/wmc-back/wmc-server:latest"
 
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
