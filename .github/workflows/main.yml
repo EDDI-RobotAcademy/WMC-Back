@@ -5,7 +5,7 @@ on:
     types: [TEST_FINISH_TRIGGER]
 
 env:
-  DOCKER_IMAGE: ghcr.io/${{ github.repository_owner }}/wmc-back/wmc-server
+  DOCKER_IMAGE: ghcr.io/eddi-robotacademy/wmc-back/wmc-server
   VERSION: ${{ github.sha }}
   NAME: backend-server
 
