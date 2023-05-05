@@ -113,6 +113,7 @@ public class MemberController {
         log.info("Hello");
         log.info("Hello 성희");
         log.info("Hello 종인");
+        log.info("Hello eddi");
         log.info("delete(): " + map);
         Long memberId = null;
 
