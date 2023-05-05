@@ -40,7 +40,7 @@ jobs:
       ## docker build & push to production
       - name: Docker build & push to prod
         run: |
-            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u eddi-robotacademy --password-stdin
             docker buildx create --name x86builder --platform linux/amd64 --use
             docker buildx build -f Dockerfile -t ghcr.io/eddi-robotacademy/wmc-back/wmc-server:latest --push .
             docker logout
