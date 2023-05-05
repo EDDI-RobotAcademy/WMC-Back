@@ -1,17 +1,14 @@
 name: Deploy
 
 on:
-  ## push:
-    ## branches:
-      ## - main
   repository_dispatch:
     types: [TEST_FINISH_TRIGGER]
-      
+
 env:
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/wmc-server
   VERSION: ${{ github.sha }}
   NAME: backend-server
-      
+
 jobs:
   build:
     name: Build
@@ -24,7 +21,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'zulu' # https://github.com/actions/setup-java
-          
+
       ## gradle caching
       - name: Gradle Caching
         uses: actions/cache@v3
@@ -35,24 +32,18 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-            
+
       ## gradle build
       - name: Build with Gradle
         run: ./gradlew build -x test
-      - name: Show JAR file information
-        run: |
-          ls -la build/libs
-          echo "JAR file last modified:"
-          date -r build/libs/*.jar
 
-        
       ## docker build & push to production
       - name: Docker build & push to prod
         run: |
-          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-          docker buildx create --name x86builder --platform linux/amd64 --use
-          docker buildx build -f Dockerfile -t ghcr.io/eddi-robot-academy/wmc-back:latest -t ghcr.io/eddi-robot-academy/wmc-back:${{ github.sha }} --push .
-          docker logout
+            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+            docker buildx create --name x86builder --platform linux/amd64 --use
+            docker buildx build -f Dockerfile -t ghcr.io/EDDI-RobotAcademy/WMC-Back/wmc-server:latest --push .
+            docker logout
 
   deploy:
     needs: build
@@ -65,7 +56,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
-          
+
       - name: Deploy to prod
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -80,20 +71,16 @@ jobs:
             fi
             echo "pass mysql-container"
 
-            if [[ "$(docker ps -qa --filter ancestor="wmc/wmc-server:latest")" ]]; then
-              docker rm -f $(docker ps -qa --filter ancestor="wmc/wmc-server:latest")
+            if [[ "$(docker ps -qa --filter ancestor=wmc/wmc-server:latest)" ]]; then
+              docker rm -f $(docker ps -qa --filter ancestor=wmc/wmc-server:latest)
             fi
-            echo "pass "wmc/wmc-server:latest""
+            echo "pass wmc/wmc-server:latest"
 
             echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
 
-            docker pull ghcr.io/eddi-robot-academy/wmc-back:latest
-            docker pull ghcr.io/eddi-robot-academy/wmc-back:${{ github.sha }}
+            docker pull ghcr.io/EDDI-RobotAcademy/WMC-Back/wmc-server:latest
 
-            docker image prune -af
+            docker image prune -f
             docker logout
             cd /home/ec2-user/project/WMC-Back
-            export VERSION=${{ github.sha }}
             docker-compose up -d
-
-
