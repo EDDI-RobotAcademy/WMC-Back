@@ -47,7 +47,7 @@ public class QuestionBoardController {
     private List<String> saveImageFiles(List<MultipartFile> fileList) {
         List<String> savedFilePaths = new ArrayList<>();
         
-        String basePath = "/finalProject/WMC-Front/src/assets/questionImages/";
+        String basePath = "/home/ec2-user/project/frontend/html/src/assets/questionImages/";
 
 
         for (MultipartFile multipartFile : fileList) {
@@ -55,7 +55,7 @@ public class QuestionBoardController {
             log.info("saveFiles() - file size: " + multipartFile.getSize());
 
             String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add("assets/questionImages/"+multipartFile.getOriginalFilename());
+            savedFilePaths.add("/home/ec2-user/project/frontend/html/src/assets/questionImages/"+multipartFile.getOriginalFilename());
 
             try{
                 FileOutputStream writer = new FileOutputStream(savedFileName);
