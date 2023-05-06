@@ -1,7 +1,9 @@
 package com.example.Backend.service.boards;
 
+import com.example.Backend.entity.boards.QuestionBoard;
 import com.example.Backend.service.boards.request.BoardRequest;
 import com.example.Backend.service.boards.response.BoardListResponse;
+import com.example.Backend.service.boards.response.BoardResponse;
 
 import java.util.List;
 
@@ -15,4 +17,6 @@ public interface QuestionService {
     //public List<QuestionBoard> questionList();
     List<BoardListResponse> getAllQuestion();
     List<BoardListResponse> getQuestionsByCategory(Long questionCategoryId);
+
+    BoardResponse read(Long questionBoardId);
 }

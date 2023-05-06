@@ -1,7 +1,7 @@
 package com.example.Backend.service.category;
 
 import com.example.Backend.entity.boards.QuestionCategory;
-import com.example.Backend.repository.category.QuestionCategoryRepository;
+import com.example.Backend.repository.jpa.category.QuestionCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

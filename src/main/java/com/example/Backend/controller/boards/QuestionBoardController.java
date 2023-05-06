@@ -1,10 +1,12 @@
 package com.example.Backend.controller.boards;
 
 import com.example.Backend.controller.boards.form.QuestionRegisterForm;
+import com.example.Backend.entity.boards.QuestionBoard;
 import com.example.Backend.entity.boards.QuestionCategory;
 import com.example.Backend.service.boards.request.BoardRequest;
 import com.example.Backend.service.boards.QuestionService;
 import com.example.Backend.service.boards.response.BoardListResponse;
+import com.example.Backend.service.boards.response.BoardResponse;
 import com.example.Backend.service.category.QuestionCategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,8 +45,8 @@ public class QuestionBoardController {
 
     private List<String> saveImageFiles(List<MultipartFile> fileList) {
         List<String> savedFilePaths = new ArrayList<>();
-
-        String basePath = "/finalProject/WMC-Front/src/assets/questionImages/";
+        
+        String basePath = "/home/ec2-user/project/frontend/html/src/assets/questionImages/";
 
 
         for (MultipartFile multipartFile : fileList) {
@@ -52,7 +54,7 @@ public class QuestionBoardController {
             log.info("saveFiles() - file size: " + multipartFile.getSize());
 
             String savedFileName = basePath + multipartFile.getOriginalFilename();
-            savedFilePaths.add("assets/questionImages/"+multipartFile.getOriginalFilename());
+            savedFilePaths.add("/home/ec2-user/project/frontend/html/src/assets/questionImages/"+multipartFile.getOriginalFilename());
 
             try{
                 FileOutputStream writer = new FileOutputStream(savedFileName);
@@ -73,6 +75,27 @@ public class QuestionBoardController {
         log.info("getAllQuestion()");
         return questionService.getAllQuestion();
     }
+
+    @GetMapping("/read/{questionBoardId}")
+    /*
+    public BoardResponse readQuestion(@RequestParam Long questionBoardId) {
+        return questionService.read(questionBoardId);
+    }*/
+    public BoardResponse readQuestion(@PathVariable("questionBoardId") Long questionBoardId) {
+        return questionService.read(questionBoardId);
+    }
+/*
+    @DeleteMapping("/{questionBoardId}")
+    public boolean deleteQuestion(@PathVariable("questionBoardId") Long questionBoardId){
+        log.info("questionBoardId():" + questionBoardId);
+        return questionService.delete(questionBoardId);
+    }
+    */
+
+
+
+
+
 
     @GetMapping("/questionListByCategory")
     public List<BoardListResponse> getQuestionsByCategory(@RequestParam Long categoryId){

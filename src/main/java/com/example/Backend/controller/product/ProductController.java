@@ -45,6 +45,7 @@ public class ProductController {
         return productService.register(request);
     }
 
+
 //    private List<String> saveFiles(List<MultipartFile> fileList) {
 //        List<String> savedFilePaths = new ArrayList<>();
 //        String basePath = "/home/ec2-user/project/frontend/html/img/";
