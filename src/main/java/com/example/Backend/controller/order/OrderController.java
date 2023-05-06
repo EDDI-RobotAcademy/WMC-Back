@@ -7,6 +7,7 @@ import com.example.Backend.service.order.OrderService;
 import com.example.Backend.service.order.request.KakaoPayRequest;
 import com.example.Backend.service.order.request.OrderItemRequest;
 import com.example.Backend.service.order.response.ManagerOrderResponse;
+import com.example.Backend.service.order.response.MyOrderResponse;
 import com.example.Backend.service.product.ProductService;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -133,9 +134,23 @@ public class OrderController {
         String[] values = value.split(":");
         String authority = values[1];
         log.info("authority:" + authority);
-        if(authority.equals("MANAGER")) {
+        if (authority.equals("MANAGER")) {
             return orderService.getManagerOrderList();
         }
         throw new RuntimeException("권한이 없습니다.");
+    }
+
+    @PostMapping("/list")
+    public List<MyOrderResponse> getOrderList(@RequestBody String token) {
+        log.info("token:" + token);
+        token = token.substring(0, token.length() - 1);
+        log.info(token);
+        String value = redisService.getValueByKey(token);
+        log.info("value:" + value);
+        String[] values = value.split(":");
+        String memberId = values[0];
+        log.info("memberId: " + memberId.toString());
+        log.info("myorderlist 조회했음");
+        return orderService.getMyOrderList(Long.valueOf(memberId));
     }
 }

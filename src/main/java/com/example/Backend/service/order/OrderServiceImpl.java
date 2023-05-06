@@ -10,6 +10,7 @@ import com.example.Backend.repository.jpa.order.OrderRepository;
 import com.example.Backend.repository.jpa.product.ProductRepository;
 import com.example.Backend.service.order.request.OrderItemRequest;
 import com.example.Backend.service.order.response.ManagerOrderResponse;
+import com.example.Backend.service.order.response.MyOrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +75,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllOrderDetails();
 
 
+    }
+
+    @Override
+    public List<MyOrderResponse> getMyOrderList(Long memberId) {
+        return orderRepository.findAllMyOrderDetails(memberId);
     }
 
 
