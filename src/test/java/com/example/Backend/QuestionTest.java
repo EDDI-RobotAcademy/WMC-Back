@@ -92,7 +92,7 @@ public class QuestionTest {
     }
 
 
-    @Test
+    /*@Test
     public void 질문삭제_확인() {
         questionRepository.deleteAll();
         assertEquals(0, questionRepository.count());
@@ -114,7 +114,7 @@ public class QuestionTest {
         QuestionBoard questionBoard = questionBoards.get(0);
 
         assertTrue(questionService.delete(questionBoard.getQuestionBoardId()));
-    }
+    }*/
 
     @Test
     public void Commemt_등록_확인() {

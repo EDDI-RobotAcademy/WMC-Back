@@ -84,12 +84,14 @@ public class QuestionBoardController {
     public BoardResponse readQuestion(@PathVariable("questionBoardId") Long questionBoardId) {
         return questionService.read(questionBoardId);
     }
-
+/*
     @DeleteMapping("/{questionBoardId}")
     public boolean deleteQuestion(@PathVariable("questionBoardId") Long questionBoardId){
         log.info("questionBoardId():" + questionBoardId);
         return questionService.delete(questionBoardId);
     }
+    */
+
 
 
 
