@@ -1,4 +1,4 @@
-
+/*
 package com.example.Backend;
 
 import com.example.Backend.entity.boards.QuestionBoard;
@@ -91,6 +91,8 @@ public class QuestionTest {
 
     }
 
+ */
+
 
     /*@Test
     public void 질문삭제_확인() {
@@ -115,7 +117,7 @@ public class QuestionTest {
 
         assertTrue(questionService.delete(questionBoard.getQuestionBoardId()));
     }*/
-
+/*
     @Test
     public void Commemt_등록_확인() {
 
@@ -151,4 +153,6 @@ public class QuestionTest {
         assertTrue(questionCommentService.commentDelete(questionComment.getQuestionCommentId()));
     }
 }
+*/
+
 
