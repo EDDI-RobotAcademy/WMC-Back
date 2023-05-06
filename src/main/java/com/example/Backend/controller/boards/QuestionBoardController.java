@@ -38,7 +38,7 @@ public class QuestionBoardController {
         List<String> saveImageFiles = saveImageFiles(form.getFileList());
         QuestionCategory questionCategory = questionCategoryService.getQuestionCategoryById(form.getQuestionCategoryId());
 
-        BoardRequest request = new BoardRequest(form.getTitle(), form.getWriter(), form.getContent(), questionCategory, saveImageFiles);
+        BoardRequest request = new BoardRequest(form.getTitle(), form.getContent(), form.getWriter(), questionCategory, saveImageFiles);
 
         return questionService.register(request);
     }
