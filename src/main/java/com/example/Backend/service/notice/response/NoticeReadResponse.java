@@ -17,6 +17,5 @@ public class NoticeReadResponse {
     private String writer;
     private String content;
     private Date regDate;
-
     private List<NoticeImageData> images;
 }

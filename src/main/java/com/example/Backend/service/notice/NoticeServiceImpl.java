@@ -26,7 +26,10 @@ public class NoticeServiceImpl implements NoticeService {
 
     final private NoticeImageDataRepository noticeImageDataRepository;
 
+    @Override
+    @Transactional
     public Boolean register(NoticeRequest noticeRequest) {
+        log.info("Received NoticeRequest" + noticeRequest);
         final Notice notice = noticeRequest.toNotice();
         noticeRepository.save(notice);
 

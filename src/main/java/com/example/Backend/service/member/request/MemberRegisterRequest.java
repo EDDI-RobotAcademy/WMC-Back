@@ -21,7 +21,7 @@ public class MemberRegisterRequest {
 
     private final AuthorityType authorityName;
 
-    private boolean managerCheck;
+    private boolean   managerCheck;
     private String managerCode;
     private String city;
     private String street;

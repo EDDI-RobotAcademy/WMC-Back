@@ -23,13 +23,15 @@ public class ProductRegisterRequest {
     final private List<String> savedFilePaths;
 
     public Product toProduct(Category category) {
-        List<ImageData> imageDataList = new ArrayList<>();
+//        List<ImageData> imageDataList = new ArrayList<>();
         Product product = new Product(name, description, stock, price, category);
 
-        for (String path : savedFilePaths) {
-            ImageData imageData = new ImageData();
-            imageData.setImageData(path);
-            product.addImageData(imageData);
+        if (savedFilePaths != null) {
+            for (String path : savedFilePaths) {
+                ImageData imageData = new ImageData();
+                imageData.setImageData(path);
+                product.addImageData(imageData);
+            }
         }
 
         return product;

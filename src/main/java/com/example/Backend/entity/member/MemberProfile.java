@@ -18,7 +18,7 @@ public class MemberProfile {
     private Long id;
 
     @Column(nullable = false)
-    private String PhoneNumber;
+    private String phoneNumber;
 
     @Embedded
     private Address address;
@@ -29,7 +29,7 @@ public class MemberProfile {
 
     private MemberProfile(Address address, String phoneNumber) {
         this.address = address;
-        this.PhoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
     public static MemberProfile of(String city, String street, String addressDetail, String zipcode, String phoneNumber) {

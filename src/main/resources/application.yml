@@ -1,23 +1,21 @@
 
 server:
   port: 7777
+#  elasticsearch:
+#    host: localhost
+#    port: 9200
+#    cluster-name: elasticsearch
+#    rest:
+#      uris: http://localhost:9200
 
+#  main:
+#    allow-bean-definition-overriding: true
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/wmc_db?allowpublickeyretrieval=true&usessl=false&serverTimezone=UTC
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/wmc_db?allowpublickeyretrieval=true&usessl=false&serverTimezone=UTC
     username: eddi
     password: eddi@123
     driver-class-name: com.mysql.cj.jdbc.Driver
-    dialect: org.hibernate.dialect.MySQL8Dialect
-  elasticsearch:
-    host: localhost
-    port: 9200
-    cluster-name: elasticsearch
-    rest:
-      uris: http://localhost:9200
-  main:
-    allow-bean-definition-overriding: true
-
   jpa:
     open-in-view: false
     database: mysql
@@ -25,13 +23,17 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
+
 
   cache:
     type: redis
 
   redis:
-    host: 127.0.0.1
+    host: ${REDIS_HOST:127.0.0.1}
     port: 6379
+    username: eddi
+    password: eddi@123
 
   servlet:
     multipart:

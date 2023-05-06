@@ -9,6 +9,7 @@ import com.example.Backend.repository.jpa.order.OrderItemRepository;
 import com.example.Backend.repository.jpa.order.OrderRepository;
 import com.example.Backend.repository.jpa.product.ProductRepository;
 import com.example.Backend.service.order.request.OrderItemRequest;
+import com.example.Backend.service.order.response.ManagerOrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +25,13 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
 
+    @Override
     public void saveOrder(Order order) {
         orderRepository.save(order);
     }
 
     @Transactional
+    @Override
     public void createOrderItem(Order order, OrderItemRequest orderItemRequest) {
         Product product = productRepository.findById(orderItemRequest.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -39,6 +42,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Transactional
+    @Override
     public void createOrder(Long memberId, List<OrderItemRequest> orderItems) {
         Member buyer = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Member not found"));
@@ -55,6 +59,21 @@ public class OrderServiceImpl implements OrderService {
             OrderItem orderItem = new OrderItem(savedOrder, product, orderItemRequest.getQuantity(), totalPrice);
             orderItemRepository.save(orderItem);
         }
+    }
+
+    @Override
+    public boolean isProductEnough(Long productId, Integer quantity){
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        return product.getStock() >= quantity;
+    }
+
+    @Override
+    public List<ManagerOrderResponse> getManagerOrderList() {
+        return orderRepository.findAllOrderDetails();
+
+
     }
 
 

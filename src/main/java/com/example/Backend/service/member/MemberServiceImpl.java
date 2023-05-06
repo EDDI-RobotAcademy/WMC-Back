@@ -1,12 +1,16 @@
 package com.example.Backend.service.member;
 
+import com.example.Backend.controller.member.form.CheckPasswordForm;
+import com.example.Backend.controller.member.form.PasswordUpdateForm;
 import com.example.Backend.entity.member.*;
 import com.example.Backend.repository.jpa.member.AuthenticationRepository;
 import com.example.Backend.repository.jpa.member.ManagerCodeRepository;
 import com.example.Backend.repository.jpa.member.MemberProfileRepository;
 import com.example.Backend.repository.jpa.member.MemberRepository;
+import com.example.Backend.repository.jpa.order.OrderRepository;
 import com.example.Backend.service.member.request.MemberLoginRequest;
 import com.example.Backend.service.member.request.MemberRegisterRequest;
+import com.example.Backend.service.member.request.MemberUpdateAddressRequest;
 import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
     final private ManagerCodeRepository managerCodeRepository;
     final private AuthenticationRepository authenticationRepository;
     final private MemberProfileRepository memberProfileRepository;
+    final private OrderRepository orderRepository;
     final private RedisService redisService;
 
     @Override
@@ -55,6 +60,9 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> maybeMember = memberRepository.findById(memberId);
         if (maybeMember.isPresent()) {
             Member member = maybeMember.get();
+
+            orderRepository.deleteAllByBuyer(member);
+
             memberProfileRepository.delete(member.getMemberProfile());
             authenticationRepository.deleteAll(member.getAuthentications());
             memberRepository.delete(member);
@@ -122,9 +130,25 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
+    public Boolean passwordCheck(CheckPasswordForm checkPasswordForm) {
+        Long memberId = checkPasswordForm.getMemberId();
+        Optional<Member> maybeMember = memberRepository.findById(memberId);
+
+        if (maybeMember.isPresent()) {
+            Member member = maybeMember.get();
+            String password = checkPasswordForm.getPassword();
+            return member.isRightPassword(password);
+        }
+        return false;
+    }
+
+
+    @Override
+    @Transactional
     public MemberResponse read(Long memberId) {
 
-        Optional<Member> maybeMember = memberRepository.findById(memberId);
+        Optional<Member> maybeMember = memberRepository.findByIdWithProfile(memberId);
         if (maybeMember.isPresent()) {
             Member member = maybeMember.get();
             MemberProfile memberProfile = memberProfileRepository.getReferenceById(memberId);
@@ -146,5 +170,47 @@ public class MemberServiceImpl implements MemberService {
             return maybeMember.get();
         }
         throw new RuntimeException("가입된 사용자가 아닙니다!");
+    }
+
+    @Override
+    @Transactional
+    public Boolean passwordUpdate(PasswordUpdateForm passwordUpdateForm) {
+        Optional<Member> maybeMember = memberRepository.findById(passwordUpdateForm.getMemberId());
+        Optional<Authentication> maybeAuthentication = authenticationRepository.findByMember_id(passwordUpdateForm.getMemberId());
+
+        if (maybeMember.isPresent()) {
+            Member member = maybeMember.get();
+
+            final BasicAuthentication authentication = new BasicAuthentication(
+                    member,
+                    Authentication.BASIC_AUTH,
+                    passwordUpdateForm.getNewPassword()
+            );
+
+            authentication.setId(maybeAuthentication.get().getId());
+            authenticationRepository.save(authentication);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public Boolean addressUpdate(MemberUpdateAddressRequest memberUpdateAddressRequest) {
+        Optional<Member> optionalMember = memberRepository.findById(memberUpdateAddressRequest.getMemberId());
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            MemberProfile memberProfile = member.getMemberProfile();
+            Address address = Address.of(memberUpdateAddressRequest.getNewCity(),
+                    memberUpdateAddressRequest.getNewStreet(),
+                    memberUpdateAddressRequest.getNewAddressDetail(),
+                    memberUpdateAddressRequest.getNewZipcode());
+            memberProfile.setAddress(address);
+            memberProfileRepository.save(memberProfile);
+            return true;
+        } else {
+            // member가 존재하지 않을 경우에 대한 처리
+            return false;
+        }
     }
 }
