@@ -6,6 +6,7 @@ import com.example.Backend.entity.boards.QuestionComment;
 import com.example.Backend.entity.member.Member;
 import com.example.Backend.entity.product.Category;
 import com.example.Backend.entity.product.Product;
+import com.example.Backend.repository.jpa.boards.QuestionCommentRepository;
 import com.example.Backend.repository.jpa.boards.QuestionRepository;
 import com.example.Backend.service.boards.QuestionService;
 import com.example.Backend.service.boards.request.BoardRequest;
@@ -43,6 +44,9 @@ public class QuestionTest {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private QuestionCommentRepository questionCommentRepository;
 
     @Test
     public void 질문게시글_등록_확인() {
@@ -130,6 +134,19 @@ public class QuestionTest {
         assertTrue(commentResponses.size() > 0);
     }
 
+    @Test
+    public void Comment_삭제_테스트() {
+        questionCommentRepository.deleteAll();
+        assertEquals(0, questionCommentRepository.count());
 
+        assertTrue(questionCommentService.register(new CommentRequest(
+                1L, "test입니다", "test내용")));
 
+        assertEquals(1, questionCommentRepository.count());
+
+        List<QuestionComment> questionComments = questionCommentRepository.findAll();
+        QuestionComment questionComment = questionComments.get(0);
+
+        assertTrue(questionCommentService.commentDelete(questionComment.getQuestionCommentId()));
+    }
 }

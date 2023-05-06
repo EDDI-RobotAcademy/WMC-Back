@@ -10,6 +10,7 @@ import com.example.Backend.service.comment.request.CommentRequest;
 import com.example.Backend.service.comment.response.CommentResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +64,7 @@ public class QuestionCommentServiceImpl implements QuestionCommentService{
     }
 
     public List<CommentResponse> questionCommentList(Long questionBoardId) {
-        List<QuestionComment> questionCommentList = questionCommentRepository.findCommentByBoardId(questionBoardId);
+        List<QuestionComment> questionCommentList = questionCommentRepository.findAllCommentByBoardId(questionBoardId);
         List<CommentResponse> commentResponseList = new ArrayList<>();
 
         for (QuestionComment questionComment : questionCommentList) {
@@ -80,6 +81,16 @@ public class QuestionCommentServiceImpl implements QuestionCommentService{
             commentResponseList.add(commentResponse);
         }
         return commentResponseList;
+    }
+
+    @Override
+    public Boolean commentDelete(Long questionCommentId) {
+        if (questionCommentRepository.existsById(questionCommentId)) {
+            List<QuestionComment> maybeComment = questionCommentRepository.findAllCommentByBoardId(questionCommentId);
+            questionCommentRepository.deleteById(questionCommentId);
+            return true;
+        }
+        return false;
     }
 
 

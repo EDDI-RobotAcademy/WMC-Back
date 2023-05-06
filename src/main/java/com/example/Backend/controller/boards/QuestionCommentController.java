@@ -40,17 +40,13 @@ public class QuestionCommentController {
         return questionCommentService.register(request);
     }
 
-    /*
-    @PostMapping("/register")
-    public void commentRegister(@RequestBody CommentRequest commentRequest){
-        log.info("commentRequest");
-        log.info("register() 게시물 Id " + commentRequest.getQuestionBoardId());
-        log.info(commentRequest.getComment());
-        log.info(commentRequest.getWriter());
-        questionCommentService.register(commentRequest);
-    }
+    // 댓글 삭제
+    @DeleteMapping("/{questionCommentId}")
+    public boolean  commentDelete(@PathVariable("questionCommentId") Long questionCommentId) {
+        log.info("commentDelete()");
 
-     */
+        return questionCommentService.commentDelete(questionCommentId);
+    }
 
 }
 

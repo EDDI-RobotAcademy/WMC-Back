@@ -19,4 +19,6 @@ public interface QuestionCommentService {
    List<CommentResponse> getAllComment();
 
    List<CommentResponse> questionCommentList(Long questionBoardId);
+
+   Boolean commentDelete(Long questionCommentId);
 }
