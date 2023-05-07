@@ -1,12 +1,11 @@
 package com.example.Backend.entity.product;
+import com.example.Backend.entity.like.Like;
 import com.example.Backend.entity.order.Order;
 import com.example.Backend.entity.order.OrderItem;
 
 import com.example.Backend.entity.review.Review;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 //import org.springframework.data.elasticsearch.annotations.FieldType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -23,7 +22,8 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-//@Document(indexName = "product")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "productId")
+@JsonIdentityReference(alwaysAsId = true)
 @JsonIgnoreProperties("orderItemList")
 public class Product {
 
@@ -69,6 +69,9 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
     public Product(String name, String description, Integer stock, Integer price, Category category) {
         this.name = name;

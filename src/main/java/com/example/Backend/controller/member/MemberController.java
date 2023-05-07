@@ -1,6 +1,7 @@
 package com.example.Backend.controller.member;
 
 import com.example.Backend.controller.member.form.*;
+import com.example.Backend.service.like.LikeService;
 import com.example.Backend.service.member.MemberService;
 import com.example.Backend.service.member.request.MemberUpdateAddressRequest;
 import com.example.Backend.service.member.response.MemberResponse;
@@ -25,6 +26,7 @@ public class MemberController {
 
     final private MemberService memberService;
     final private RedisService redisService;
+    final private LikeService likeService;
 
     @PostMapping("/check-email/{email}")
     public Boolean emailValidation(@PathVariable("email") String email) {
@@ -156,8 +158,67 @@ public class MemberController {
         return authorityName.equals("MANAGER");
     }
 
+    @PostMapping("/like")
+    public boolean like(@RequestBody Map<String, String> map) {
+        log.info("like(): " + map);
+        Long memberId = null;
+
+        String token = map.get("token");
+        log.info("token: " + token);
+        String memberValue = redisService.getValueByKey(token);
+        log.info("memberValue : " + memberValue);
+        if (memberValue != null) {
+            String[] value = memberValue.split(":");
+            if (value.length > 0) {
+                memberId = Long.valueOf(value[0]);
+            }
+        }
+        log.info("memberId: " + memberId);
+
+        if (memberId == null) {
+            log.info("token: " + map);
+            log.info("memberValue: " + memberValue);
+            return false;
+        }
+
+        return likeService.likeProduct(memberId, Long.valueOf(map.get("productId")));
+    }
+
+    @PostMapping("/unlike")
+    public boolean unlike(@RequestBody Map<String, String> map) {
+        log.info("like(): " + map);
+        Long memberId = null;
+
+        String token = map.get("token");
+        log.info("token: " + token);
+        String memberValue = redisService.getValueByKey(token);
+        log.info("memberValue : " + memberValue);
+        if (memberValue != null) {
+            String[] value = memberValue.split(":");
+            if (value.length > 0) {
+                memberId = Long.valueOf(value[0]);
+            }
+        }
+        log.info("memberId: " + memberId);
+
+        if (memberId == null) {
+            log.info("token: " + map);
+            log.info("memberValue: " + memberValue);
+            return false;
+        }
+        return likeService.unlikeProduct(memberId, Long.valueOf(map.get("productId")));
+    }
+
+    @GetMapping("/liked/{memberId}/{productId}")
+    public ResponseEntity<Boolean> checkIfMemberLikedProduct(@PathVariable Long memberId, @PathVariable Long productId) {
+        boolean isLiked = likeService.checkIfMemberLikedProduct(memberId, productId);
+        return ResponseEntity.ok(isLiked);
+    }
+
+
     @GetMapping("/test")
     public String test() {
+
         return "test";
     }
 }
