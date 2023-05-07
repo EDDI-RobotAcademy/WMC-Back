@@ -3,6 +3,7 @@ package com.example.Backend.service.member;
 import com.example.Backend.controller.member.form.CheckPasswordForm;
 import com.example.Backend.controller.member.form.PasswordUpdateForm;
 import com.example.Backend.entity.member.*;
+import com.example.Backend.entity.product.Product;
 import com.example.Backend.repository.jpa.member.AuthenticationRepository;
 import com.example.Backend.repository.jpa.member.ManagerCodeRepository;
 import com.example.Backend.repository.jpa.member.MemberProfileRepository;
@@ -15,6 +16,7 @@ import com.example.Backend.service.member.response.MemberResponse;
 import com.example.Backend.service.security.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -213,4 +215,5 @@ public class MemberServiceImpl implements MemberService {
             return false;
         }
     }
+
 }

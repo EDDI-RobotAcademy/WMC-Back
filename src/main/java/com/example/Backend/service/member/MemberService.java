@@ -24,4 +24,5 @@ public interface MemberService {
     Boolean passwordUpdate(PasswordUpdateForm passwordUpdateForm);
     Boolean addressUpdate(MemberUpdateAddressRequest memberUpdateAddressRequest);
 
+
 }
