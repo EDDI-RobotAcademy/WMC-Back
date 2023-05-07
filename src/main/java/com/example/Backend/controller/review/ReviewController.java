@@ -62,8 +62,8 @@ public class ReviewController {
         return reviewService.delete(reviewId);
     }
 
-    @GetMapping("/list")
-    public List<ReviewListResponse> getAllReviews(@RequestBody Long productId) {
+    @GetMapping("/list/{productId}")
+    public List<ReviewListResponse> getAllReviews(@PathVariable Long productId) {
 
         return reviewService.getAllReviews(productId);
     }
