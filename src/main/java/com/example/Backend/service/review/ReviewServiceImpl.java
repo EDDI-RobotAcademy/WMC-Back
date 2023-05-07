@@ -57,6 +57,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public List<ReviewListResponse>getAllReviews(Long productId) {
 
         Product product = productRepository.findById(productId)
