@@ -52,6 +52,7 @@ public class MemberController {
     @PostMapping("/sign-in")
     public String signIn(@RequestBody MemberLoginForm form) {
         log.info("signIn(): " + form);
+        log.info("안녕하세요 잘 부탁드립니다");
 
         return memberService.signIn(form.toMemberLoginRequest());
     }
