@@ -1,8 +1,8 @@
 
 server:
   port: 7777
-  servlet:
-    context-path: /api
+#  servlet:
+#    context-path: /api
 #  ssl:
 #    key-store-type: PKCS12
 #    key-store: file:/home/ec2-user/keystore.p12
