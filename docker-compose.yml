@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
     volumes:
       - appdata:/app
-      - /home/ec2-user/keystore.p12:/home/ec2-user/keystore.p12
+#      - /home/ec2-user/keystore.p12:/home/ec2-user/keystore.p12
     depends_on:
       - redis
     ports:
