@@ -14,7 +14,8 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://127.0.0.1:8080",
                         "http://localhost:8080",
-                        "http://wemakecode.co.kr"
+                        "http://wemakecode.co.kr",
+                        "https://wemakecode.co.kr"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
     }
