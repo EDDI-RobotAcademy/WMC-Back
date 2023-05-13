@@ -37,11 +37,11 @@ services:
     restart: unless-stopped
     volumes:
       - appdata:/app
-#      - /home/ec2-user/keystore.p12:/home/ec2-user/keystore.p12
+      - /home/ec2-user/keystore.p12:/home/ec2-user/keystore.p12
     depends_on:
       - redis
     ports:
-      - "7777:7777"
+      - "8443:8443"
     command:
       - bash
       - -c
