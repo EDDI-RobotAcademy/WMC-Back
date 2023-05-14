@@ -8,8 +8,9 @@ RUN apk add --no-cache --update bash
 ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /
 RUN chmod +x /wait-for-it.sh
 
+RUN mkdir -p /etc/nginx/certs
 # Make sure the path to keystore.p12 is correct
 #COPY ./keystore.p12 /etc/nginx/certs/keystore.p12
-RUN sudo chmod 644 /etc/nginx/certs/keystore.p12
+RUN chmod 644 /etc/nginx/certs/keystore.p12
 
 ENTRYPOINT [ "java", "-jar", "/app.jar" ]
