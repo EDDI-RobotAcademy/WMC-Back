@@ -9,7 +9,7 @@ ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.s
 RUN chmod +x /wait-for-it.sh
 
 # Make sure the path to keystore.p12 is correct
-COPY ./keystore.p12 /etc/nginx/certs/keystore.p12
+#COPY ./keystore.p12 /etc/nginx/certs/keystore.p12
 RUN chmod 644 /etc/nginx/certs/keystore.p12
 
 ENTRYPOINT [ "java", "-jar", "/app.jar" ]
