@@ -64,7 +64,7 @@ public class OrderController {
             conn.setRequestProperty("Authorization", "KakaoAK 52f93d87ec4e46149a6c978cf9f6d606");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
             conn.setDoOutput(true);
-            String params = "cid=TC0ONETIME&partner_order_id=partner_order_id&partner_user_id=partner_user_id&item_name=초코파이&quantity=1&total_amount=2200&vat_amount=200&tax_free_amount=0&approval_url=http://wemakecode.co.kr/order/kakaoPaySuccess&cancel_url=http://wemakecode.co.kr/order/kakaoPayCancel&fail_url=http://wemakecode.co.kr/order/kakaoPaySuccessFail";
+            String params = "cid=TC0ONETIME&partner_order_id=partner_order_id&partner_user_id=partner_user_id&item_name=초코파이&quantity=1&total_amount=2200&vat_amount=200&tax_free_amount=0&approval_url=https://wemakecode.co.kr/order/kakaoPaySuccess&cancel_url=https://wemakecode.co.kr/order/kakaoPayCancel&fail_url=https://wemakecode.co.kr/order/kakaoPaySuccessFail";
             OutputStream os = conn.getOutputStream();
             DataOutputStream dos = new DataOutputStream(os);
             dos.writeBytes(params);
