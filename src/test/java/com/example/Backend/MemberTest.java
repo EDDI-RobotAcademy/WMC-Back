@@ -59,22 +59,25 @@ public class MemberTest {
         assertEquals(0, memberRepository.count());
     }
 
-//    @Transactional
-//    @Test
-//    public void 회원조회() {
-//        memberRepository.deleteAll();
-//        assertTrue(memberService.signUp(new MemberRegisterRequest(
-//                "test@test.com", "test", "asdf", 19950228, AuthorityType.MEMBER, true,
-//                "집", "집", "집",
-//                "01234", "010-2345-1234"
-//        )));
-//        assertEquals(1, memberRepository.count());
-//        MemberResponse res = memberService.read(1L);
-//        assertTrue(res.getAddressDetail().equals("집"));
-//        assertTrue(res.getCity().equals("집"));
-//        assertTrue(res.getPhoneNumber().equals("010-2345-1234"));
-//        assertTrue(res.getEmail().equals("test@test.com"));
-//        assertTrue(res.getUsername().equals("asdf"));
-//        assertTrue(res.getBirthdate()==19950228);
-//    }
+    @Transactional
+    @Test
+    public void 회원조회() {
+        memberRepository.deleteAll();
+        MemberRegisterRequest request = new MemberRegisterRequest(
+                "test@test.com", "test", "asdf", 19950228, AuthorityType.MEMBER, true,
+                "집", "집", "집",
+                "01234", "010-2345-1234"
+        );
+        assertTrue(memberService.signUp(request));
+        List<Member> members = memberRepository.findAll();
+        Member member = members.get(0);
+        Long id = member.getId();
+        MemberResponse res = memberService.read(id);
+        assertTrue(res.getAddressDetail().equals("집"));
+        assertTrue(res.getCity().equals("집"));
+        assertTrue(res.getPhoneNumber().equals("010-2345-1234"));
+        assertTrue(res.getEmail().equals("test@test.com"));
+        assertTrue(res.getUsername().equals("asdf"));
+        assertTrue(res.getBirthdate()==19950228);
+    }
 }
